@@ -14,7 +14,7 @@
                     <div class="form-group row">
                         <label for="kode" class="col-lg-2 col-lg-offset-1 control-label">Kode</label>
                         <div class="col-lg-6">
-                            <input type="text" name="kode" id="kode" class="form-control" required autofocus>
+                            <input type="text" name="kode_produk" id="kode_produk" class="form-control" required autofocus>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
