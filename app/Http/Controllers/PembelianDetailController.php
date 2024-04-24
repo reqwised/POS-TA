@@ -8,6 +8,8 @@ use App\Models\Produk;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
+//test
+
 class PembelianDetailController extends Controller
 {
     public function index()
