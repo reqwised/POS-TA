@@ -13,15 +13,16 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="box">
-            <div class="box-header with-border">
-                <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
+            <div class="box-header">
+                <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-success btn-sm">Tambah</button>
             </div>
             <div class="box-body table-responsive">
-                <table class="table table-stiped table-bordered">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead class="bg-info">
                         <th width="5%">No</th>
                         <th>Kategori</th>
-                        <th width="15%"><i class="fa fa-cog"></i></th>
+                        <!-- <th width="15%"><i class="fa fa-cog"></i></th> -->
+                        <th width="20%">Aksi</th>
                     </thead>
                 </table>
             </div>
