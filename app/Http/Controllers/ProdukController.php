@@ -109,6 +109,23 @@ class ProdukController extends Controller
         //
     }
 
+    public function getProducts()
+    {
+        $produk = Produk::all();
+        return response()->json($produk);
+    }
+    public function getProductByKode($kode)
+    {
+        $produk = Produk::where('kode_produk', $kode)->first();
+
+        if ($produk) {
+            return response()->json($produk);
+        } else {
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
+        }
+    }
+
+
     /**
      * Update the specified resource in storage.
      *

@@ -99,6 +99,9 @@
                 </a>
             </li>
             @endif
+            <li>
+                <a href="{{route('jual.index')}}">Jual</a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
