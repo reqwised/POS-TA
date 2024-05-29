@@ -1,5 +1,28 @@
 @extends('layouts.master')
 
+@push('css')
+<style>
+    .tampil-bayar {
+        font-size: 5em;
+        text-align: center;
+        height: 100px;
+    }
+
+    .tampil-terbilang {
+        padding: 10px;
+        background: #f0f0f0;
+    }
+
+    @media(max-width: 768px) {
+        .tampil-bayar {
+            font-size: 3em;
+            height: 70px;
+            padding-top: 5px;
+        }
+    }
+</style>
+@endpush
+
 @section('title')
     Transaksi Penjualan
 @endsection
@@ -20,7 +43,6 @@
                         Lihat Daftar Produk
                     </button>
                     <input type="text" id="kodeProdukInput" class="form-control d-inline" placeholder="Masukkan Kode Produk" style="width: 200px; display: inline-block;">
-                    <button type="button" class="btn btn-success" onclick="cariProduk()">Cari Produk</button>
                 </div>
 
                 <table class="table table-striped table-bordered table-penjualan">
@@ -43,6 +65,32 @@
                     <div class="col-lg-8">
                         <div class="tampil-bayar bg-primary"></div>
                         <div class="tampil-terbilang"></div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="total">Total</label>
+                            <input type="text" id="total" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="member">Member</label>
+                            <input type="text" id="member" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="diskon">Diskon (%)</label>
+                            <input type="number" id="diskon" class="form-control" value="0" oninput="applyDiscount()">
+                        </div>
+                        <div class="form-group">
+                            <label for="bayar">Bayar</label>
+                            <input type="text" id="bayar" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="diterima">Diterima</label>
+                            <input type="number" id="diterima" class="form-control" oninput="calculateChange()">
+                        </div>
+                        <div class="form-group">
+                            <label for="kembali">Kembali</label>
+                            <input type="text" id="kembali" class="form-control" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,25 +139,41 @@
 
     function pilihProduk(kode, nama, harga) {
         const tbody = document.getElementById('table-penjualan-body');
-        const row = document.createElement('tr');
+        let existingRow = null;
 
-        row.innerHTML = `
-            <td>${no++}</td>
-            <td>${kode}</td>
-            <td>${nama}</td>
-            <td>${harga}</td>
-            <td><input type="number" class="form-control" name="jumlah" value="1" oninput="updateSubtotal(this)"></td>
-            <td><input type="number" class="form-control" name="diskon" value="0" oninput="updateSubtotal(this)"></td>
-            <td>${harga}</td>
-            <td><button type="button" class="btn btn-danger btn-xs btn-flat" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
-        `;
+        // Cek apakah produk sudah ada di tabel
+        tbody.querySelectorAll('tr').forEach(row => {
+            if (row.cells[1].innerText === kode) {
+                existingRow = row;
+            }
+        });
 
-        tbody.appendChild(row);
-        $('#daftarProdukModal').modal('hide');
+        if (existingRow) {
+            // Jika produk sudah ada, tambahkan jumlahnya
+            const jumlahInput = existingRow.querySelector('input[name="jumlah"]');
+            jumlahInput.value = parseInt(jumlahInput.value) + 1;
+            updateSubtotal(jumlahInput);
+        } else {
+            // Jika produk belum ada, tambahkan produk baru
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${no++}</td>
+                <td>${kode}</td>
+                <td>${nama}</td>
+                <td>${harga}</td>
+                <td><input type="number" class="form-control" name="jumlah" value="1" oninput="updateSubtotal(this)"></td>
+                <td><input type="number" class="form-control" name="diskon" value="0" oninput="updateSubtotal(this)"></td>
+                <td>${harga}</td>
+                <td><button type="button" class="btn btn-danger btn-xs btn-flat" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
+            `;
+
+            tbody.appendChild(row);
+        }
+        calculateTotal();
     }
 
-    function cariProduk() {
-        const kodeProduk = document.getElementById('kodeProdukInput').value;
+    function cariProduk(kodeProduk) {
         fetch(`/api/products/${kodeProduk}`)
             .then(response => {
                 if (!response.ok) {
@@ -129,6 +193,7 @@
     function hapusProduk(button) {
         const row = button.parentNode.parentNode;
         row.parentNode.removeChild(row);
+        calculateTotal();
     }
 
     function updateSubtotal(input) {
@@ -140,7 +205,9 @@
 
         const subtotal = (harga * jumlah) - diskon;
         subtotalCell.innerText = subtotal;
+        calculateTotal();
     }
+
     document.getElementById('kodeProdukInput').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             const kodeProduk = document.getElementById('kodeProdukInput').value;
@@ -149,5 +216,38 @@
             }
         }
     });
+
+    function calculateTotal() {
+        const tbody = document.getElementById('table-penjualan-body');
+        let total = 0;
+
+        tbody.querySelectorAll('tr').forEach(row => {
+            const subtotal = parseFloat(row.cells[6].innerText);
+            total += subtotal;
+        });
+
+        document.querySelector('.tampil-bayar').innerText = format_uang(total);
+        document.getElementById('total').value = total;
+        applyDiscount();
+    }
+
+    function applyDiscount() {
+        const total = parseFloat(document.getElementById('total').value || 0);
+        const diskon = parseFloat(document.getElementById('diskon').value || 0);
+        const totalSetelahDiskon = total - (total * (diskon / 100));
+        document.getElementById('bayar').value = totalSetelahDiskon;
+        calculateChange();
+    }
+
+    function calculateChange() {
+        const totalBayar = parseFloat(document.getElementById('bayar').value || 0);
+        const diterima = parseFloat(document.getElementById('diterima').value || 0);
+        const kembali = diterima - totalBayar;
+        document.getElementById('kembali').value = kembali;
+    }
+
+    function format_uang(number) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
+    }
 </script>
 @endpush
