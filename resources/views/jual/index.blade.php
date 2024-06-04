@@ -92,12 +92,77 @@
                             <input type="text" id="kembali" class="form-control" readonly>
                         </div>
                     </div>
+                    <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
+                        @csrf
+                        <input type="" id="id_member" name="id_member" value="">
+                        <input type="" id="total_item" name="total_item" value="">
+                        <input type="" id="total_harga" name="total_harga" value="">
+                        <input type="" id="diskon" name="diskon" value="">
+                        <input type="" id="bayar" name="bayar" value="">
+                        <input type="" id="diterima" name="diterima" value="">
+                        <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan">
+                            <i class="fa fa-floppy-o"></i> Simpan Transaksi
+                        </button>
+                    </form>
+                    
+                    <script>
+                        document.querySelector('.btn-simpan').addEventListener('click', function(event) {
+                            event.preventDefault();
+                    
+                            // Mengambil nilai dari input
+                            const member = document.getElementById('member').value;
+                            const totalItem = calculateTotalItems();
+                            const totalHarga = document.getElementById('total').value;
+                            const diskon = document.getElementById('diskon').value;
+                            const bayar = document.getElementById('bayar').value;
+                            const diterima = document.getElementById('diterima').value;
+                    
+                            // Isi input hidden
+                            document.getElementById('id_member').value = member;
+                            document.getElementById('total_item').value = totalItem;
+                            document.getElementById('total_harga').value = totalHarga;
+                            document.getElementById('diskon').value = diskon;
+                            document.getElementById('bayar').value = bayar;
+                            document.getElementById('diterima').value = diterima;
+                    
+                            // Log values to console for debugging
+                            console.log({
+                                id_member: document.getElementById('id_member').value,
+                                total_item: document.getElementById('total_item').value,
+                                total_harga: document.getElementById('total_harga').value,
+                                diskon: document.getElementById('diskon').value,
+                                bayar: document.getElementById('bayar').value,
+                                diterima: document.getElementById('diterima').value
+                            });
+                    
+                            // Submit the form
+                            document.getElementById('form-penjualan').submit();
+                        });
+                    
+                        function calculateTotalItems() {
+                            const tbody = document.getElementById('table-penjualan-body');
+                            let totalItems = 0;
+                    
+                            tbody.querySelectorAll('tr').forEach(row => {
+                                const jumlahInput = row.querySelector('input[name="jumlah"]');
+                                if (jumlahInput) {
+                                    const jumlah = parseInt(jumlahInput.value);
+                                    if (!isNaN(jumlah)) {
+                                        totalItems += jumlah;
+                                    }
+                                }
+                            });
+                    
+                            return totalItems;
+                        }
+                    </script>
+                    
                 </div>
             </div>
 
-            <div class="box-footer">
+            {{-- <div class="box-footer">
                 <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i class="fa fa-floppy-o"></i> Simpan Transaksi</button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
