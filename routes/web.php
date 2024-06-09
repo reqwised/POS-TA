@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     SettingController,
     SupplierController,
     UserController,
+    JualController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -100,4 +101,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
         Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
     });
+    Route::get('/jual', [JualController::class, 'index'])->name('jual.index');
+    Route::get('/api/products', [ProdukController::class, 'getProducts']);
+    Route::get('/api/products/{kode}', [ProdukController::class, 'getProductByKode']);
+    Route::post('/jualstore', [JualController::class, 'store'])->name('jual.store');
+
 });
