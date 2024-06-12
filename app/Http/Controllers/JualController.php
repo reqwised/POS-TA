@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penjualan;
 use App\Models\Produk;
+use App\Models\PenjualanDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -27,6 +28,7 @@ class JualController extends Controller
         'diskon' => 'required|numeric|min:0',
         'bayar' => 'required|numeric|min:0',
         'diterima' => 'required|numeric|min:0',
+        'detail_items' => 'required'
     ]);
 
     try {
@@ -40,6 +42,23 @@ class JualController extends Controller
         $penjualan->diterima = $request->diterima;
         $penjualan->id_user = Auth::id(); // Mengambil ID user yang sedang login
         $penjualan->save();
+
+        Log::info('Main transaction saved successfully', ['penjualan_id' => $penjualan->id]);
+
+        $detailItems = json_decode($request->detail_items, true);
+        foreach ($detailItems as $item) {
+            Log::info('Saving detail item: ', $item); // Log detail item yang akan disimpan
+            $penjualanDetail = new PenjualanDetail;
+            $penjualanDetail->id_penjualan = $penjualan->id_penjualan;
+            $penjualanDetail->id_produk = $item['kode'];
+            $penjualanDetail->harga_jual = $item['harga'];
+            $penjualanDetail->jumlah = $item['jumlah'];
+            $penjualanDetail->diskon = $item['diskon'];
+            $penjualanDetail->subtotal = $item['subtotal'];
+            $penjualanDetail->save();
+            Log::info('Detail item saved successfully', ['penjualan_detail_id' => $penjualanDetail->id]); // Log detail item berhasil disimpan
+        }
+
 
         Log::info('Transaction saved successfully');
 

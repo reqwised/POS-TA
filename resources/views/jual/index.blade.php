@@ -77,15 +77,15 @@
                         </div>
                         <div class="form-group">
                             <label for="diskon">Diskon (%)</label>
-                            <input type="number" id="diskon" class="form-control" value="0" oninput="applyDiscount()">
+                            <input type="number" id="disc" class="form-control" value="0" oninput="applyDiscount()">
                         </div>
                         <div class="form-group">
                             <label for="bayar">Bayar</label>
-                            <input type="text" id="bayar" class="form-control" readonly>
+                            <input type="text" id="byr" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label for="diterima">Diterima</label>
-                            <input type="number" id="diterima" class="form-control" oninput="calculateChange()">
+                            <input type="number" id="cash" class="form-control" oninput="calculateChange()">
                         </div>
                         <div class="form-group">
                             <label for="kembali">Kembali</label>
@@ -94,12 +94,13 @@
                     </div>
                     <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
                         @csrf
-                        <input type="" id="id_member" name="id_member" value="">
-                        <input type="" id="total_item" name="total_item" value="">
-                        <input type="" id="total_harga" name="total_harga" value="">
-                        <input type="" id="diskon" name="diskon" value="">
-                        <input type="" id="bayar" name="bayar" value="">
-                        <input type="" id="diterima" name="diterima" value="">
+                        <input type="hidden" id="id_member" name="id_member" value="">
+                        <input type="hidden" id="total_item" name="total_item" value="">
+                        <input type="hidden" id="total_harga" name="total_harga" value="">
+                        <input type="hidden" id="diskon" name="diskon" value="">
+                        <input type="hidden" id="bayar" name="bayar" value="">
+                        <input type="hidden" id="diterima" name="diterima" value="">
+                        <input type="hidden" id="detail_items" name="detail_items" value="">
                         <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan">
                             <i class="fa fa-floppy-o"></i> Simpan Transaksi
                         </button>
@@ -113,9 +114,10 @@
                             const member = document.getElementById('member').value;
                             const totalItem = calculateTotalItems();
                             const totalHarga = document.getElementById('total').value;
-                            const diskon = document.getElementById('diskon').value;
-                            const bayar = document.getElementById('bayar').value;
-                            const diterima = document.getElementById('diterima').value;
+                            const diskon = document.getElementById('disc').value;
+                            const bayar = document.getElementById('byr').value;
+                            const diterima = document.getElementById('cash').value;
+                            const detailItems = getDetailItems();
                     
                             // Isi input hidden
                             document.getElementById('id_member').value = member;
@@ -124,20 +126,36 @@
                             document.getElementById('diskon').value = diskon;
                             document.getElementById('bayar').value = bayar;
                             document.getElementById('diterima').value = diterima;
-                    
-                            // Log values to console for debugging
-                            console.log({
-                                id_member: document.getElementById('id_member').value,
-                                total_item: document.getElementById('total_item').value,
-                                total_harga: document.getElementById('total_harga').value,
-                                diskon: document.getElementById('diskon').value,
-                                bayar: document.getElementById('bayar').value,
-                                diterima: document.getElementById('diterima').value
-                            });
+                            document.getElementById('detail_items').value = JSON.stringify(detailItems);
                     
                             // Submit the form
                             document.getElementById('form-penjualan').submit();
                         });
+
+                        function getDetailItems() {
+                            const tbody = document.getElementById('table-penjualan-body');
+                            let items = [];
+
+                            tbody.querySelectorAll('tr').forEach(row => {
+                                const kode = row.cells[1].innerText;
+                                const nama = row.cells[2].innerText;
+                                const harga = parseFloat(row.cells[3].innerText);
+                                const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
+                                const diskon = parseInt(row.querySelector('input[name="diskon"]').value);
+                                const subtotal = parseFloat(row.cells[6].innerText);
+
+                                items.push({
+                                    kode: kode,
+                                    nama: nama,
+                                    harga: harga,
+                                    jumlah: jumlah,
+                                    diskon: diskon,
+                                    subtotal: subtotal
+                                });
+                            });
+
+                            return items;
+                        }
                     
                         function calculateTotalItems() {
                             const tbody = document.getElementById('table-penjualan-body');
@@ -298,15 +316,15 @@
 
     function applyDiscount() {
         const total = parseFloat(document.getElementById('total').value || 0);
-        const diskon = parseFloat(document.getElementById('diskon').value || 0);
+        const diskon = parseFloat(document.getElementById('disc').value || 0);
         const totalSetelahDiskon = total - (total * (diskon / 100));
-        document.getElementById('bayar').value = totalSetelahDiskon;
+        document.getElementById('byr').value = totalSetelahDiskon;
         calculateChange();
     }
 
     function calculateChange() {
-        const totalBayar = parseFloat(document.getElementById('bayar').value || 0);
-        const diterima = parseFloat(document.getElementById('diterima').value || 0);
+        const totalBayar = parseFloat(document.getElementById('byr').value || 0);
+        const diterima = parseFloat(document.getElementById('cash').value || 0);
         const kembali = diterima - totalBayar;
         document.getElementById('kembali').value = kembali;
     }
