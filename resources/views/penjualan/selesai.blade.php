@@ -1,31 +1,37 @@
 @extends('layouts.master')
 
-@section('title')
-    Transaksi Penjualan
-@endsection
-
+@section('title'. 'Penjualan')
 @section('breadcrumb')
     @parent
-    <li class="active">Transaksi Penjualan</li>
+    <li class="breadcrumb-item active">Penjualan Selesai</li>
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box">
-            <div class="box-body">
-                <div class="alert alert-success alert-dismissible">
-                    <i class="fa fa-check icon"></i>
-                    Data Transaksi telah selesai.
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="alert alert-primary alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="fas fa-check"></i>
+                        Berhasil
+                    </h2>
+                    <div class="text-center">
+                        <h2>Transaksi telah disimpan.</h2>
+                        <br><br>
+                        <a href="{{ route('transaksi.baru') }}" class="btn btn-primary btn-lg">Transaksi Baru</a>
+                        <a href="{{ route('transaksi.index') }}" class="btn btn-dark btn-lg">Edit Transaksi</a>
+                        @if ($setting->tipe_nota == 1)
+                        <button class="btn btn-danger btn-lg" onclick="notaKecil('{{ route('transaksi.nota_kecil') }}', 'Nota Kecil')">Cetak Nota</button>
+                        @else
+                        <button class="btn btn-danger btn-lg" onclick="notaBesar('{{ route('transaksi.nota_besar') }}', 'Nota PDF')">Cetak Nota</button>
+                        @endif
+                    </div>
                 </div>
-            </div>
-            <div class="box-footer">
-                @if ($setting->tipe_nota == 1)
-                <button class="btn btn-warning btn-flat" onclick="notaKecil('{{ route('transaksi.nota_kecil') }}', 'Nota Kecil')">Cetak Ulang Nota</button>
-                @else
-                <button class="btn btn-warning btn-flat" onclick="notaBesar('{{ route('transaksi.nota_besar') }}', 'Nota PDF')">Cetak Ulang Nota</button>
-                @endif
-                <a href="{{ route('transaksi.baru') }}" class="btn btn-primary btn-flat">Transaksi Baru</a>
+                <div class="card-footer">
+                    
+                </div>
             </div>
         </div>
     </div>

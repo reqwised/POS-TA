@@ -2,14 +2,13 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Detail Penjualan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body">
-                <table class="table table-striped table-bordered table-detail">
+            <div class="modal-body m-4">
+                <table class="table table-borderless table-striped table-detail">
                     <thead>
-                        <th width="5%">No</th>
+                        <th width="5%">#</th>
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Harga</th>

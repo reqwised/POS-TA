@@ -1,31 +1,30 @@
 @extends('layouts.master')
 
-@section('title')
-    Daftar Supplier
-@endsection
-
+@section('title', 'Supplier')
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Supplier</li>
+    <li class="breadcrumb-item active">Supplier</li>
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box">
-            <div class="box-header with-border">
-                <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
-            </div>
-            <div class="box-body table-responsive">
-                <table class="table table-stiped table-bordered">
-                    <thead>
-                        <th width="5%">No</th>
-                        <th>Nama</th>
-                        <th>Telepon</th>
-                        <th>Alamat</th>
-                        <th width="15%"><i class="fa fa-cog"></i></th>
-                    </thead>
-                </table>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless table-striped">
+                        <thead>
+                            <th width="5%">#</th>
+                            <th>Nama</th>
+                            <th>Telepon</th>
+                            <th>Alamat</th>
+                            <th width="15%">Aksi</th>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -60,12 +59,22 @@
             if (! e.preventDefault()) {
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                     .done((response) => {
-                        $('#modal-form').modal('hide');
-                        table.ajax.reload();
+                        Swal.fire({
+                            title: "Berhasil menyimpan data",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            $('#modal-form').modal('hide');
+                            table.ajax.reload();
+                        });
                     })
                     .fail((errors) => {
-                        alert('Tidak dapat menyimpan data');
-                        return;
+                        Swal.fire({
+                        title: "Gagal menyimpan data",
+                        icon: "error",
+                        confirmButtonColor: '#007bff',
+                        });
                     });
             }
         });
@@ -97,14 +106,26 @@
                 $('#modal-form [name=alamat]').val(response.alamat);
             })
             .fail((errors) => {
-                alert('Tidak dapat menampilkan data');
+                Swal.fire({
+                    title: "Gagal menampilkan data",
+                    icon: "error",
+                });
                 return;
             });
     }
 
     function deleteData(url) {
-        if (confirm('Yakin ingin menghapus data terpilih?')) {
-            $.post(url, {
+        Swal.fire({
+            title: 'Yakin ingin menghapus data ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post(url, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'delete'
                 })
@@ -112,10 +133,14 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    alert('Tidak dapat menghapus data');
+                    Swal.fire({
+                        title: "Gagal menghapus data",
+                        icon: "error",
+                    });
                     return;
                 });
-        }
+            }
+        });
     }
 </script>
 @endpush

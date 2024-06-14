@@ -32,13 +32,13 @@ class MemberController extends Controller
                 ';
             })
             ->addColumn('kode_member', function ($member) {
-                return '<span class="label label-success">'. $member->kode_member .'<span>';
+                return '<span class="badge badge-primary">'. $member->kode_member .'<span>';
             })
             ->addColumn('aksi', function ($member) {
                 return '
-                <div class="btn-group">
-                    <button type="button" onclick="editForm(`'. route('member.update', $member->id_member) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('member.destroy', $member->id_member) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <div>
+                    <button type="button" onclick="editForm(`'. route('member.update', $member->id_member) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button type="button" onclick="deleteData(`'. route('member.destroy', $member->id_member) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })

@@ -35,9 +35,9 @@ class PenjualanController extends Controller
             ->addColumn('tanggal', function ($penjualan) {
                 return tanggal_indonesia($penjualan->created_at, false);
             })
-            ->addColumn('kode_member', function ($penjualan) {
-                $member = $penjualan->member->kode_member ?? '';
-                return '<span class="label label-success">'. $member .'</spa>';
+            ->addColumn('nama', function ($penjualan) {
+                $member = $penjualan->member->nama ?? '';
+                return '<span class="badge badge-primary">'. $member .'</spa>';
             })
             ->editColumn('diskon', function ($penjualan) {
                 return $penjualan->diskon . '%';
@@ -47,13 +47,13 @@ class PenjualanController extends Controller
             })
             ->addColumn('aksi', function ($penjualan) {
                 return '
-                <div class="btn-group">
-                    <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i></button>
-                    <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <div>
+                    <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-info-circle"></i></button>
+                    <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'kode_member'])
+            ->rawColumns(['aksi', 'nama'])
             ->make(true);
     }
 
@@ -105,7 +105,7 @@ class PenjualanController extends Controller
             ->of($detail)
             ->addIndexColumn()
             ->addColumn('kode_produk', function ($detail) {
-                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
+                return '<span class="badge badge-primary">'. $detail->produk->kode_produk .'</span>';
             })
             ->addColumn('nama_produk', function ($detail) {
                 return $detail->produk->nama_produk;

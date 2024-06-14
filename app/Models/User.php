@@ -27,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -61,6 +62,6 @@ class User extends Authenticatable
 
     public function scopeIsNotAdmin($query)
     {
-        return $query->where('level', '!=', 1);
+        return $query->where('role', '!=', 'Pemilik Toko');
     }
 }

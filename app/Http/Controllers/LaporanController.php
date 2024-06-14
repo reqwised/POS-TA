@@ -53,12 +53,12 @@ class LaporanController extends Controller
         }
 
         $data[] = [
-            'DT_RowIndex' => '',
-            'tanggal' => '',
-            'penjualan' => '',
-            'pembelian' => '',
-            'pengeluaran' => 'Total Pendapatan',
-            'pendapatan' => format_uang($total_pendapatan),
+            'DT_RowIndex'   => '',
+            'tanggal'       => '',
+            'penjualan'     => '',
+            'pembelian'     => '',
+            'pengeluaran'   => 'Total Pendapatan',
+            'pendapatan'    => format_uang($total_pendapatan),
         ];
 
         return $data;

@@ -8,8 +8,6 @@ use App\Models\Produk;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
-//test
-
 class PembelianDetailController extends Controller
 {
     public function index()
@@ -37,13 +35,13 @@ class PembelianDetailController extends Controller
 
         foreach ($detail as $item) {
             $row = array();
-            $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
+            $row['kode_produk'] = '<span class="badge badge-primary">'. $item->produk['kode_produk'] .'</span';
             $row['nama_produk'] = $item->produk['nama_produk'];
             $row['harga_beli']  = 'Rp. '. format_uang($item->harga_beli);
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_pembelian_detail .'" value="'. $item->jumlah .'">';
             $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
-                                    <button onclick="deleteData(`'. route('pembelian_detail.destroy', $item->id_pembelian_detail) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                                    <button onclick="deleteData(`'. route('pembelian_detail.destroy', $item->id_pembelian_detail) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                                 </div>';
             $data[] = $row;
 

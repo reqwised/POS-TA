@@ -27,8 +27,8 @@ class KategoriController extends Controller
             ->addColumn('aksi', function ($kategori) {
                 return '
                 <div>
-                <button onclick="editForm(`'. route('kategori.update', $kategori->id_kategori) .'`)" class="btn btn-xs btn-warning">Edit</button>
-                <button onclick="deleteData(`'. route('kategori.destroy', $kategori->id_kategori) .'`)" class="btn btn-xs btn-danger">Hapus</button>
+                    <button onclick="editForm(`'. route('kategori.update', $kategori->id_kategori) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button onclick="deleteData(`'. route('kategori.destroy', $kategori->id_kategori) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })

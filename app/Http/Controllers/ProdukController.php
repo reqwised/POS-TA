@@ -37,7 +37,7 @@ class ProdukController extends Controller
                 ';
             })
             ->addColumn('kode_produk', function ($produk) {
-                return '<span class="label label-success">'. $produk->kode_produk .'</span>';
+                return '<span class="badge badge-primary">'. $produk->kode_produk .'</span>';
             })
             ->addColumn('harga_beli', function ($produk) {
                 return format_uang($produk->harga_beli);
@@ -50,9 +50,9 @@ class ProdukController extends Controller
             })
             ->addColumn('aksi', function ($produk) {
                 return '
-                <div class="btn-group">
-                    <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('produk.destroy', $produk->id_produk) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <div>
+                    <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button type="button" onclick="deleteData(`'. route('produk.destroy', $produk->id_produk) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })
@@ -109,23 +109,6 @@ class ProdukController extends Controller
         //
     }
 
-    public function getProducts()
-    {
-        $produk = Produk::all();
-        return response()->json($produk);
-    }
-    public function getProductByKode($kode)
-    {
-        $produk = Produk::where('kode_produk', $kode)->first();
-
-        if ($produk) {
-            return response()->json($produk);
-        } else {
-            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
-        }
-    }
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -163,6 +146,22 @@ class ProdukController extends Controller
         }
 
         return response(null, 204);
+    }
+
+    public function getProducts()
+    {
+        $produk = Produk::all();
+        return response()->json($produk);
+    }
+    public function getProductByKode($kode)
+    {
+        $produk = Produk::where('kode_produk', $kode)->first();
+
+        if ($produk) {
+            return response()->json($produk);
+        } else {
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
+        }
     }
 
     public function cetakBarcode(Request $request)

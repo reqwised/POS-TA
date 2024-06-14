@@ -1,61 +1,65 @@
-<header class="main-header">
-    <!-- Logo -->
-    <a href="index2.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        @php
-            $words = explode(' ', $setting->nama_perusahaan);
-            $word  = '';
-            foreach ($words as $w) {
-                $word .= $w[0];
-            }
-        @endphp
-        <span class="logo-mini">{{ $word }}</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>{{ $setting->nama_perusahaan }}</b></span>
-    </a>
-    <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-            <span class="sr-only">Toggle navigation</span>
-        </a>
+@push('css')
+<style>
+.dropdown-footer .btn {
+        width: calc(100% - 20px); /* Adjust the width of buttons to match parent */
+    }
+</style>
+@endpush
+<nav class="main-header navbar navbar-expand navbar-primary navbar-dark border-bottom-0">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
 
-        <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-                <!-- User Account: style can be found in dropdown.less -->
-                <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ url(auth()->user()->foto ?? '') }}" class="user-image img-profil"
-                            alt="User Image">
-                        <span class="hidden-xs">{{ auth()->user()->name }}</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <img src="{{ url(auth()->user()->foto ?? '') }}" class="img-circle img-profil"
-                                alt="User Image">
+    <!-- Right navbar links -->
+    <!-- <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="#" 
+                onclick="document.querySelector('#logout-form').submit()">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </a>
 
-                            <p>
-                                {{ auth()->user()->name }} - {{ auth()->user()->email }}
-                            </p>
-                        </li>
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="{{ route('user.profil') }}" class="btn btn-default btn-flat">Profil</a>
-                            </div>
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat"
-                                    onclick="$('#logout-form').submit()">Keluar</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+            <form action="{{ route('logout') }}" method="post" id="logout-form">
+                @csrf
+            </form>
+        </li>
+    </ul> -->
 
-<form action="{{ route('logout') }}" method="post" id="logout-form" style="display: none;">
-    @csrf
-</form>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown user-menu">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="{{ url(auth()->user()->foto ?? '/img/user.jpg') }}" class="user-image img-profil rounded-circle" alt="User Image">
+                <span>{{ auth()->user()->name }} - {{ auth()->user()->role }}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <!-- User image -->
+                <div class="dropdown-item user-header text-center">
+                    <img src="{{ url(auth()->user()->foto ?? '/img/user.jpg') }}" class="img-circle img-profil" alt="User Image" style="width: 80px; height: 80px;">
+                    <h4 class="mt-2">{{ auth()->user()->name }} - <span class="text-sm badge badge-dark">{{ auth()->user()->role }}</span></h4>
+                    <p>{{ auth()->user()->email }}</p>
+                </div>
+                <div class="dropdown-divider"></div>
+                <!-- Menu Footer-->
+                <div class="dropdown-footer d-flex justify-content-around">
+                    <a href="{{ route('user.profil') }}" class="btn btn-outline-primary w-100 mb-2">Profil</a>
+                    <a href="#" class="btn btn-outline-danger w-100" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
+                </div>
+                <form action="{{ route('logout') }}" method="post" id="logout-form" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </li>
+    </ul>
+</nav>
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        // Prevent dropdown menu from closing when clicked inside
+        $('.dropdown-menu').on('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+</script>
+@endpush

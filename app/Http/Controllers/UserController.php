@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -22,9 +22,9 @@ class UserController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
                 return '
-                <div class="btn-group">
-                    <button type="button" onclick="editForm(`'. route('user.update', $user->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-pencil"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('user.destroy', $user->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i></button>
+                <div>
+                    <button type="button" onclick="editForm(`'. route('user.update', $user->id) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button type="button" onclick="deleteData(`'. route('user.destroy', $user->id) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })
@@ -54,7 +54,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
-        $user->level = 2;
+        $user->role = $request->role;
         $user->foto = '/img/user.jpg';
         $user->save();
 

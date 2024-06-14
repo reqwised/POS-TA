@@ -1,46 +1,43 @@
 @extends('layouts.master')
 
-@section('title')
-    Daftar Produk
-@endsection
-
+@section('title', 'Produk')
 @section('breadcrumb')
     @parent
-    <li class="active">Daftar Produk</li>
+    <li class="breadcrumb-item active">Produk</li>
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box">
-            <div class="box-header with-border">
-                <div class="btn-group">
-                    <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Tambah</button>
-                    <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')" class="btn btn-danger btn-xs btn-flat"><i class="fa fa-trash"></i> Hapus</button>
-                    <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-barcode"></i> Cetak Barcode</button>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
+                    <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Hapus</button>
+                    <!-- <button onclick="cetakBarcode('{{ route('produk.cetak_barcode') }}')" class="btn btn-info btn-sm"><i class="fa fa-barcode"></i> Cetak Barcode</button> -->
                 </div>
-            </div>
-            <div class="box-body table-responsive">
-                <form action="" method="post" class="form-produk">
-                    @csrf
-                    <table class="table table-stiped table-bordered">
-                        <thead>
-                            <th width="5%">
-                                <input type="checkbox" name="select_all" id="select_all">
-                            </th>
-                            <th width="5%">No</th>
-                            <th>Kode</th>
-                            <th>Nama</th>
-                            <th>Kategori</th>
-                            {{-- <th>Merk</th> --}}
-                            <th>Harga Beli</th>
-                            <th>Harga Jual</th>
-                            <th>Diskon</th>
-                            <th>Stok</th>
-                            <th width="15%"><i class="fa fa-cog"></i></th>
-                        </thead>
-                    </table>
-                </form>
+                <div class="card-body">
+                    <form action="" method="post" class="form-produk">
+                        @csrf
+                        <table class="table table-borderless table-striped">
+                            <thead>
+                                <th width="5%">
+                                    <input type="checkbox" name="select_all" id="select_all">
+                                </th>
+                                <th width="5%">#</th>
+                                <th>Kode</th>
+                                <th>Nama</th>
+                                <th>Kategori</th>
+                                <!-- <th>Merk</th> -->
+                                <th>Harga Beli</th>
+                                <th>Harga Jual</th>
+                                <th>Diskon</th>
+                                <th>Stok</th>
+                                <th width="12%">Aksi</th>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -68,7 +65,6 @@
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
                 {data: 'nama_kategori'},
-                // {data: 'merk'},
                 {data: 'harga_beli'},
                 {data: 'harga_jual'},
                 {data: 'diskon'},
@@ -81,12 +77,22 @@
             if (! e.preventDefault()) {
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                     .done((response) => {
-                        $('#modal-form').modal('hide');
-                        table.ajax.reload();
+                        Swal.fire({
+                            title: "Berhasil menyimpan data",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            $('#modal-form').modal('hide');
+                            table.ajax.reload();
+                        });
                     })
                     .fail((errors) => {
-                        alert('Tidak dapat menyimpan data');
-                        return;
+                        Swal.fire({
+                        title: "Gagal menyimpan data",
+                        icon: "error",
+                        confirmButtonColor: '#007bff',
+                        });
                     });
             }
         });
@@ -119,20 +125,32 @@
             .done((response) => {
                 $('#modal-form [name=nama_produk]').val(response.nama_produk);
                 $('#modal-form [name=id_kategori]').val(response.id_kategori);
-                // $('#modal-form [name=merk]').val(response.merk);
+                $('#modal-form [name=merk]').val(response.merk);
                 $('#modal-form [name=harga_beli]').val(response.harga_beli);
                 $('#modal-form [name=harga_jual]').val(response.harga_jual);
                 $('#modal-form [name=diskon]').val(response.diskon);
                 $('#modal-form [name=stok]').val(response.stok);
             })
             .fail((errors) => {
-                alert('Tidak dapat menampilkan data');
+                Swal.fire({
+                    title: "Gagal menampilkan data",
+                    icon: "error",
+                });
                 return;
             });
     }
 
     function deleteData(url) {
-        if (confirm('Yakin ingin menghapus data terpilih?')) {
+        Swal.fire({
+            title: 'Yakin ingin menghapus data ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
             $.post(url, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'delete'
@@ -141,29 +159,50 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    alert('Tidak dapat menghapus data');
+                    Swal.fire({
+                        title: "Gagal menghapus data",
+                        icon: "error",
+                    });
                     return;
                 });
-        }
+            }
+        });
     }
 
     function deleteSelected(url) {
-        if ($('input:checked').length > 1) {
-            if (confirm('Yakin ingin menghapus data terpilih?')) {
+    if ($('input:checked').length > 1) {
+        Swal.fire({
+            title: 'Yakin ingin menghapus data ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 $.post(url, $('.form-produk').serialize())
-                    .done((response) => {
-                        table.ajax.reload();
-                    })
-                    .fail((errors) => {
-                        alert('Tidak dapat menghapus data');
-                        return;
+                .done((response) => {
+                    table.ajax.reload();
+                })
+                .fail((errors) => {
+                    Swal.fire({
+                        title: "Gagal menghapus data",
+                        icon: "error",
                     });
+                    return;
+                });
             }
-        } else {
-            alert('Pilih data yang akan dihapus');
-            return;
-        }
+        });
+    } else {
+        Swal.fire({
+            title: "Pilih minimal 2 data yang akan dihapus",
+            icon: "warning",
+        });
+        return;
     }
+}
+
 
     function cetakBarcode(url) {
         if ($('input:checked').length < 1) {

@@ -15,7 +15,7 @@ class TambahKolomBaruToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('foto')->nullable()->after('password');
-            $table->tinyInteger('level')->default(0)->after('foto');
+            $table->string('role')->after('foto');
         });
     }
 
@@ -26,10 +26,11 @@ class TambahKolomBaruToUsersTable extends Migration
      */
     public function down()
     {
+        
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
                 'foto',
-                'level'
+                'role',
             ]);
         });
     }
