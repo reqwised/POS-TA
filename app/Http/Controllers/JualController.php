@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Penjualan;
+use App\Models\Member;
 use App\Models\Produk;
 use App\Models\PenjualanDetail;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class JualController extends Controller
 
     // Validasi data
     $request->validate([
-        'id_member' => 'nullable|exists:member,id',
+        'id_member' => 'nullable|exists:member,id_member',
         'total_item' => 'required|integer',
         'total_harga' => 'required|numeric|min:0',
         'diskon' => 'required|numeric|min:0',
@@ -50,12 +51,19 @@ class JualController extends Controller
             Log::info('Saving detail item: ', $item); // Log detail item yang akan disimpan
             $penjualanDetail = new PenjualanDetail;
             $penjualanDetail->id_penjualan = $penjualan->id_penjualan;
-            $penjualanDetail->id_produk = $item['kode'];
+            $penjualanDetail->id_produk = $item['id_produk'];
             $penjualanDetail->harga_jual = $item['harga'];
             $penjualanDetail->jumlah = $item['jumlah'];
             $penjualanDetail->diskon = $item['diskon'];
             $penjualanDetail->subtotal = $item['subtotal'];
             $penjualanDetail->save();
+
+
+            $prod = Produk::find($item['id_produk']);
+            if($prod){
+                $prod->stok -= $item['jumlah'];
+                $prod->save();
+            }
             Log::info('Detail item saved successfully', ['penjualan_detail_id' => $penjualanDetail->id]); // Log detail item berhasil disimpan
         }
 

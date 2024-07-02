@@ -25,6 +25,7 @@ class ProdukController extends Controller
     {
         $produk = Produk::leftJoin('kategori', 'kategori.id_kategori', 'produk.id_kategori')
             ->select('produk.*', 'nama_kategori')
+            ->where('produk.softdel', 0) // Menambahkan kondisi softdel = 0
             // ->orderBy('kode_produk', 'asc')
             ->get();
 
@@ -132,8 +133,9 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
-        $produk = Produk::find($id);
-        $produk->delete();
+        $produk = Produk::findOrFail($id);
+        $produk->softdel = true;
+        $produk->save();
 
         return response(null, 204);
     }
@@ -141,8 +143,9 @@ class ProdukController extends Controller
     public function deleteSelected(Request $request)
     {
         foreach ($request->id_produk as $id) {
-            $produk = Produk::find($id);
-            $produk->delete();
+            $produk = Produk::findOrFail($id);
+            $produk->softdel = true;
+            $produk->save();
         }
 
         return response(null, 204);
@@ -162,6 +165,26 @@ class ProdukController extends Controller
         } else {
             return response()->json(['message' => 'Produk tidak ditemukan'], 404);
         }
+    }
+
+    public function stash()
+    {
+        $produk = Produk::leftJoin('kategori', 'kategori.id_kategori', 'produk.id_kategori')
+                        ->select('produk.*', 'nama_kategori')
+                        ->where('produk.softdel', true)
+                        ->get();
+
+        return view('produk.softdeleted', compact('produk'));
+    }
+
+    public function restore($id)
+    {
+        $produk = Produk::find($id);
+        if ($produk) {
+            $produk->softdel = false;
+            $produk->save();
+        }
+        return response()->json(['success' => true]);
     }
 
     public function cetakBarcode(Request $request)

@@ -3,10 +3,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="daftarProdukModalLabel">Daftar Produk</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <h5 class="modal-title" id="daftarProdukModalLabel">Daftar Produk</h5>
+                <div class="row-cols-1">
+                    <input type="text" id="search">
+                    <button type="submit">Cari Produk</button>
+                </div>
             </div>
             <div class="modal-body">
                 <table class="table">

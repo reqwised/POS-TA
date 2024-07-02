@@ -2,6 +2,9 @@
 
 @push('css')
 <style>
+    .hidden-column{
+        display: none;
+    }
     .tampil-bayar {
         font-size: 5em;
         text-align: center;
@@ -48,6 +51,7 @@
                 <table class="table table-striped table-bordered table-penjualan">
                     <thead>
                         <th width="5%">No</th>
+                        <th class="hidden-column">ID Produk</th>
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Harga</th>
@@ -137,14 +141,16 @@
                             let items = [];
 
                             tbody.querySelectorAll('tr').forEach(row => {
-                                const kode = row.cells[1].innerText;
-                                const nama = row.cells[2].innerText;
-                                const harga = parseFloat(row.cells[3].innerText);
+                                const id_produk = row.cells[1].innerText;
+                                const kode = row.cells[2].innerText;
+                                const nama = row.cells[3].innerText;
+                                const harga = parseFloat(row.cells[4].innerText);
                                 const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
                                 const diskon = parseInt(row.querySelector('input[name="diskon"]').value);
-                                const subtotal = parseFloat(row.cells[6].innerText);
+                                const subtotal = parseFloat(row.cells[7].innerText);
 
                                 items.push({
+                                    id_produk: id_produk,
                                     kode: kode,
                                     nama: nama,
                                     harga: harga,
@@ -203,12 +209,13 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1}</td>
-                        <td><span class="label label-success">${item.kode_produk}</span></td>
+                        <td class="hidden-column"><span class="label label-success">${item.id_produk}</span></td>
+                        <td>${item.kode_produk}</td>
                         <td>${item.nama_produk}</td>
                         <td>${item.harga_jual}</td>
                         <td>
                             <button type="button" class="btn btn-primary btn-xs btn-flat" 
-                                onclick="pilihProduk('${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}')">
+                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}')">
                                 <i class="fa fa-check-circle"></i> Pilih
                             </button>
                         </td>
@@ -220,13 +227,13 @@
 
     $('#daftarProdukModal').on('show.bs.modal', fetchProducts);
 
-    function pilihProduk(kode, nama, harga) {
+    function pilihProduk(id_produk, kode, nama, harga) {
         const tbody = document.getElementById('table-penjualan-body');
         let existingRow = null;
 
         // Cek apakah produk sudah ada di tabel
         tbody.querySelectorAll('tr').forEach(row => {
-            if (row.cells[1].innerText === kode) {
+            if (row.cells[1].innerText === id_produk.toString()) {
                 existingRow = row;
             }
         });
@@ -242,6 +249,7 @@
 
             row.innerHTML = `
                 <td>${no++}</td>
+                <td class="hidden-column">${id_produk}</td>
                 <td>${kode}</td>
                 <td>${nama}</td>
                 <td>${harga}</td>
@@ -265,7 +273,7 @@
                 return response.json();
             })
             .then(data => {
-                pilihProduk(data.kode_produk, data.nama_produk, data.harga_jual);
+                pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual);
                 document.getElementById('kodeProdukInput').value = ''; // Clear input after adding product
             })
             .catch(error => {
@@ -281,10 +289,10 @@
 
     function updateSubtotal(input) {
         const row = input.parentNode.parentNode;
-        const harga = parseFloat(row.cells[3].innerText);
+        const harga = parseFloat(row.cells[4].innerText);
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
         const diskon = parseInt(row.querySelector('input[name="diskon"]').value);
-        const subtotalCell = row.cells[6];
+        const subtotalCell = row.cells[7];
 
         const subtotal = (harga * jumlah) - diskon;
         subtotalCell.innerText = subtotal;
@@ -305,7 +313,7 @@
         let total = 0;
 
         tbody.querySelectorAll('tr').forEach(row => {
-            const subtotal = parseFloat(row.cells[6].innerText);
+            const subtotal = parseFloat(row.cells[7].innerText);
             total += subtotal;
         });
 
