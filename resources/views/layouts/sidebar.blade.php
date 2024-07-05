@@ -95,14 +95,14 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('transaksi.baru') }}" class="nav-link {{(Route::is('transaksi.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-cash-register"></i>
                         <p>
                             Transaksi
                         </p>
                     </a>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a href="{{ route('jual.index') }}" class="nav-link {{(Route::is('jual.index')) ? 'nav-link active' : '' }}">

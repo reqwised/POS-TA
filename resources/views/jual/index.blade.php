@@ -32,7 +32,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="active">Transaksi Penjualan</li>
+    <li class="breadcrumb-item active">Transaksi Penjualan</li>
 @endsection
 
 @section('content')
@@ -59,6 +59,7 @@
                         <th>Diskon</th>
                         <th>Subtotal</th>
                         <th width="15%"><i class="fa fa-cog"></i></th>
+                        <th>Stok</th>
                     </thead>
                     <tbody id="table-penjualan-body">
                         <!-- Produk akan ditambahkan di sini -->
@@ -89,7 +90,7 @@
                         </div>
                         <div class="form-group">
                             <label for="diterima">Diterima</label>
-                            <input type="number" id="cash" class="form-control" oninput="calculateChange()">
+                            <input type="number" id="cash" class="form-control" oninput="calculateChange()" value='100000'>
                         </div>
                         <div class="form-group">
                             <label for="kembali">Kembali</label>
@@ -183,13 +184,30 @@
                     
                 </div>
             </div>
-
-            {{-- <div class="box-footer">
-                <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan"><i class="fa fa-floppy-o"></i> Simpan Transaksi</button>
-            </div> --}}
         </div>
     </div>
+    <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="warningModalLabel">Peringatan</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Stok tidak mencukupi untuk produk ini.
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
+
+<!-- Modal Warning -->
+  
 
 @includeIf('jual.produk')
 
@@ -215,7 +233,7 @@
                         <td>${item.harga_jual}</td>
                         <td>
                             <button type="button" class="btn btn-primary btn-xs btn-flat" 
-                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}')">
+                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}','${item.stok}')">
                                 <i class="fa fa-check-circle"></i> Pilih
                             </button>
                         </td>
@@ -227,7 +245,7 @@
 
     $('#daftarProdukModal').on('show.bs.modal', fetchProducts);
 
-    function pilihProduk(id_produk, kode, nama, harga) {
+    function pilihProduk(id_produk, kode, nama, harga, stok) {
         const tbody = document.getElementById('table-penjualan-body');
         let existingRow = null;
 
@@ -241,7 +259,14 @@
         if (existingRow) {
             // Jika produk sudah ada, tambahkan jumlahnya
             const jumlahInput = existingRow.querySelector('input[name="jumlah"]');
-            jumlahInput.value = parseInt(jumlahInput.value) + 1;
+            const newJumlah = parseInt(jumlahInput.value) + 1;
+            if (newJumlah > stok) {
+                const modalBody = document.querySelector('#warningModal .modal-body');
+                modalBody.innerText = `Stok tidak mencukupi untuk produk "${nama}".`;
+                $('#warningModal').modal('show');
+                return;
+            }
+            jumlahInput.value = newJumlah;
             updateSubtotal(jumlahInput);
         } else {
             // Jika produk belum ada, tambahkan produk baru
@@ -253,16 +278,18 @@
                 <td>${kode}</td>
                 <td>${nama}</td>
                 <td>${harga}</td>
-                <td><input type="number" class="form-control" name="jumlah" value="1" oninput="updateSubtotal(this)"></td>
+                <td><input type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
                 <td><input type="number" class="form-control" name="diskon" value="0" oninput="updateSubtotal(this)"></td>
                 <td>${harga}</td>
                 <td><button type="button" class="btn btn-danger btn-xs btn-flat" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
+                <td>${stok}</td>
             `;
 
             tbody.appendChild(row);
         }
         calculateTotal();
     }
+
 
     function cariProduk(kodeProduk) {
         fetch(`/api/products/${kodeProduk}`)
@@ -273,7 +300,7 @@
                 return response.json();
             })
             .then(data => {
-                pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual);
+                pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual, data.stok);
                 document.getElementById('kodeProdukInput').value = ''; // Clear input after adding product
             })
             .catch(error => {
@@ -335,6 +362,20 @@
         const diterima = parseFloat(document.getElementById('cash').value || 0);
         const kembali = diterima - totalBayar;
         document.getElementById('kembali').value = kembali;
+    }
+
+    function validateJumlah(input, stok) {
+        const jumlah = parseInt(input.value);
+        if (jumlah > stok) {
+            // Tampilkan modal peringatan
+            const modalBody = document.querySelector('#warningModal .modal-body');
+            modalBody.innerText = `Stok tidak mencukupi untuk produk "${nama_produk}".`;
+            $('#warningModal').modal('show');
+            
+            // Setel kembali nilai jumlah ke stok maksimum
+            input.value = stok;
+        }
+        updateSubtotal(input);
     }
 
     function format_uang(number) {

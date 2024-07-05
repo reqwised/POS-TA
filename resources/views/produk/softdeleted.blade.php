@@ -1,5 +1,11 @@
 @extends('layouts.master')
 
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item active"><a href="{{ route('produk.index') }}">Produk</a></li>
+    <li class="breadcrumb-item active">Stash</li>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">

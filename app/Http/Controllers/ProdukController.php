@@ -153,12 +153,13 @@ class ProdukController extends Controller
 
     public function getProducts()
     {
-        $produk = Produk::all();
+        $produk = Produk::where('softdel',false)->get();
         return response()->json($produk);
     }
     public function getProductByKode($kode)
     {
-        $produk = Produk::where('kode_produk', $kode)->first();
+        $produk = Produk::where('kode_produk', $kode)
+                        ->where('softdel',false)->first();
 
         if ($produk) {
             return response()->json($produk);
