@@ -45,7 +45,7 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal">
                         Lihat Daftar Produk
                     </button>
-                    <input type="text" id="kodeProdukInput" class="form-control d-inline" placeholder="Masukkan Kode Produk" style="width: 200px; display: inline-block;">
+                    <input tabindex="1" type="text" id="kodeProdukInput" class="form-control d-inline" placeholder="Masukkan Kode Produk" style="width: 200px; display: inline-block;">
                 </div>
 
                 <table class="table table-striped table-bordered table-penjualan">
@@ -278,7 +278,7 @@
                 <td>${kode}</td>
                 <td>${nama}</td>
                 <td>${harga}</td>
-                <td><input type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
+                <td><input tabindex="${no}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
                 <td><input type="number" class="form-control" name="diskon" value="0" oninput="updateSubtotal(this)"></td>
                 <td>${harga}</td>
                 <td><button type="button" class="btn btn-danger btn-xs btn-flat" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
@@ -320,10 +320,22 @@
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
         const diskon = parseInt(row.querySelector('input[name="diskon"]').value);
         const subtotalCell = row.cells[7];
+        const stok = row.cells[9].innerText;
+        const kondisi = stok-jumlah+1;
 
-        const subtotal = (harga * jumlah) - diskon;
-        subtotalCell.innerText = subtotal;
-        calculateTotal();
+        if(kondisi){
+            const subtotal = (harga * jumlah) - diskon;
+            subtotalCell.innerText = subtotal;
+            calculateTotal();
+        }
+        else{
+            const modalBody = document.querySelector('#warningModal .modal-body');
+            modalBody.innerText = `Stok tidak mencukupi untuk produk ini.`;
+            $('#warningModal').modal('show');
+            row.querySelector('input[name="jumlah"]').value = stok;
+            // Update jumlah kembali
+            jumlah = stok;
+        }
     }
 
     document.getElementById('kodeProdukInput').addEventListener('keypress', function(event) {
@@ -334,6 +346,13 @@
             }
         }
     });
+
+    document.addEventListener("keypress", event=>{
+        if(event.key==="Enter"){
+            console.log("Hah?");
+            $('[tabindex= 1]').focus();
+        }
+    })
 
     function calculateTotal() {
         const tbody = document.getElementById('table-penjualan-body');
@@ -369,7 +388,7 @@
         if (jumlah > stok) {
             // Tampilkan modal peringatan
             const modalBody = document.querySelector('#warningModal .modal-body');
-            modalBody.innerText = `Stok tidak mencukupi untuk produk "${nama_produk}".`;
+            modalBody.innerText = `Stok tidak mencukupi untuk produk ini.`;
             $('#warningModal').modal('show');
             
             // Setel kembali nilai jumlah ke stok maksimum
