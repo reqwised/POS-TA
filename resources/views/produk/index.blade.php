@@ -124,6 +124,7 @@
 
         $.get(url)
             .done((response) => {
+                $('#modal-form [name=kode_produk]').val(response.kode_produk);
                 $('#modal-form [name=nama_produk]').val(response.nama_produk);
                 $('#modal-form [name=id_kategori]').val(response.id_kategori);
                 $('#modal-form [name=merk]').val(response.merk);

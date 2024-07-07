@@ -42,10 +42,10 @@
             <div class="box-body">
 
                 <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal">
+                    <button tabindex="1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal">
                         Lihat Daftar Produk
                     </button>
-                    <input tabindex="1" type="text" id="kodeProdukInput" class="form-control d-inline" placeholder="Masukkan Kode Produk" style="width: 200px; display: inline-block;">
+                    <input tabindex="2" type="text" id="kodeProdukInput" class="form-control d-inline" placeholder="Masukkan Kode Produk" style="width: 200px; display: inline-block;">
                 </div>
 
                 <table class="table table-striped table-bordered table-penjualan">
@@ -231,13 +231,13 @@
                         <td>${item.kode_produk}</td>
                         <td>${item.nama_produk}</td>
                         <td>${item.harga_jual}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-xs btn-flat" 
-                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}','${item.stok}')">
+                        <td>${item.stok > 0 ? 
+                            `<button type="button" class="btn btn-primary btn-xs btn-flat" 
+                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}', '${item.stok}')">
                                 <i class="fa fa-check-circle"></i> Pilih
-                            </button>
-                        </td>
-                    `;
+                            </button>` : 
+                            '<span class="text-danger">Stok habis</span>'}
+                        </td>`;
                     tbody.appendChild(row);
                 });
             });
@@ -278,7 +278,7 @@
                 <td>${kode}</td>
                 <td>${nama}</td>
                 <td>${harga}</td>
-                <td><input tabindex="${no}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
+                <td><input tabindex="${no+1}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
                 <td><input type="number" class="form-control" name="diskon" value="0" oninput="updateSubtotal(this)"></td>
                 <td>${harga}</td>
                 <td><button type="button" class="btn btn-danger btn-xs btn-flat" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
@@ -300,8 +300,15 @@
                 return response.json();
             })
             .then(data => {
-                pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual, data.stok);
-                document.getElementById('kodeProdukInput').value = ''; // Clear input after adding product
+                if(data.stok > 0){
+                    pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual, data.stok);
+                    document.getElementById('kodeProdukInput').value = ''; // Clear input after adding product
+                }
+                else{
+                    const modalBody = document.querySelector('#warningModal .modal-body');
+                    modalBody.innerText = `Stok tidak mencukupi untuk produk "${data.nama_produk}".`;
+                    $('#warningModal').modal('show');
+                }
             })
             .catch(error => {
                 alert(error.message);
@@ -348,8 +355,8 @@
     });
 
     document.addEventListener("keypress", event=>{
-        if(event.key==="Enter"){
-            console.log("Hah?");
+        console.log(event.key);
+        if(event.key==='['){
             $('[tabindex= 1]').focus();
         }
     })

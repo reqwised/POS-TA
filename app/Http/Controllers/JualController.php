@@ -86,7 +86,7 @@ class JualController extends Controller
             
             Log::info('Transaction saved successfully');
 
-            return redirect()->route('jual.index')->with('success', 'Transaksi berhasil disimpan');
+            return redirect()->route('jual.selesai',$penjualan->id_penjualan)->with('success', 'Transaksi berhasil disimpan');
         } catch (\Exception $e) {
             Log::error('Error saving transaction: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan transaksi');
@@ -94,10 +94,26 @@ class JualController extends Controller
     }
 
     
-    public function selesai()
-    {
-        $setting = Setting::first();
+    public function selesai($id)
+        {
+            $penjualan = Penjualan::with('details')->find($id);
 
-        return view('penjualan.selesai', compact('setting'));
+            if (!$penjualan) {
+                return redirect()->route('jual.index')->with('error', 'Transaksi tidak ditemukan');
+            }
+
+            return view('jual.selesai', compact('penjualan'));
+        }
+
+    public function cetak($id)
+    {
+        $penjualan = Penjualan::with('details')->find($id);
+
+        if (!$penjualan) {
+            return redirect()->route('jual.index')->with('error', 'Transaksi tidak ditemukan');
+        }
+
+        // Buat logika untuk menampilkan atau mencetak nota, misalnya dengan menggunakan view khusus atau library PDF
+        return view('jual.cetak', compact('penjualan'));
     }
 }
