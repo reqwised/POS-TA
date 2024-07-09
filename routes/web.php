@@ -114,8 +114,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/jualstore', [JualController::class, 'store'])->name('jual.store');
     Route::get('/jual/selesai/{id}', [JualController::class, 'selesai'])->name('jual.selesai');
     Route::get('/jual/cetak/{id}', [JualController::class, 'cetak'])->name('jual.cetak');
-    Route::get('/api/members', [MemberController::class,'getmembers']);
-    Route::get('/api/member/{kode}', [MemberController::class,'getMemberByKode']);
-    
+
 
 });

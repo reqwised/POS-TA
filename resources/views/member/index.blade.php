@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <button tabindex="1" onclick="addForm('{{ route('member.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Member</button>
+                    <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Member</button>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" class="form-member">
@@ -41,14 +41,6 @@
 
 @push('scripts')
 <script>
-
-    document.addEventListener("keypress", event=>{
-        console.log(event.key);
-        if(event.key==='+'){
-            $('[tabindex= 1]').focus();
-        }
-    })
-
     let table;
 
     $(function () {

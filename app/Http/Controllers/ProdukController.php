@@ -151,19 +151,9 @@ class ProdukController extends Controller
         return response(null, 204);
     }
 
-    public function getProducts(Request $request)
+    public function getProducts()
     {
-        $query = Produk::orderBy('nama_produk')->where('softdel', false);
-
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where(function ($q) use ($search) {
-                $q->where('kode_produk', 'like', "%$search%")
-                ->orWhere('nama_produk', 'like', "%$search%");
-            });
-        }
-
-        $produk = $query->paginate(10);
+        $produk = Produk::where('softdel',false)->get();
         return response()->json($produk);
     }
     public function getProductByKode($kode)

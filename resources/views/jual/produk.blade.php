@@ -20,13 +20,11 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="product-list">
-                    
+                    <tbody>
+                        <tbody id="product-list">
+                        </tbody>
                     </tbody>
                 </table>
-                <div id="pagination" class="text-center">
-                    <!-- Tombol paginasi akan dimuat di sini melalui JavaScript -->
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>

@@ -19,8 +19,8 @@
                     <div class="text-center">
                         <h2>Transaksi telah disimpan.</h2>
                         <br><br>
-                        <a tabindex="1" href="{{ route('jual.index') }}" class="btn btn-primary btn-lg">Transaksi Baru</a>
-                        <button tabindex="2" class="btn btn-danger btn-lg" onclick="cetakNota({{ $penjualan->id_penjualan }})">Cetak Nota</button>
+                        <a href="{{ route('jual.index') }}" class="btn btn-primary btn-lg">Transaksi Baru</a>
+                        <button class="btn btn-danger btn-lg" onclick="cetakNota({{ $penjualan->id_penjualan }})">Cetak Nota</button>
                     </div>
                 </div>
                 <div class="card-footer">
