@@ -11,9 +11,7 @@
         font-size: 4.5em;
     }
     .tampil-terbilang {}
-    .table-penjualan tbody tr:last-child {
-        display: none;
-    }
+    .table-penjualan {}
     @media(max-width: 768px) {
         .tampil-bayar {
             font-size: 3em;
@@ -53,9 +51,9 @@
                             <th>Nama</th>
                             <th>Harga</th>
                             <th width="15%">Jumlah</th>
-                            <th>Diskon</th>
+                            <th width="15%">Diskon</th>
                             <th>Subtotal</th>
-                            <th width="15%">Aksi</i></th>
+                            <th width="10%">Aksi</i></th>
                             <th>Stok</th>
                         </thead>
                         <tbody id="table-penjualan-body">
@@ -286,7 +284,7 @@
                 <td><input tabindex="${no+1}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
                 <td><input type="number" class="form-control" name="diskon" value="0" oninput="updateSubtotal(this)"></td>
                 <td>${harga}</td>
-                <td><button type="button" class="btn btn-danger btn-xs btn-flat" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
+                <td><button type="button" class="btn btn-danger btn-sm onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
                 <td>${stok}</td>
             `;
 
