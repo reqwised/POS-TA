@@ -12,7 +12,7 @@
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Produk</button>
+                    <button tabindex="1" onclick="addForm('{{ route('produk.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Produk</button>
                     @if (auth()->user()->role == 'Pemilik Toko')
                     <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Hapus</button>
                     <a href="{{ route('produk.stash') }}" class="btn btn-sm btn-warning float-right"><i class="fa fa-recycle"></i> Stash</a>
@@ -111,6 +111,13 @@
             $(':checkbox').prop('checked', this.checked);
         });
     });
+
+    document.addEventListener("keypress", event=>{
+        console.log(event.key);
+        if(event.key==='['){
+            $('[tabindex= 1]').focus();
+        }
+    })
 
     function addForm(url) {
         $('#modal-form').modal('show');
