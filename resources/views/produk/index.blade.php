@@ -99,7 +99,7 @@
                     .fail((errors) => {
                         Swal.fire({
                             title: "Gagal!",
-                            text: "Nama produk tidak boleh sama dengan yang sudah ada",
+                            text: "Kode atau nama produk tidak boleh sama dengan yang sudah ada",
                             icon: "warning",
                             confirmButtonColor: '#007bff',
                         });
