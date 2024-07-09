@@ -128,4 +128,45 @@ class MemberController extends Controller
 
         return response(null, 204);
     }
+
+    public function getMembers(Request $request)
+    {
+        $query = Member::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('kode_member', 'like', "%$search%")
+                ->orWhere('nama', 'like', "%$search%");
+        }
+
+        $members = $query->paginate(5);
+        return response()->json($members);
+    }
+    
+    public function getMemberByKode($kode)
+    {
+        $member = Member::where('kode_member', $kode)->first();
+        if ($member) {
+            return response()->json($member);
+        } else {
+            return response()->json(['message' => 'Member not found']);
+        }
+    }
+
+    public function cetakMember(Request $request)
+    {
+        $datamember = collect(array());
+        foreach ($request->id_member as $id) {
+            $member = Member::find($id);
+            $datamember[] = $member;
+        }
+
+        $datamember = $datamember->chunk(2);
+        $setting    = Setting::first();
+
+        $no  = 1;
+        $pdf = PDF::loadView('member.cetak', compact('datamember', 'no', 'setting'));
+        $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');
+        return $pdf->stream('member.pdf');
+    }
 }
