@@ -26,54 +26,46 @@
         </div>
         <div class="col-lg-6">
             <div class="row align-items-center justify-content-center h-100 g-0 px-4 px-sm-0 ">
-                <div class="col col-sm-6 col-lg-7 col-xl-6">
+                <div class="col col-sm-7 col-lg-8 col-xl-7">
                     <a href="#" class="d-flex justify-content-center mb-4">
                         <img src="{{ url($setting->path_logo) }}" alt="logo.png" width="100">
                     </a>
-                    <div class="text-center mb-5">
+                    <div class="text-center mb-10">
                         <h1 class="font-weight-bold">Login</h1>
-                        <p class="text-secondary">Get access to your account</p>
+                        <p class="text-secondary">Silahkan login untuk mengelola penjualan Toko Anda dengan mudah dan efisien.</p>
                     </div>
 
-                    <form action="{{ route('login') }}" method="post" class="form-login">
+                    @if ($errors->any())
+                        <div class="alert alert-danger text-center" role="alert">
+                            <strong>LOGIN GAGAL! EMAIL ATAU PASSWORD SALAH!</strong>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('login') }}" method="post" class="form-login" id="loginForm" novalidate>
                         @csrf
-                        <div class="form-group mb-3 @error('email') has-error @enderror">
+                        <div class="form-group mb-3">
                             <label for="email">Email <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                </div>
-                                <input type="text" name="email" class="form-control form-control-lg" placeholder="Email" required value="{{ old('email') }}" autofocus>
+                            <input type="email" name="email" class="form-control form-control-lg" id="email" placeholder="user@example.com" required value="{{ old('email') }}" autofocus>
+                            <div class="invalid-feedback">
+                                Email tidak valid. Pastikan email memiliki format yang benar (misalnya, user@example.com).
                             </div>
-                            @error('email')
-                                <span class="help-block text-danger">{{ $message }}</span>
-                            @else
-                                <span class="help-block with-errors text-danger"></span>
-                            @enderror
                         </div>
 
-                        <div class="form-group @error('password') has-error @enderror">
+                        <div class="form-group mb-3">
                             <label for="password">Password <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                                </div>
-                                <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" required>
+                            <input type="password" name="password" class="form-control form-control-lg" id="password" placeholder="password" required>
+                            <div class="invalid-feedback">
+                                Password tidak boleh kosong.
                             </div>
-                            @error('password')
-                                <span class="help-block text-danger">{{ $message }}</span>
-                            @else
-                                <span class="help-block with-errors text-danger"></span>
-                            @enderror
                         </div>
 
-                        <div class="custom-control custom-checkbox my-4">
-                            <input class="custom-control-input icheck" type="checkbox" id="rememberMe" name="remember">
-                            <label class="custom-control-label text-secondary" for="rememberMe">
+                        <div class="form-group form-check my-3">
+                            <input class="form-check-input icheck" type="checkbox" id="rememberMe" name="remember">
+                            <label class="form-check-label text-secondary" for="rememberMe">
                                 Remember Me
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg w-100">Login</button>
+                        <button type="submit" class="btn btn-lg btn-primary w-100" id="loginButton" disabled>Login</button>
                     </form>
                 </div>
             </div>

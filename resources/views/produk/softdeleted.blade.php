@@ -15,7 +15,7 @@
                     <h4>Soft Deleted Produk</h4>
                 </div>
                 <div class="card-body">
-                    <table class="table table-borderless table-striped">
+                    <table class="table table-sm table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Kode</th>
@@ -30,14 +30,16 @@
                         <tbody>
                             @foreach ($produk as $item)
                                 <tr>
-                                    <td>{{ $item->kode_produk }}</td>
+                                    <td>
+                                        <span class="badge badge-primary">{{ $item->kode_produk }}<span>
+                                    </td>
                                     <td>{{ $item->nama_produk }}</td>
                                     <td>{{ $item->nama_kategori }}</td>
                                     <td>{{ format_uang($item->harga_beli) }}</td>
                                     <td>{{ format_uang($item->harga_jual) }}</td>
                                     <td>{{ format_uang($item->stok) }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-primary" onclick="restoreProduct({{ $item->id_produk }})">Restore</button>
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="restoreProduct({{ $item->id_produk }})">Pulihkan</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -64,7 +66,5 @@
     </div>
 </div>
 @endsection
-
 @section('scripts')
-
 @endsection

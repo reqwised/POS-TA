@@ -1,9 +1,6 @@
 @extends('layouts.master')
 
-@section('title')
-    Laporan Pendapatan {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}
-@endsection
-
+@section('title', 'Laporan Pendapatan')
 @push('css')
 <link rel="stylesheet" href="{{ asset('/AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
 @endpush
@@ -19,11 +16,14 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <button onclick="updatePeriode()" class="btn btn-primary"><i class="fas fa-exchange-alt"></i> Periode</button>
-                    <a href="{{ route('laporan.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank" class="btn btn-danger"><i class="far fa-file-pdf"></i> PDF</a>
+                    <h5 class="card-title">Laporan Pendapatan {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}</h5>
+                    <div class="float-right">
+                        <button onclick="updatePeriode()" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Periode Laporan</button>
+                        <a href="{{ route('laporan.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank" class="btn btn-sm btn-danger"><i class="far fa-file-pdf"></i> PDF</a>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-borderless table-striped">
+                    <table class="table table-sm table-bordered table-striped">
                         <thead>
                             <th width="5%">No</th>
                             <th>Tanggal</th>
@@ -82,27 +82,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Find the form element
         var form = document.querySelector('form[data-toggle="validator"]');
 
-        // Add event listener for form submission
         form.addEventListener('submit', function (event) {
-            // Get the value of tanggal_awal and tanggal_akhir
             var tanggalAwal = new Date(document.getElementById('tanggal_awal').value);
             var tanggalAkhir = new Date(document.getElementById('tanggal_akhir').value);
 
-            // Check if tanggal_awal is greater than tanggal_akhir
             if (tanggalAwal > tanggalAkhir) {
-                // Prevent form submission
                 event.preventDefault();
-
-                // Show error message
                 Swal.fire({
-                    title: "Tanggal awal tidak boleh lebih besar dari tanggal akhir.",
-                    icon: "error",
+                    title: "Perhatian!",
+                    text: "Tanggal awal tidak boleh lebih dari tanggal akhir.",
+                    icon: "warning",
                     confirmButtonColor: '#007bff',
                 });
-                return;
             }
         });
     });

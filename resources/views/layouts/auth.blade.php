@@ -34,7 +34,32 @@
                 increaseArea: '20%'
             });
         });
-        $('.form-login').validator();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.getElementById('loginButton');
+
+            function checkFormValidity() {
+                if (emailInput.value && passwordInput.value) {
+                    loginButton.removeAttribute('disabled');
+                } else {
+                    loginButton.setAttribute('disabled', 'disabled');
+                }
+            }
+
+            emailInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('input', checkFormValidity);
+
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        }, false);
     </script>
 </body>
 </html>

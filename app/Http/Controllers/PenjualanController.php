@@ -45,15 +45,16 @@ class PenjualanController extends Controller
             ->editColumn('kasir', function ($penjualan) {
                 return $penjualan->user->name ?? '';
             })
-            ->addColumn('aksi', function ($penjualan) {
-                return '
-                <div>
-                    <button onclick="showDetail(`'. route('penjualan.show', $penjualan->id_penjualan) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-info-circle"></i></button>
-                    <button onclick="deleteData(`'. route('penjualan.destroy', $penjualan->id_penjualan) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-                </div>
-                ';
+            ->addColumn('detail_url', function ($penjualan) {
+                return route('penjualan.show', $penjualan->id_penjualan);
             })
-            ->rawColumns(['aksi', 'nama'])
+            ->addColumn('nota_select', function ($penjualan) {
+                return route('penjualan.nota_Select', $penjualan->id_penjualan);
+            })
+            ->addColumn('delete_url', function ($penjualan) {
+                return route('penjualan.destroy', $penjualan->id_penjualan);
+            })
+            ->rawColumns(['nama'])
             ->make(true);
     }
 
@@ -177,5 +178,19 @@ class PenjualanController extends Controller
         $pdf = PDF::loadView('penjualan.nota_besar', compact('setting', 'penjualan', 'detail'));
         $pdf->setPaper(0,0,609,440, 'potrait');
         return $pdf->stream('Transaksi-'. date('Y-m-d-his') .'.pdf');
+    }
+
+    public function notaSelect($id)
+    {
+        $setting = Setting::first();
+        $penjualan = Penjualan::find($id);
+        if (! $penjualan) {
+            abort(404);
+        }
+        $detail = PenjualanDetail::with('produk')
+            ->where('id_penjualan', $id)
+            ->get();
+
+        return view('penjualan.nota_kecil', compact('setting', 'penjualan', 'detail'));
     }
 }

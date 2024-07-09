@@ -10,79 +10,66 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-outline card-primary">
                 <form action="{{ route('setting.update') }}" method="post" class="form-setting" data-toggle="validator" enctype="multipart/form-data">
                     @csrf
-                    <div class="card-body m-4">
-                        <div class="form-group row">
-                            <label for="nama_perusahaan" class="col-sm-2 col-form-label">Nama Toko  <span class="text-danger">*</span></label>
-                            <div class="col-lg-4">
-                                <input type="text" name="nama_perusahaan" class="form-control" id="nama_perusahaan" required autofocus><span class="help-block with-errors text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="telepon" class="col-sm-2 col-form-label">Telepon  <span class="text-danger">*</span></label>
-                            <div class="col-lg-4">
-                                <input type="text" name="telepon" class="form-control" id="telepon" required>
-                                <span class="help-block with-errors text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="alamat" class="col-sm-2 col-form-label">Alamat <span class="text-danger">*</span></label>
-                            <div class="col-lg-4">
-                                <textarea name="alamat" class="form-control" id="alamat" rows="3" required></textarea>
-                                <span class="help-block with-errors text-danger"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">Logo</label>
-                            <div class="col-lg-4">
-                                <div class="custom-file">
-                                    <input type="file" name="path_logo" class="custom-file-input" id="path_logo" onchange="preview('.tampil-logo', this.files[0])">
-                                    <label class="custom-file-label" for="foto">Choose file</label>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group col-md-10">
+                                    <label for="nama_perusahaan">Nama Toko  <span class="text-danger">*</span></label>
+                                    <input type="text" name="nama_perusahaan" class="form-control" id="nama_perusahaan" data-error="Nama toko tidak boleh kosong" required autofocus><span class="help-block with-errors text-danger"></span>
                                 </div>
-                                <span class="help-block with-errors text-danger"></span>
-                                <br>
-                                <div class="tampil-logo mt-3">
-                                    <img src="{{ url($profil->foto ?? '/') }}" width="200">
+
+                                <div class="form-group col-md-10">
+                                    <label for="telepon">Telepon  <span class="text-danger">*</span></label>
+                                    <input type="text" name="telepon" class="form-control" data-error="Nomor telepon tidak boleh kosong" id="telepon" required>
+                                    <span class="help-block with-errors text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-10">
+                                    <label for="alamat">Alamat <span class="text-danger">*</span></label>
+                                    <textarea name="alamat" class="form-control" data-error="Alamat tidak boleh kosong" id="alamat" rows="3" required></textarea>
+                                    <span class="help-block with-errors text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <!-- <div class="form-group row">
-                            <label for="path_kartu_member" class="col-sm-2 col-form-label">Kartu Member</label>
-                            <div class="col-lg-4">
-                                <input type="file" name="path_kartu_member" class="form-control" id="path_kartu_member"
-                                    onchange="preview('.tampil-kartu-member', this.files[0], 300)">
-                                <span class="help-block with-errors text-danger"></span>
-                                <br>
-                                <div class="tampil-kartu-member"></div>
-                            </div>
-                        </div> -->
-                        <div class="form-group row">
-                            <label for="diskon" class="col-sm-2 col-form-label">Diskon  <span class="text-danger">*</span></label>
-                            <div class="col-lg-4">
-                                <input type="number" name="diskon" class="form-control" id="diskon" required>
-                                <span class="help-block with-errors text-danger"></span>
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <label for="tipe_nota" class="col-sm-2 col-form-label">Tipe Nota  <span class="text-danger">*</span></label>
-                            <div class="col-lg-4">
-                                <select name="tipe_nota" class="custom-select" id="tipe_nota" required>
-                                    <option value="1">Nota Kecil</option>
-                                    <option value="2">Nota Besar</option>
-                                </select>
-                                <span class="help-block with-errors text-danger"></span>
+                            <div class="col-md-6">
+                                <div class="form-group col-md-10">
+                                    <label for="diskon">Diskon  <span class="text-danger">*</span></label>
+                                    <input type="number" name="diskon" class="form-control" data-error="Diskon tidak boleh kosong" id="diskon" required>
+                                    <span class="help-block with-errors text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-10">
+                                    <label for="tipe_nota">Tipe Nota  <span class="text-danger">*</span></label>
+                                    <select name="tipe_nota" class="custom-select" id="tipe_nota" required>
+                                        <option value="1">Nota Kecil</option>
+                                        <option value="2">Nota Besar</option>
+                                    </select>
+                                    <span class="help-block with-errors text-danger"></span>
+                                </div>
+
+                                <div class="form-group col-md-10">
+                                    <label>Logo <span class="text-sm text-secondary font-italic">(Kosongkan jika tidak ingin diubah)</span></label>
+                                    <div class="custom-file">
+                                        <input type="file" name="path_logo" class="custom-file-input" id="path_logo" onchange="preview('.tampil-logo', this.files[0])">
+                                        <label class="custom-file-label" for="foto">Choose file</label>
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        File harus berupa gambar PNG, ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
+                                    </small>
+                                    <span class="help-block with-errors text-danger"></span>
+                                    <div class="tampil-logo mt-3">
+                                        <img src="{{ url($profil->foto ?? '/') }}" width="150">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-footer">
-                        <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
+                        <button class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -143,7 +130,7 @@
                 $('.logo-mini').text(word);
                 $('.logo-lg').text(response.nama_perusahaan);
 
-                $('.tampil-logo').html(`<img src="{{ url('/') }}${response.path_logo}" width="200">`);
+                $('.tampil-logo').html(`<img src="{{ url('/') }}${response.path_logo}" width="150">`);
                 $('.tampil-kartu-member').html(`<img src="{{ url('/') }}${response.path_kartu_member}" width="300">`);
                 $('[rel=icon]').attr('href', `{{ url('/') }}/${response.path_logo}`);
             })
@@ -154,6 +141,41 @@
                     });
                     return;
             });
+    }
+
+    function validateImage(input) {
+        const file = input.files[0];
+        const img = new Image();
+        const maxSize = 500 * 1024; // 500KB
+        const allowedTypes = ['image/png'];
+
+        if (file) {
+            if (!allowedTypes.includes(file.type)) {
+                alert("File harus berupa gambar PNG.");
+                input.value = "";
+                return;
+            }
+
+            if (file.size > maxSize) {
+                alert("Ukuran file maksimal adalah 500KB.");
+                input.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                img.src = e.target.result;
+                img.onload = function () {
+                    if (img.width !== img.height) {
+                        alert("Gambar harus memiliki aspek rasio 1:1.");
+                        input.value = "";
+                    } else {
+                        document.getElementById('logoPreview').src = img.src;
+                    }
+                };
+            };
+            reader.readAsDataURL(file);
+        }
     }
 </script>
 @endpush

@@ -10,11 +10,11 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-outline card-primary">
                 <div class="card-body">
-                    <table class="table table-borderless table-striped table-penjualan">
+                    <table class="table table-sm table-bordered table-striped table-penjualan">
                         <thead>
-                            <th width="5%">#</th>
+                            <th width="5%">No</th>
                             <th>Tanggal</th>
                             <th>Member</th>
                             <th>Total Item</th>
@@ -22,7 +22,7 @@
                             <th>Diskon</th>
                             <th>Total Bayar</th>
                             <th>Kasir</th>
-                            <th width="12%">Aksi</th>
+                            <th width="15%">Aksi</th>
                         </thead>
                     </table>
                 </div>
@@ -56,7 +56,33 @@
                 {data: 'diskon'},
                 {data: 'bayar'},
                 {data: 'kasir'},
-                {data: 'aksi', searchable: false, sortable: false},
+                {
+                    data: 'aksi',
+                    searchable: false,
+                    sortable: false,
+                    render: function(data, type, row) {
+                        @if (auth()->user()->role == 'Pemilik Toko')
+                            return `
+                                <button onclick="showDetail('${row.detail_url}')" class="btn btn-sm btn-warning text-light">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                                <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
+                                    <i class="fas fa-file"></i>
+                                </button>
+                                <button onclick="deleteData('${row.delete_url}')" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>`;
+                        @elseif (auth()->user()->role == 'Kasir')
+                            return `
+                                <button onclick="showDetail('${row.detail_url}')" class="btn btn-sm btn-warning text-light">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                                <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
+                                    <i class="fas fa-file"></i>
+                                </button>`;
+                        @endif
+                    }
+                },
             ]
         });
 
@@ -101,14 +127,45 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
-                    });
+                    alert('Gagal menghapus data!');
                     return;
                 });
             }
         });
+    }
+
+    // print nota
+    document.cookie = "innerHeight=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    
+    function notaSelect(url, title) {
+        popupCenter(url, title, 625, 500);
+    }
+
+    function notaBesar(url, title) {
+        popupCenter(url, title, 900, 675);
+    }
+
+    function popupCenter(url, title, w, h) {
+        const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
+        const dualScreenTop  = window.screenTop  !==  undefined ? window.screenTop  : window.screenY;
+
+        const width  = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        const systemZoom = width / window.screen.availWidth;
+        const left       = (width - w) / 2 / systemZoom + dualScreenLeft
+        const top        = (height - h) / 2 / systemZoom + dualScreenTop
+        const newWindow  = window.open(url, title, 
+        `
+            scrollbars=yes,
+            width  = ${w / systemZoom}, 
+            height = ${h / systemZoom}, 
+            top    = ${top}, 
+            left   = ${left}
+        `
+        );
+
+        if (window.focus) newWindow.focus();
     }
 </script>
 @endpush

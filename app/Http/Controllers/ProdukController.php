@@ -41,10 +41,10 @@ class ProdukController extends Controller
                 return '<span class="badge badge-primary">'. $produk->kode_produk .'</span>';
             })
             ->addColumn('harga_beli', function ($produk) {
-                return format_uang($produk->harga_beli);
+                return '<span class="float-right">'. 'Rp. '. format_uang($produk->harga_beli) .'</span>';
             })
             ->addColumn('harga_jual', function ($produk) {
-                return format_uang($produk->harga_jual);
+                return '<span class="float-right">'. 'Rp. '. format_uang($produk->harga_jual) .'</span>'; ;
             })
             ->addColumn('stok', function ($produk) {
                 return format_uang($produk->stok);
@@ -52,12 +52,12 @@ class ProdukController extends Controller
             ->addColumn('aksi', function ($produk) {
                 return '
                 <div>
-                    <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-sm btn-warning text-light"><i class="fas fa-edit"></i></button>
                     <button type="button" onclick="deleteData(`'. route('produk.destroy', $produk->id_produk) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'kode_produk', 'select_all'])
+            ->rawColumns(['aksi', 'kode_produk', 'select_all', 'stok', 'harga_beli', 'harga_jual'])
             ->make(true);
     }
 
@@ -186,19 +186,5 @@ class ProdukController extends Controller
             $produk->save();
         }
         return response()->json(['success' => true]);
-    }
-
-    public function cetakBarcode(Request $request)
-    {
-        $dataproduk = array();
-        foreach ($request->id_produk as $id) {
-            $produk = Produk::find($id);
-            $dataproduk[] = $produk;
-        }
-
-        $no  = 1;
-        $pdf = PDF::loadView('produk.barcode', compact('dataproduk', 'no'));
-        $pdf->setPaper('a4', 'potrait');
-        return $pdf->stream('produk.pdf');
     }
 }

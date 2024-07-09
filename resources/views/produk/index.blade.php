@@ -10,31 +10,35 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
-                        <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Hapus</button>
-                    </div>
-                    <a href="{{ route('produk.stash') }}" class="btn btn-warning float-right"><i class="fa fa-recycle"></i> Stash</a>
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <button onclick="addForm('{{ route('produk.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Produk</button>
+                    @if (auth()->user()->role == 'Pemilik Toko')
+                    <button onclick="deleteSelected('{{ route('produk.delete_selected') }}')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Hapus</button>
+                    <a href="{{ route('produk.stash') }}" class="btn btn-sm btn-warning float-right"><i class="fa fa-recycle"></i> Stash</a>
+                    @endif
                 </div>
                 <div class="card-body">
-                    <form action="" method="post" class="form-produk">
+                    <form method="post" class="form-produk">
                         @csrf
-                        <table class="table table-borderless table-striped">
+                        <table class="table table-sm table-bordered table-striped">
                             <thead>
+                                @if (auth()->user()->role == 'Pemilik Toko')
                                 <th width="5%">
                                     <input type="checkbox" name="select_all" id="select_all">
                                 </th>
-                                <th width="5%">#</th>
+                                @endif
+                                <th width="5%">No</th>
                                 <th>Kode</th>
                                 <th>Nama</th>
                                 <th>Kategori</th>
-                                <th>Harga Beli</th>
-                                <th>Harga Jual</th>
+                                <th>Modal</th>
+                                <th>Jual</th>
                                 <th>Diskon</th>
                                 <th>Stok</th>
-                                <th width="12%">Aksi</th>
+                                @if (auth()->user()->role == 'Pemilik Toko')
+                                    <th width="10%">Aksi</th>
+                                @endif
                             </thead>
                         </table>
                     </form>
@@ -61,7 +65,9 @@
                 url: '{{ route('produk.data') }}',
             },
             columns: [
+                @if (auth()->user()->role == 'Pemilik Toko')
                 {data: 'select_all', searchable: false, sortable: false},
+                @endif
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
@@ -70,7 +76,9 @@
                 {data: 'harga_jual'},
                 {data: 'diskon'},
                 {data: 'stok'},
+                @if (auth()->user()->role == 'Pemilik Toko')
                 {data: 'aksi', searchable: false, sortable: false},
+                @endif
             ]
         });
 
@@ -90,9 +98,10 @@
                     })
                     .fail((errors) => {
                         Swal.fire({
-                        title: "Gagal menyimpan data",
-                        icon: "error",
-                        confirmButtonColor: '#007bff',
+                            title: "Gagal!",
+                            text: "Nama produk tidak boleh sama dengan yang sudah ada",
+                            icon: "warning",
+                            confirmButtonColor: '#007bff',
                         });
                     });
             }
@@ -134,10 +143,7 @@
                 $('#modal-form [name=stok]').val(response.stok);
             })
             .fail((errors) => {
-                Swal.fire({
-                    title: "Gagal menampilkan data",
-                    icon: "error",
-                });
+                alert('Gagal menampilkan data!');
                 return;
             });
     }
@@ -161,10 +167,7 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
-                    });
+                    alert('Gagal menghapus data!');
                     return;
                 });
             }
@@ -188,23 +191,19 @@
                         table.ajax.reload();
                     })
                     .fail((errors) => {
-                        Swal.fire({
-                            title: "Gagal menghapus data",
-                            icon: "error",
-                        });
+                        alert('Gagal menampilkan data');
                         return;
                     });
                 }
             });
         } else {
             Swal.fire({
-                title: "Pilih minimal 2 data yang akan dihapus",
+                title: "Perhatian!",
+                text: "Pilih minimal 2 data yang akan dihapus",
                 icon: "warning",
+                confirmButtonColor: '#007bff',
             });
-            return;
         }
     }
-
-
 </script>
 @endpush

@@ -42,13 +42,11 @@ class PembelianController extends Controller
             ->editColumn('diskon', function ($pembelian) {
                 return $pembelian->diskon . '%';
             })
-            ->addColumn('aksi', function ($pembelian) {
-                return '
-                <div>
-                    <button onclick="showDetail(`'. route('pembelian.show', $pembelian->id_pembelian) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-info-circle"></i></button>
-                    <button onclick="deleteData(`'. route('pembelian.destroy', $pembelian->id_pembelian) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-                </div>
-                ';
+            ->addColumn('detail_url', function ($pembelian) {
+                return route('pembelian.show', $pembelian->id_pembelian);
+            })
+            ->addColumn('delete_url', function ($pembelian) {
+                return route('pembelian.destroy', $pembelian->id_pembelian);
             })
             ->rawColumns(['aksi'])
             ->make(true);

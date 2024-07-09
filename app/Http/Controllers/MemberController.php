@@ -37,7 +37,7 @@ class MemberController extends Controller
             ->addColumn('aksi', function ($member) {
                 return '
                 <div>
-                    <button type="button" onclick="editForm(`'. route('member.update', $member->id_member) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button type="button" onclick="editForm(`'. route('member.update', $member->id_member) .'`)" class="btn btn-sm btn-warning text-light"><i class="fas fa-edit"></i></button>
                     <button type="button" onclick="deleteData(`'. route('member.destroy', $member->id_member) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
@@ -127,22 +127,5 @@ class MemberController extends Controller
         $member->delete();
 
         return response(null, 204);
-    }
-
-    public function cetakMember(Request $request)
-    {
-        $datamember = collect(array());
-        foreach ($request->id_member as $id) {
-            $member = Member::find($id);
-            $datamember[] = $member;
-        }
-
-        $datamember = $datamember->chunk(2);
-        $setting    = Setting::first();
-
-        $no  = 1;
-        $pdf = PDF::loadView('member.cetak', compact('datamember', 'no', 'setting'));
-        $pdf->setPaper(array(0, 0, 566.93, 850.39), 'potrait');
-        return $pdf->stream('member.pdf');
     }
 }

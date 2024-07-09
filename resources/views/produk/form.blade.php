@@ -1,87 +1,72 @@
 <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <form action="" method="post" class="form-horizontal">
             @csrf
             @method('post')
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"></h4>
+                    <h5 class="modal-title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
 
-                <div class="modal-body mx-4 mt-3">
-
-                    <div class="form-group row">
-                        <label for="kode_produk" class="col-lg-3 control-label">Kode <span class="text-danger">&#42;</span></label>
-                        <div class="col-lg-9">
-                            <input type="text" name="kode_produk" id="kode_produk" class="form-control" required autofocus>
+                <div class="modal-body mx-2">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="kode_produk">Kode Produk <span class="text-danger">&#42;</span></label>
+                            <input type="text" name="kode_produk" id="kode_produk" class="form-control" placeholder="Kode Produk .. (Wajib)" data-error="Kode produk tidak boleh kosong" required>
                             <span class="help-block with-errors text-danger"></span>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="nama_produk" class="col-lg-3 control-label">Nama <span class="text-danger">&#42;</span></label>
-                        <div class="col-lg-9">
-                            <input type="text" name="nama_produk" id="nama_produk" class="form-control" required autofocus>
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
+                    <div class="form-group">
+                        <label for="nama_produk">Nama <span class="text-danger">&#42;</span></label>
+                        <input type="text" name="nama_produk" id="nama_produk" class="form-control" placeholder="Masukkan Nama Produk .. (Wajib)" data-error="Nama produk tidak boleh kosong" required>
+                        <span class="help-block with-errors text-danger"></span>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="id_kategori" class="col-lg-3 control-label">Kategori <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <select name="id_kategori" id="id_kategori" class="custom-select" required>
-                                <option value="">Pilih Kategori</option>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="id_kategori">Kategori <span class="text-danger">&#42;</span></label>
+                            <select name="id_kategori" id="id_kategori" class="custom-select" data-error="Kategori tidak boleh kosong" required>
+                                <option value="">- Pilih kategori -</option>
                                 @foreach ($kategori as $key => $item)
                                 <option value="{{ $key }}">{{ $item }}</option>
                                 @endforeach
                             </select>
                             <span class="help-block with-errors text-danger"></span>
                         </div>
-                    </div>
-                    <!-- <div class="form-group row">
-                        <label for="merk" class="col-sm-2 col-form-label">Merk</label>
-                        <div class="col-lg-9">
-                            <input type="text" name="merk" id="merk" class="form-control">
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
-                    </div> -->
-                    <div class="form-group row">
-                        <label for="harga_beli" class="col-lg-3 control-label">Harga Beli <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="number" name="harga_beli" id="harga_beli" class="form-control" required>
+                        <div class="form-group col-md-6">
+                            <label for="stok">Stok <span class="text-danger">&#42;</span></label>
+                            <input type="number" name="stok" id="stok" class="form-control" placeholder="Masukkan Jumlah Stok .. (Wajib)" data-error="Jumlah stok tidak boleh kosong" required>
                             <span class="help-block with-errors text-danger"></span>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="harga_jual" class="col-lg-3  control-label">Harga Jual <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="number" name="harga_jual" id="harga_jual" class="form-control" required>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="harga_beli">Harga Modal <span class="text-danger">&#42;</span></label>
+                            <input type="number" name="harga_beli" id="harga_beli" placeholder="Contoh: 10000 .. (Wajib)" data-error="Harga modal tidak boleh kosong" class="form-control" required>
+                            <span class="help-block with-errors text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="harga_jual">Harga Jual <span class="text-danger">&#42;</span></label>
+                            <input type="number" name="harga_jual" id="harga_jual" class="form-control" placeholder="Contoh: 15000 .. (Wajib)" data-error="Harga jual tidak boleh kosong" required>
                             <span class="help-block with-errors text-danger"></span>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="diskon" class="col-lg-3  control-label">Diskon</label>
-                        <div class="col-lg-9">
-                            <input type="number" name="diskon" id="diskon" class="form-control" value="0">
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="stok" class="col-lg-3  control-label">Stok <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="number" name="stok" id="stok" class="form-control" required value="1">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="diskon">Diskon</label>
+                            <input type="number" name="diskon" id="diskon" class="form-control"value="0">
                             <span class="help-block with-errors text-danger"></span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="modal-footer">
-                    <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
-                    <!-- <button type="button" class="btn btn-sm  btn-dark" data-dismiss="modal"><i class="fas fa-chevron-circle-left"></i> Batal</button> -->
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-sm btn-primary">Simpan</button>
                 </div>
             </div>
         </form>

@@ -12,14 +12,16 @@
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
+                    <button onclick="addForm('{{ route('kategori.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Kategori</button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-borderless table-striped">
+                    <table class="table table-sm table-bordered table-striped">
                         <thead>
-                            <th width="5%">#</th>
+                            <th width="5%">No</th>
                             <th>Kategori</th>
-                            <th width="15%">Aksi</th>
+                            @if (auth()->user()->role == 'Pemilik Toko')
+                                <th width="10%">Aksi</th>
+                            @endif
                         </thead>
                     </table>
                 </div>
@@ -47,7 +49,9 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nama_kategori'},
+                @if (auth()->user()->role == 'Pemilik Toko')
                 {data: 'aksi', searchable: false, sortable: false},
+                @endif
             ]
         });
 
@@ -56,7 +60,7 @@
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                     .done((response) => {
                         Swal.fire({
-                            title: "Berhasil menyimpan data",
+                            title: "Berhasil menyimpan data!",
                             icon: "success",
                             showConfirmButton: false,
                             timer: 1500
@@ -67,19 +71,10 @@
                     })
                     .fail((errors) => {
                         Swal.fire({
-                            title: "Gagal menyimpan data",
-                            icon: "error",
+                            title: "Gagal!",
+                            text: "Nama kategori tidak boleh sama dengan yang sudah ada",
+                            icon: "warning",
                             confirmButtonColor: '#007bff',
-                            width: 600,
-                            padding: "3em",
-                            color: "#716add",
-                            background: "#fff url(/img/trees.png)",
-                            backdrop: `
-                                rgba(0,0,123,0.4)
-                                url("/img/nyan-cat.gif")
-                                left top
-                                no-repeat
-                            `
                         });
                     });
             }
@@ -110,10 +105,7 @@
                 $('#modal-form [name=nama_kategori]').val(response.nama_kategori);
             })
             .fail((errors) => {
-                Swal.fire({
-                    title: "Gagal menampilkan data",
-                    icon: "error",
-                });
+                alert('Gagal menampilkan data!');
                 return;
             });
     }
@@ -138,10 +130,11 @@
                 })
                 .fail((errors) => {
                     Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
+                        title: "Gagal!",
+                        text: "Nama kategori sedang digunakan oleh produk",
+                        icon: "warning",
+                        confirmButtonColor: '#007bff',
                     });
-                    return;
                 });
             }
         });

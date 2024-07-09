@@ -1,6 +1,5 @@
-<!-- File: resources/views/jual/produk.blade.php -->
 <div class="modal fade" id="daftarProdukModal" tabindex="-1" role="dialog" aria-labelledby="daftarProdukModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="daftarProdukModalLabel">Daftar Produk</h5>
@@ -8,28 +7,27 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body mx-2 mt-3">
                 <input type="text" id="search-input" class="form-control" placeholder="Cari kode/nama produk...">
                 <br>
-                <table class="table">
+                <table class="table table-sm table-bordered table-striped">
                     <thead>
                         <tr>
                             <th width="5%">No</th>
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Harga Beli</th>
-                            <th><i class="fa fa-cog"></i></th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tbody id="product-list">
-                            <!-- Produk akan dimuat di sini melalui JavaScript -->
                         </tbody>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

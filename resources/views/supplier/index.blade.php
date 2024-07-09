@@ -10,18 +10,20 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
+                    <button onclick="addForm('{{ route('supplier.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Supplier</button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-borderless table-striped">
+                    <table class="table table-sm table-bordered table-striped">
                         <thead>
-                            <th width="5%">#</th>
+                            <th width="5%">No</th>
                             <th>Nama</th>
-                            <th>Telepon</th>
-                            <th>Alamat</th>
-                            <th width="15%">Aksi</th>
+                            <th width="15%">Telepon</th>
+                            <th width="50%">Alamat</th>
+                            @if (auth()->user()->role == 'Pemilik Toko')
+                                <th width="10%">Aksi</th>
+                            @endif
                         </thead>
                     </table>
                 </div>
@@ -51,7 +53,9 @@
                 {data: 'nama'},
                 {data: 'telepon'},
                 {data: 'alamat'},
+                @if (auth()->user()->role == 'Pemilik Toko')
                 {data: 'aksi', searchable: false, sortable: false},
+                @endif
             ]
         });
 
@@ -60,7 +64,7 @@
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                     .done((response) => {
                         Swal.fire({
-                            title: "Berhasil menyimpan data",
+                            title: "Berhasil menyimpan data!",
                             icon: "success",
                             showConfirmButton: false,
                             timer: 1500
@@ -71,8 +75,8 @@
                     })
                     .fail((errors) => {
                         Swal.fire({
-                        title: "Gagal menyimpan data",
-                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        icon: "warning",
                         confirmButtonColor: '#007bff',
                         });
                     });
@@ -106,10 +110,7 @@
                 $('#modal-form [name=alamat]').val(response.alamat);
             })
             .fail((errors) => {
-                Swal.fire({
-                    title: "Gagal menampilkan data",
-                    icon: "error",
-                });
+                alert('Gagal menampilkan data!');
                 return;
             });
     }
@@ -133,10 +134,7 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
-                    });
+                    alert('Gagal menghapus data!');
                     return;
                 });
             }

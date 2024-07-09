@@ -1,34 +1,27 @@
 @extends('layouts.master')
 
+@section('title', 'Transaksi Penjualan')
+
 @push('css')
 <style>
     .hidden-column{
         display: none;
     }
     .tampil-bayar {
-        font-size: 5em;
-        text-align: center;
-        height: 100px;
+        font-size: 4.5em;
     }
-
-    .tampil-terbilang {
-        padding: 10px;
-        background: #f0f0f0;
+    .tampil-terbilang {}
+    .table-penjualan tbody tr:last-child {
+        display: none;
     }
-
     @media(max-width: 768px) {
         .tampil-bayar {
             font-size: 3em;
-            height: 70px;
-            padding-top: 5px;
+            margin-top: 10px;
         }
     }
 </style>
 @endpush
-
-@section('title')
-    Transaksi Penjualan
-@endsection
 
 @section('breadcrumb')
     @parent
@@ -36,184 +29,196 @@
 @endsection
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box">
-            <div class="box-body">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-outline card-primary">
+                <div class="card-body mx-2">
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <input tabindex="2" type="text" id="kodeProdukInput"class="form-control d-inline" placeholder="Masukkan Kode Produk">
+                        </div>
+                        <div class="col-sm-3">
+                            <button tabindex="1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal"><i class="fas fa-search"></i>
+                                Cari Produk
+                            </button>
+                        </div>
+                    </div>
 
-                <div>
-                    <button tabindex="1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal">
-                        Lihat Daftar Produk
-                    </button>
-                    <input tabindex="2" type="text" id="kodeProdukInput" class="form-control d-inline" placeholder="Masukkan Kode Produk" style="width: 200px; display: inline-block;">
+                    <table class="table table-sm table-bordered table-striped table-penjualan">
+                        <thead>
+                            <th width="5%">No</th>
+                            <th class="hidden-column">ID Produk</th>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Harga</th>
+                            <th width="15%">Jumlah</th>
+                            <th>Diskon</th>
+                            <th>Subtotal</th>
+                            <th width="15%">Aksi</i></th>
+                            <th>Stok</th>
+                        </thead>
+                        <tbody id="table-penjualan-body">
+                        </tbody>
+                    </table>
+
+                    <div class="row mt-5">
+                        <div class="col-lg-4">
+                            <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
+                                @csrf
+                                <input type="hidden" id="id_member" name="id_member" value="">
+                                <input type="hidden" id="total_item" name="total_item" value="">
+                                <input type="hidden" id="total_harga" name="total_harga" value="">
+                                <input type="hidden" id="diskon" name="diskon" value="">
+                                <input type="hidden" id="bayar" name="bayar" value="">
+                                <input type="hidden" id="diterima" name="diterima" value="">
+                                <input type="hidden" id="detail_items" name="detail_items" value="">
+
+                                <div class="form-group row">
+                                    <label for="total" class="col-sm-3 col-form-label">Total</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" id="total" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="member" class="col-sm-3 col-form-label">Member</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" id="member" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="diskon" class="col-sm-3 col-form-label">Diskon</label>
+                                    <div class="col-lg-9">
+                                        <input type="number" id="disc" class="form-control" value="0" oninput="applyDiscount()">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="bayar" class="col-sm-3 col-form-label">Bayar</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" id="byr" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="diterima" class="col-sm-3 col-form-label">Diterima</label>
+                                    <div class="col-lg-9">
+                                        <input type="number" id="cash" class="form-control" oninput="calculateChange()" value="{{ $penjualan->diterima ?? 0 }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="kembali" class="col-sm-3 col-form-label">Kembali</label>
+                                    <div class="col-lg-9">
+                                        <input type="text" id="kembali" name="kembali" class="form-control" value="0" readonly>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <div class="tampil-bayar bg-primary"></div>
+                            <div class="tampil-terbilang"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <table class="table table-striped table-bordered table-penjualan">
-                    <thead>
-                        <th width="5%">No</th>
-                        <th class="hidden-column">ID Produk</th>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Harga</th>
-                        <th width="15%">Jumlah</th>
-                        <th>Diskon</th>
-                        <th>Subtotal</th>
-                        <th width="15%"><i class="fa fa-cog"></i></th>
-                        <th>Stok</th>
-                    </thead>
-                    <tbody id="table-penjualan-body">
-                        <!-- Produk akan ditambahkan di sini -->
-                    </tbody>
-                </table>
-
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="tampil-bayar bg-primary"></div>
-                        <div class="tampil-terbilang"></div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="total">Total</label>
-                            <input type="text" id="total" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="member">Member</label>
-                            <input type="text" id="member" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="diskon">Diskon (%)</label>
-                            <input type="number" id="disc" class="form-control" value="0" oninput="applyDiscount()">
-                        </div>
-                        <div class="form-group">
-                            <label for="bayar">Bayar</label>
-                            <input type="text" id="byr" class="form-control" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="diterima">Diterima</label>
-                            <input type="number" id="cash" class="form-control" oninput="calculateChange()" value='100000'>
-                        </div>
-                        <div class="form-group">
-                            <label for="kembali">Kembali</label>
-                            <input type="text" id="kembali" class="form-control" readonly>
-                        </div>
-                    </div>
-                    <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
-                        @csrf
-                        <input type="hidden" id="id_member" name="id_member" value="">
-                        <input type="hidden" id="total_item" name="total_item" value="">
-                        <input type="hidden" id="total_harga" name="total_harga" value="">
-                        <input type="hidden" id="diskon" name="diskon" value="">
-                        <input type="hidden" id="bayar" name="bayar" value="">
-                        <input type="hidden" id="diterima" name="diterima" value="">
-                        <input type="hidden" id="detail_items" name="detail_items" value="">
-                        <button type="submit" class="btn btn-primary btn-sm btn-flat pull-right btn-simpan">
-                            <i class="fa fa-floppy-o"></i> Simpan Transaksi
-                        </button>
-                    </form>
-                    
-                    <script>
-                        document.querySelector('.btn-simpan').addEventListener('click', function(event) {
-                            event.preventDefault();
-                    
-                            // Mengambil nilai dari input
-                            const member = document.getElementById('member').value;
-                            const totalItem = calculateTotalItems();
-                            const totalHarga = document.getElementById('total').value;
-                            const diskon = document.getElementById('disc').value;
-                            const bayar = document.getElementById('byr').value;
-                            const diterima = document.getElementById('cash').value;
-                            const detailItems = getDetailItems();
-                    
-                            // Isi input hidden
-                            document.getElementById('id_member').value = member;
-                            document.getElementById('total_item').value = totalItem;
-                            document.getElementById('total_harga').value = totalHarga;
-                            document.getElementById('diskon').value = diskon;
-                            document.getElementById('bayar').value = bayar;
-                            document.getElementById('diterima').value = diterima;
-                            document.getElementById('detail_items').value = JSON.stringify(detailItems);
-                    
-                            // Submit the form
-                            document.getElementById('form-penjualan').submit();
-                        });
-
-                        function getDetailItems() {
-                            const tbody = document.getElementById('table-penjualan-body');
-                            let items = [];
-
-                            tbody.querySelectorAll('tr').forEach(row => {
-                                const id_produk = row.cells[1].innerText;
-                                const kode = row.cells[2].innerText;
-                                const nama = row.cells[3].innerText;
-                                const harga = parseFloat(row.cells[4].innerText);
-                                const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
-                                const diskon = parseInt(row.querySelector('input[name="diskon"]').value);
-                                const subtotal = parseFloat(row.cells[7].innerText);
-
-                                items.push({
-                                    id_produk: id_produk,
-                                    kode: kode,
-                                    nama: nama,
-                                    harga: harga,
-                                    jumlah: jumlah,
-                                    diskon: diskon,
-                                    subtotal: subtotal
-                                });
-                            });
-
-                            return items;
-                        }
-                    
-                        function calculateTotalItems() {
-                            const tbody = document.getElementById('table-penjualan-body');
-                            let totalItems = 0;
-                    
-                            tbody.querySelectorAll('tr').forEach(row => {
-                                const jumlahInput = row.querySelector('input[name="jumlah"]');
-                                if (jumlahInput) {
-                                    const jumlah = parseInt(jumlahInput.value);
-                                    if (!isNaN(jumlah)) {
-                                        totalItems += jumlah;
-                                    }
-                                }
-                            });
-                    
-                            return totalItems;
-                        }
-                    </script>
-                    
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary btn-simpan">Simpan</button>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="warningModalLabel">Peringatan</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Stok tidak mencukupi untuk produk ini.
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+
+        <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="warningModalLabel">Peringatan</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Stok tidak mencukupi untuk produk ini.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+    </div>
 </div>
 
-<!-- Modal Warning -->
-  
-
 @includeIf('jual.produk')
-
 @endsection
-
 @push('scripts')
+
+<script>
+    document.querySelector('.btn-simpan').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const member = document.getElementById('member').value;
+        const totalItem = calculateTotalItems();
+        const totalHarga = document.getElementById('total').value;
+        const diskon = document.getElementById('disc').value;
+        const bayar = document.getElementById('byr').value;
+        const diterima = document.getElementById('cash').value;
+        const detailItems = getDetailItems();
+
+        document.getElementById('id_member').value = member;
+        document.getElementById('total_item').value = totalItem;
+        document.getElementById('total_harga').value = totalHarga;
+        document.getElementById('diskon').value = diskon;
+        document.getElementById('bayar').value = bayar;
+        document.getElementById('diterima').value = diterima;
+        document.getElementById('detail_items').value = JSON.stringify(detailItems);
+
+        document.getElementById('form-penjualan').submit();
+    });
+
+    function getDetailItems() {
+        const tbody = document.getElementById('table-penjualan-body');
+        let items = [];
+
+        tbody.querySelectorAll('tr').forEach(row => {
+            const id_produk = row.cells[1].innerText;
+            const kode = row.cells[2].innerText;
+            const nama = row.cells[3].innerText;
+            const harga = parseFloat(row.cells[4].innerText);
+            const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
+            const diskon = parseInt(row.querySelector('input[name="diskon"]').value);
+            const subtotal = parseFloat(row.cells[7].innerText);
+
+            items.push({
+                id_produk: id_produk,
+                kode: kode,
+                nama: nama,
+                harga: harga,
+                jumlah: jumlah,
+                diskon: diskon,
+                subtotal: subtotal
+            });
+        });
+
+        return items;
+    }
+
+    function calculateTotalItems() {
+        const tbody = document.getElementById('table-penjualan-body');
+        let totalItems = 0;
+
+        tbody.querySelectorAll('tr').forEach(row => {
+            const jumlahInput = row.querySelector('input[name="jumlah"]');
+            if (jumlahInput) {
+                const jumlah = parseInt(jumlahInput.value);
+                if (!isNaN(jumlah)) {
+                    totalItems += jumlah;
+                }
+            }
+        });
+
+        return totalItems;
+    }
+</script>
+
 <script>
     let no = 1;
 
@@ -226,15 +231,15 @@
                 data.forEach((item, index) => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${index + 1}</td>
+                        <td width="5%">${index + 1}</td>
                         <td class="hidden-column"><span class="label label-success">${item.id_produk}</span></td>
-                        <td>${item.kode_produk}</td>
+                        <td><span class="badge badge-primary">${item.kode_produk}</span></td>
                         <td>${item.nama_produk}</td>
-                        <td>${item.harga_jual}</td>
-                        <td>${item.stok > 0 ? 
-                            `<button type="button" class="btn btn-primary btn-xs btn-flat" 
+                        <td >${item.harga_jual}</td>
+                        <td width="10%">${item.stok > 0 ? 
+                            `<button type="button" class="btn btn-primary btn-sm" 
                                 onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}', '${item.stok}')">
-                                <i class="fa fa-check-circle"></i> Pilih
+                                Pilih
                             </button>` : 
                             '<span class="text-danger">Stok habis</span>'}
                         </td>`;

@@ -1,27 +1,27 @@
 @extends('layouts.master')
 
-@section('title', 'User')
+@section('title', 'Pengguna')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">User</li>
+    <li class="breadcrumb-item active">Pengguna</li>
 @endsection
 
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <button onclick="addForm('{{ route('user.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
+                    <button onclick="addForm('{{ route('user.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Pengguna</button>
                 </div>
                 <div class="card-body">
-                    <table class="table table-borderless table-striped">
+                    <table class="table table-sm table-bordered table-striped">
                         <thead>
-                            <th width="5%">#</th>
+                            <th width="5%">No</th>
                             <th>Nama</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th width="15%">Aksi</th>
+                            <th width="20%">Email</th>
+                            <th width="20%">Role</th>
+                            <th width="10%">Aksi</th>
                         </thead>
                     </table>
                 </div>
@@ -60,7 +60,7 @@
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                 .done((response) => {
                         Swal.fire({
-                            title: "Berhasil menyimpan data",
+                            title: "Berhasil menyimpan data!",
                             icon: "success",
                             showConfirmButton: false,
                             timer: 1500
@@ -71,9 +71,9 @@
                     })
                     .fail((errors) => {
                         Swal.fire({
-                        title: "Gagal menyimpan data",
-                        icon: "error",
-                        confirmButtonColor: '#007bff',
+                            title: "Gagal menyimpan data!",
+                            icon: "error",
+                            confirmButtonColor: '#007bff',
                         });
                     });
             }
@@ -82,7 +82,7 @@
 
     function addForm(url) {
         $('#modal-form').modal('show');
-        $('#modal-form .modal-title').text('Tambah User');
+        $('#modal-form .modal-title').text('Tambah Pengguna');
 
         $('#modal-form form')[0].reset();
         $('#modal-form form').attr('action', url);
@@ -110,10 +110,7 @@
                 $('#modal-form [name=role]').val(response.role);
             })
             .fail((errors) => {
-                Swal.fire({
-                    title: "Gagal menampilkan data",
-                    icon: "error",
-                });
+                alert('Gagal menampilkan data!');
                 return;
             });
     }
@@ -137,10 +134,7 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
-                    });
+                    alert('Gagal menghapus data!');
                     return;
                 });
             }

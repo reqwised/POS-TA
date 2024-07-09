@@ -23,7 +23,7 @@ class UserController extends Controller
             ->addColumn('aksi', function ($user) {
                 return '
                 <div>
-                    <button type="button" onclick="editForm(`'. route('user.update', $user->id) .'`)" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                    <button type="button" onclick="editForm(`'. route('user.update', $user->id) .'`)" class="btn btn-sm btn-warning text-light"><i class="fas fa-edit"></i></button>
                     <button type="button" onclick="deleteData(`'. route('user.destroy', $user->id) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';

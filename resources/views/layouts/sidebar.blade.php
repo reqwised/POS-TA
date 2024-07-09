@@ -1,4 +1,3 @@
-<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ url('/') }}" class="brand-link bg-primary">
@@ -9,18 +8,6 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-            <img src="{{ url(auth()->user()->foto ?? '') }}" alt="User Image" class="img-circle elevation-2">
-            </div>
-            <div class="info">
-                <a href="{{ route('user.profil') }}" class="d-block" data-toggle="tooltip" data-placement="top" title="Edit Profil">
-                    {{ auth()->user()->name }}
-                </a>
-            </div>
-        </div>
-
-        <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
@@ -94,21 +81,11 @@
                         </p>
                     </a>
                 </li>
-
-                {{-- <li class="nav-item">
-                    <a href="{{ route('transaksi.baru') }}" class="nav-link {{(Route::is('transaksi.index')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-cash-register"></i>
-                        <p>
-                            Transaksi
-                        </p>
-                    </a>
-                </li> --}}
-
                 <li class="nav-item">
                     <a href="{{ route('jual.index') }}" class="nav-link {{(Route::is('jual.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-cash-register"></i>
                         <p>
-                            Transaksi LOL
+                            Transaksi
                         </p>
                     </a>
                 </li>
@@ -128,15 +105,7 @@
                     <a href="{{ route('user.index') }}" class="nav-link {{(Route::is('user.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
-                            User
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('user.profil') }}" class="nav-link {{(Route::is('user.profil')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-user-edit"></i>
-                        <p>
-                            Profile
+                            Pengguna
                         </p>
                     </a>
                 </li>
@@ -152,18 +121,18 @@
                 @elseif (auth()->user()->role == 'Kasir')
 
                 <li class="nav-item">
-                    <a href="{{ route('transaksi.baru') }}" class="nav-link {{(Route::is('transaksi.baru')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-cart-plus"></i>
+                    <a href="{{ route('penjualan.index') }}" class="nav-link {{(Route::is('penjualan.index')) ? 'nav-link active' : '' }}">
+                        <i class="nav-icon fas fa-upload"></i>
                         <p>
-                            Transaksi
+                            Penjualan
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('user.profil') }}" class="nav-link {{(Route::is('user.profil')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-user-edit"></i>
+                    <a href="{{ route('jual.index') }}" class="nav-link {{(Route::is('jual.index')) ? 'nav-link active' : '' }}">
+                        <i class="nav-icon fas fa-cash-register"></i>
                         <p>
-                            Profile
+                            Transaksi
                         </p>
                     </a>
                 </li>
@@ -202,17 +171,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('user.profil') }}" class="nav-link {{(Route::is('user.profil')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-user-edit"></i>
-                        <p>
-                            Profile
-                        </p>
-                    </a>
-                </li>
-
                 @endif
-
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

@@ -6,35 +6,33 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"></h4>
+                    <h5 class="modal-title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body mx-4 mt-3">
-                    <div class="form-group row">
-                        <label for="nama" class="col-sm-3 col-form-label">Nama <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="text" name="nama" id="nama" class="form-control" required autofocus>
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
+
+                <div class="modal-body mx-2">
+                    <div class="form-group">
+                        <label for="nama">Nama <span class="text-danger">*</span></label>
+                        <input type="text" name="nama" id="nama" class="form-control" placeholder="Nama Member .. (Wajib)" data-error="Nama member tidak boleh kosong" required>
+                        <span class="help-block with-errors text-danger"></span>
                     </div>
-                    <div class="form-group row">
-                        <label for="telepon" class="col-sm-3 col-form-label">Telepon <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="text" name="telepon" id="telepon" class="form-control" required>
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="telepon">Telepon <span class="text-danger">*</span></label>
+                        <input type="text" name="telepon" id="telepon" class="form-control" placeholder="Nomor Telepon .. (Wajib)"  data-error="Nomor telepon tidak boleh kosong" required>
+                        <span class="help-block with-errors text-danger"></span>
                     </div>
-                    <div class="form-group row">
-                        <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
-                        <div class="col-lg-9">
-                            <textarea name="alamat" id="alamat" rows="3" class="form-control"></textarea>
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <textarea name="alamat" id="alamat" rows="3" class="form-control" placeholder="Masukkan Alamat Member .. (Opsional)"></textarea>
+                        <span class="help-block with-errors text-danger"></span>
                     </div>
                 </div>
+                
                 <div class="modal-footer">
-                    <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
-                    <!-- <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="fas fa-chevron-circle-left"></i> Batal</button> -->
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-sm btn-primary">Simpan</button>
                 </div>
             </div>
         </form>

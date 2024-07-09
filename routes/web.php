@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
         Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
         Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
+        Route::get('/penjualan/{id}/nota', [PenjualanController::class, 'notaSelect'])->name('penjualan.nota_Select');
     });
 
     Route::group(['middleware' => 'role:Pemilik Toko,Pemantau Stok'], function () {

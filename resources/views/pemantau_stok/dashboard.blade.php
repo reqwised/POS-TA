@@ -12,8 +12,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body text-center">
-                    <h1>Selamat Datang</h1>
-                    <h2>Anda login sebagai <span class="badge badge-primary">PEMANTAU STOK</span></h2>
+                    <h2>Selamat Datang!</h2>
+                    <h4>Anda login sebagai <span class="badge badge-primary">Pengelola Stok</span></h4>
                     <br><br><br>
                 </div>
             </div>

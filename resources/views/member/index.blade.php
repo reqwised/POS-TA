@@ -10,25 +10,23 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Tambah</button>
-                    <!-- <button onclick="cetakMember('{{ route('member.cetak_member') }}')" class="btn btn-info btn-xs btn-flat"><i class="fa fa-id-card"></i> Cetak Member</button> -->
+                    <button onclick="addForm('{{ route('member.store') }}')" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Member</button>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" class="form-member">
                         @csrf
-                        <table class="table table-borderless table-striped">
+                        <table class="table table-sm table-bordered table-striped">
                             <thead>
-                                <!-- <th width="5%">
-                                    <input type="checkbox" name="select_all" id="select_all">
-                                </th> -->
-                                <th width="5%">#</th>
-                                <th>Kode</th>
+                                <th width="5%">No</th>
+                                <th width="10%">Kode</th>
                                 <th>Nama</th>
-                                <th>Telepon</th>
-                                <th>Alamat</th>
-                                <th width="15%">Aksi</th>
+                                <th width="15%">Telepon</th>
+                                <th width="40%">Alamat</th>
+                                @if (auth()->user()->role == 'Pemilik Toko')
+                                <th width="10%">Aksi</th>
+                                @endif
                             </thead>
                         </table>
                     </form>
@@ -60,7 +58,9 @@
                 {data: 'nama'},
                 {data: 'telepon'},
                 {data: 'alamat'},
+                @if (auth()->user()->role == 'Pemilik Toko')
                 {data: 'aksi', searchable: false, sortable: false},
+                @endif
             ]
         });
 
@@ -69,7 +69,7 @@
                 $.post($('#modal-form form').attr('action'), $('#modal-form form').serialize())
                 .done((response) => {
                         Swal.fire({
-                            title: "Berhasil menyimpan data",
+                            title: "Berhasil menyimpan data!",
                             icon: "success",
                             showConfirmButton: false,
                             timer: 1500
@@ -80,8 +80,8 @@
                     })
                     .fail((errors) => {
                         Swal.fire({
-                        title: "Gagal menyimpan data",
-                        icon: "error",
+                        title: "Gagal menyimpan data!",
+                        icon: "warning",
                         confirmButtonColor: '#007bff',
                         });
                     });
@@ -119,10 +119,7 @@
                 $('#modal-form [name=alamat]').val(response.alamat);
             })
             .fail((errors) => {
-                Swal.fire({
-                    title: "Gagal menampilkan data",
-                    icon: "error",
-                });
+                alert('Gagal menampilkan data!');
                 return;
             });
     }
@@ -146,26 +143,11 @@
                     table.ajax.reload();
                 })
                 .fail((errors) => {
-                    Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
-                    });
+                    alert('Gagal menghapus data!');
                     return;
                 });
             }
         });
-    }
-
-    function cetakMember(url) {
-        if ($('input:checked').length < 1) {
-            alert('Pilih data yang akan dicetak');
-            return;
-        } else {
-            $('.form-member')
-                .attr('target', '_blank')
-                .attr('action', url)
-                .submit();
-        }
     }
 </script>
 @endpush

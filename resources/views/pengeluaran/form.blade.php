@@ -6,28 +6,27 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"></h4>
+                    <h5 class="modal-title"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class="modal-body mx-4 mt-3">
-                    <div class="form-group row">
-                        <label for="deskripsi" class="col-sm-3 col-form-label">Deskripsi <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="text" name="deskripsi" id="deskripsi" class="form-control" required autofocus>
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
+
+                <div class="modal-body mx-2">
+                    <div class="form-group">
+                        <label for="deskripsi">Deskripsi Pengeluaran <span class="text-danger">*</span></label>
+                        <input type="text" name="deskripsi" id="deskripsi" class="form-control" placeholder="Masukkan Deskripsi Pengeluaran .. (Wajib)" data-error="Deskripsi pengeluaran tidak boleh kosong" required>
+                        <span class="help-block with-errors text-danger"></span>
                     </div>
-                    <div class="form-group row">
-                        <label for="nominal" class="col-sm-3 col-form-label">Nominal <span class="text-danger">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="number" name="nominal" id="nominal" class="form-control" required>
-                            <span class="help-block with-errors text-danger"></span>
-                        </div>
+
+                    <div class="form-group">
+                        <label for="nominal">Nominal <span class="text-danger">*</span></label>
+                        <input type="number" name="nominal" id="nominal" class="form-control" placeholder="Contoh: 250000 .. (Wajib)"  data-error="Nominal pengeluaran tidak boleh kosong" required>
+                        <span class="help-block with-errors text-danger"></span>
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
-                    <!-- <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="fas fa-chevron-circle-left"></i> Batal</button> -->
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-sm btn-primary">Simpan</button>
                 </div>
             </div>
         </form>

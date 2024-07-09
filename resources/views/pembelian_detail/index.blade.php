@@ -25,14 +25,14 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header with-border">
-                    <table>
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <table class="table table-sm table-borderless mb-0">
                         <tr>
-                            <td>Supplier</td>
+                            <td width="10%">Supplier</td>
                             <td>: {{ $supplier->nama }}</td>
                         </tr>
                         <tr>
@@ -45,33 +45,30 @@
                         </tr>
                     </table>
                 </div>
-                <div class="card-body m-4">
+                <div class="card-body mx-2">
                     <form class="form-produk">
                         @csrf
                         <div class="form-group row">
-                            <label for="kode_produk" class="col-sm-2 col-form-label">Pilih Produk</label>
-                            <div class="col-lg-4">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="kode_produk" id="kode_produk">
-                                    <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
-                                    <input type="hidden" name="id_produk" id="id_produk">
-                                    <span class="input-group-btn input-group-append">
-                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                                    </span>
-                                </div>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Cari Produk">
+                                <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
+                                <input type="hidden" name="id_produk" id="id_produk">
+                            </div>
+                            <div class="col-sm-3">
+                                <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Pilih Produk</button>
                             </div>
                         </div>
                     </form>
 
-                    <table class="table table-borderless table-striped table-pembelian">
+                    <table class="table table-sm table-bordered table-striped table-pembelian">
                         <thead>
-                            <th width="5%">#</th>
+                            <th width="5%">No</th>
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>Harga</th>
-                            <th width="12%">Jumlah</th>
+                            <th width="10%">Jumlah</th>
                             <th>Subtotal</th>
-                            <th width="15%">Aksi</th>
+                            <th width="10%">Aksi</th>
                         </thead>
                     </table>
 
@@ -112,7 +109,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary btn-simpan"><i class="fas fa-save"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary btn-simpan">Simpan</button>
                 </div>
             </div>
         </div>
@@ -161,13 +158,21 @@
 
             if (jumlah < 1) {
                 $(this).val(1);
-                alert('Jumlah tidak boleh kurang dari 1');
-                return;
+                Swal.fire({
+                    title: "Perhatian!",
+                    text: "Jumlah tidak boleh kurang dari 1",
+                    icon: "warning",
+                    confirmButtonColor: '#007bff',
+                });
             }
-            if (jumlah > 10000) {
-                $(this).val(10000);
-                alert('Jumlah tidak boleh lebih dari 10000');
-                return;
+            if (jumlah > 1000) {
+                $(this).val(1000);
+                Swal.fire({
+                    title: "Perhatian!",
+                    text: "Jumlah tidak boleh lebih dari 1000",
+                    icon: "warning",
+                    confirmButtonColor: '#007bff',
+                });
             }
 
             $.post(`{{ url('/pembelian_detail') }}/${id}`, {
@@ -181,12 +186,9 @@
                     });
                 })
                 .fail(errors => {
-                    Swal.fire({
-                        title: "Gagal menampilkan data",
-                        icon: "error",
-                    });
+                    alert('Tidak dapat menampilkan data');
                     return;
-                });
+                })
         });
 
         $(document).on('input', '#diskon', function () {
@@ -247,13 +249,10 @@
                 .done((response) => {
                     table.ajax.reload();
                 })
-                .fail((errors) => {
-                    Swal.fire({
-                        title: "Gagal menghapus data",
-                        icon: "error",
-                    });
+                .fail(errors => {
+                    alert('Gagal menghapus data!');
                     return;
-                });
+                })
             }
         });
     }
