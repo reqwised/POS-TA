@@ -323,7 +323,7 @@
                 <td><input type="number" class="form-control" name="diskon_pr" value="0" oninput="diskon_pr(this)"></td>
                 <td><input type="number" class="form-control" name="diskon_rp" value="0" oninput="diskon_rp(this)"></td>
                 <td>${harga}</td>
-                <td><button type="button" class="btn btn-danger btn-sm onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
                 <td>${stok}</td>
             `;
 

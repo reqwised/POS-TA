@@ -213,6 +213,32 @@
             <!-- /.box -->
         </div>
         <!-- /.col -->
+        
+        <!-- TEST TERLARIS -->
+
+        <div class="col-lg-12">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Grafik Pendapatan {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="chart">
+                                <!-- Sales Chart Canvas -->
+                                <canvas id="barChart" style="height: 180px;"></canvas>
+                            </div>
+                            <!-- /.chart-responsive -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- TEST TERLARIS -->
+
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">

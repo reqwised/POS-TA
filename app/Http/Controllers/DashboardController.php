@@ -41,6 +41,44 @@ class DashboardController extends Controller
 
             $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
         }
+        
+        //TEST BARANG TERLARIS
+
+        // Fetch data for top-selling products
+        $tanggal_awal = date('Y-m-01');
+        $tanggal_akhir = date('Y-m-d');
+        $total_terlaris = PenjualanDetail::select('id_produk', DB::raw('CAST(SUM(jumlah) AS UNSIGNED) as total_jumlah'))
+            ->whereDate('created_at', '>=', $tanggal_awal)
+            ->whereDate('created_at', '<=', $tanggal_akhir)
+            ->groupBy('id_produk')
+            ->take(10)
+            ->get();
+
+            $dataNama_produk = [];
+            $dataJumlah_produk = [];    
+
+        // Populate $dataNama_produk and $dataJumlah_produk arrays
+        foreach ($total_terlaris as $penjualan) {
+            $produksi = Produk::find($penjualan->id_produk);
+            if ($produksi) {
+                $cleaned_nama_produk = trim($produksi->nama_produk, '"');
+                $dataNama_produk[] = $cleaned_nama_produk;
+                $dataJumlah_produk[] = $penjualan->total_jumlah;
+            }
+        }
+        // dd($dataNama_produk, $dataJumlah_produk, $data_tanggal, $data_pendapatan);
+        //TEST BARANG TERLARIS
+
+        $tanggal_awal = date('Y-m-01');
+        // Menambahkan data jumlah penjualan
+        $today = date('Y-m-d');
+        $thisMonth = date('Y-m');
+        $thisYear = date('Y');
+
+        $penjualanHariIni = Penjualan::whereDate('created_at', $today)->sum('bayar');
+        $penjualanBulanIni = Penjualan::where('created_at', 'LIKE', "$thisMonth%")->sum('bayar');
+        $penjualanTahunIni = Penjualan::where('created_at', 'LIKE', "$thisYear%")->sum('bayar');
+        $totalPenjualan = Penjualan::sum('bayar');
 
         $tanggal_awal = date('Y-m-01');
         $tanggal_akhir = date('Y-m-d');
