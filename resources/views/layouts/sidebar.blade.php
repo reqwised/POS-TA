@@ -100,6 +100,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('terlaris.index') }}" class="nav-link {{(Route::is('terlaris.index')) ? 'nav-link active' : '' }}">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>
+                            Laporan Barang Terlaris
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-header">SYSTEM</li>
                 <li class="nav-item">
                     <a href="{{ route('user.index') }}" class="nav-link {{(Route::is('user.index')) ? 'nav-link active' : '' }}">

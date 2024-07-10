@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     SupplierController,
     UserController,
     JualController,
+    TerlarisController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/data/{awal}/{akhir}', [LaporanController::class, 'data'])->name('laporan.data');
         Route::get('/laporan/pdf/{awal}/{akhir}', [LaporanController::class, 'exportPDF'])->name('laporan.export_pdf');
+
+        Route::get('/terlaris', [TerlarisController::class, 'index'])->name('terlaris.index');
+        Route::get('/terlaris/data/{awal}/{akhir}', [TerlarisController::class, 'data'])->name('terlaris.data');
 
         Route::get('/user/data', [UserController::class, 'data'])->name('user.data');
         Route::resource('/user', UserController::class);
@@ -106,6 +110,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'role:Pemilik Toko,Kasir,Pemantau Stok'], function () {
         Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
         Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
+        Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
+        Route::post('/produk/delete-selected', [ProdukController::class, 'deleteSelected'])->name('produk.delete_selected');
+        Route::post('/produk/cetak-barcode', [ProdukController::class, 'cetakBarcode'])->name('produk.cetak_barcode');
+        Route::resource('/produk', ProdukController::class);
     });
 
     Route::get('/jual', [JualController::class, 'index'])->name('jual.index');
