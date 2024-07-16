@@ -104,7 +104,7 @@
                     <a href="{{ route('terlaris.index') }}" class="nav-link {{(Route::is('terlaris.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>
-                            Laporan Barang Terlaris
+                            Laporan Barang
                         </p>
                     </a>
                 </li>

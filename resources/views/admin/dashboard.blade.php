@@ -60,12 +60,12 @@
         </div>        
     </div>
 
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>{{$labaHariIni }}</h3>
-                    <p>Laba Hari Ini</p>
+                    <h3>{{ $pengeluaranHariIni }}</h3>
+                    <p>Pengeluaran Hari Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-bar"></i>
@@ -75,8 +75,8 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{ $labaBulanIni }}</h3>
-                    <p>Laba Bulan Ini</p>
+                    <h3>{{ $pengeluaranBulanIni }}</h3>
+                    <p>Pengeluaran Bulan Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-bar"></i>
@@ -86,8 +86,8 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>{{ $labaTahunIni }}</h3>
-                    <p>Laba Tahun Ini</p>
+                    <h3>{{ $pengeluaranTahunIni }}</h3>
+                    <p>Pengeluaran Tahun Ini</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-bar"></i>
@@ -97,15 +97,15 @@
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-dark">
                 <div class="inner">
-                    <h3>{{ $totalLaba }}</h3>
-                    <p>Total Seluruh Laba</p>
+                    <h3>{{ $pengeluaranTotal }}</h3>
+                    <p>Total Seluruh Pengeluaran</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-bar"></i>
                 </div>
             </div>
         </div>        
-    </div> -->
+    </div>
 
     <div class="row">
         <div class="col-lg-2 col-xs-6">
@@ -124,7 +124,7 @@
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $jumlahPemantauStok }}</h3>
-                    <p>Total Pemantau Stok</p>
+                    <p>Total Pengelola Stok</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-user"></i>
@@ -189,152 +189,146 @@
         </div>
     </div>
 
-    <!-- Main row -->
     <div class="row">
-        <div class="col-lg-12">
+        <!-- Grafik Pendapatan -->
+        <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Grafik Pendapatan {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
                 </div>
-                <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="chart">
-                                <!-- Sales Chart Canvas -->
-                                <canvas id="salesChart" style="height: 180px;"></canvas>
-                            </div>
-                            <!-- /.chart-responsive -->
-                        </div>
+                    <div class="chart">
+                        <canvas id="salesChart" style="height: 300px;"></canvas>
                     </div>
-                    <!-- /.row -->
                 </div>
             </div>
-            <!-- /.box -->
         </div>
-        <!-- /.col -->
-        
-        <!-- TEST TERLARIS -->
 
-        <div class="col-lg-12">
+        <!-- Grafik Barang Terjual -->
+        <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Grafik Pendapatan {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                    <h3 class="card-title">Grafik Barang Terjual {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
                 </div>
-                <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="chart">
-                                <!-- Sales Chart Canvas -->
-                                <canvas id="barChart" style="height: 180px;"></canvas>
-                            </div>
-                            <!-- /.chart-responsive -->
-                        </div>
+                    <div class="chart">
+                        <canvas id="barChart" style="height: 300px;"></canvas>
                     </div>
-                    <!-- /.row -->
                 </div>
             </div>
-            <!-- /.box -->
-        </div>
-        <!-- TEST TERLARIS -->
-
-        <div class="col-lg-12">
-            <div class="card card-outline card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Grafik Pendapatan {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="chart">
-                                <!-- Sales Chart Canvas -->
-                                <canvas id="barChart" style="height: 180px;"></canvas>
-                            </div>
-                            <!-- /.chart-responsive -->
-                        </div>
-                    </div>
-                    <!-- /.row -->
-                </div>
-            </div>
-            <!-- /.box -->
         </div>
     </div>
-    <!-- /.row (main row) -->
 </div>
-@endsection
 
+@endsection
 @push('scripts')
-<!-- ChartJS -->
+
 <script src="{{ asset('AdminLTE/plugins/chart.js/Chart.min.js') }}"></script>
 <script>
-$(function() {
-    // Get context with jQuery - using jQuery's .get() method.
-    var salesChartCanvas = $('#salesChart').get(0).getContext('2d');
+    $(function() {
+        // Grafik Pendapatan
+        var salesChartCanvas = $('#salesChart').get(0).getContext('2d');
 
-    var salesChartData = {
-        labels: {{ json_encode($data_tanggal) }},
-        datasets: [
-            {
-                label               : 'Pendapatan',
-                backgroundColor     : 'rgba(60,141,188,0.9)',
-                borderColor         : 'rgba(60,141,188,0.8)',
-                pointColor          : '#3b8bba',
-                pointStrokeColor    : 'rgba(60,141,188,1)',
-                pointHighlightFill  : '#fff',
-                pointHighlightStroke: 'rgba(60,141,188,1)',
-                data                : {{ json_encode($data_pendapatan) }}
+        var salesChartData = {
+            labels: {!! json_encode($data_tanggal) !!},
+            datasets: [{
+                label: 'Pendapatan',
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                data: {!! json_encode($data_pendapatan) !!}
+            }]
+        };
+
+        var salesChartOptions = {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Tanggal'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        callback: function(value) { if (Number.isInteger(value)) { return value; } }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Pendapatan'
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                    }
+                }
             }
-        ]
-    };
+        };
 
-    var salesChartOptions = {
-        pointDot : false,
-        responsive : true
-    };
+        new Chart(salesChartCanvas, {
+            type: 'line',
+            data: salesChartData,
+            options: salesChartOptions
+        });
 
-    new Chart(salesChartCanvas, {
-      type: 'line',
-      data: salesChartData,
-      options: salesChartOptions
-    })});
+        // Grafik Barang Terlaris
+        var barChartCanvas = $('#barChart').get(0).getContext('2d');
 
-    var barChartCanvas = $('#barChart').get(0).getContext('2d');
+        var barChartData = {
+            labels: {!! json_encode($dataNama_produk) !!},
+            datasets: [{
+                label: 'Barang Terlaris',
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                data: {!! json_encode($dataJumlah_produk) !!}
+            }]
+        };
 
-    var barChartData = {
-        labels: {!! json_encode ($dataNama_produk) !!},
-        datasets: [
-            {
-            label               : 'Pendapatan',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
-            pointColor          : '#3b8bba',
-            pointStrokeColor    : 'rgba(60,141,188,1)',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : {{ json_encode($dataJumlah_produk) }}
+        var barChartOptions = {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Nama Produk'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        callback: function(value) { if (Number.isInteger(value)) { return value; } }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Jumlah Terjual'
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                    }
+                }
             }
-        ]
-    }
+        };
 
-    var barChartOptions = {
-      responsive              : true,
-      maintainAspectRatio     : false,
-      scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
-        }]
-    },
-      datasetFill             : false
-    }
-    
-    new Chart(barChartCanvas, {
-      type: 'bar',
-      data: barChartData,
-      options: barChartOptions
-    })
+        new Chart(barChartCanvas, {
+            type: 'bar',
+            data: barChartData,
+            options: barChartOptions
+        });
+    });
 </script>
 @endpush

@@ -8,6 +8,7 @@ use App\Models\Produk;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use PDF;
+use Carbon\Carbon;
 
 class PenjualanController extends Controller
 {
@@ -18,7 +19,14 @@ class PenjualanController extends Controller
 
     public function data()
     {
-        $penjualan = Penjualan::with('member')->orderBy('id_penjualan', 'desc')->get();
+        $user = auth()->user();
+        $penjualanQuery = Penjualan::with('member')->orderBy('id_penjualan', 'desc');
+
+        if ($user->role == 'Kasir') {
+            $penjualanQuery->whereDate('created_at', Carbon::today());
+        }
+
+        $penjualan = $penjualanQuery->get();
 
         return datatables()
             ->of($penjualan)
@@ -27,17 +35,17 @@ class PenjualanController extends Controller
                 return format_uang($penjualan->total_item);
             })
             ->addColumn('total_harga', function ($penjualan) {
-                return 'Rp. '. format_uang($penjualan->total_harga);
+                return 'Rp. ' . format_uang($penjualan->total_harga);
             })
             ->addColumn('bayar', function ($penjualan) {
-                return 'Rp. '. format_uang($penjualan->bayar);
+                return 'Rp. ' . format_uang($penjualan->bayar);
             })
             ->addColumn('tanggal', function ($penjualan) {
                 return tanggal_indonesia($penjualan->created_at, false);
             })
             ->addColumn('nama', function ($penjualan) {
                 $member = $penjualan->member->nama ?? '';
-                return '<span class="badge badge-primary">'. $member .'</spa>';
+                return '<span class="badge badge-primary">' . $member . '</spa>';
             })
             ->editColumn('diskon', function ($penjualan) {
                 return $penjualan->diskon . '%';

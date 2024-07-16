@@ -1,5 +1,5 @@
 <div class="modal fade" id="daftarProdukModal" tabindex="-1" role="dialog" aria-labelledby="daftarProdukModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="daftarProdukModalLabel">Daftar Produk</h5>
@@ -14,10 +14,10 @@
                     <thead>
                         <tr>
                             <th width="5%">No</th>
-                            <th>Kode</th>
+                            <th width="15%">Kode</th>
                             <th>Nama</th>
                             <th>Harga Beli</th>
-                            <th>Aksi</th>
+                            <th width="15%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,11 +26,10 @@
                     </tbody>
                 </table>
                 <div id="pagination" class="text-center">
-                    <!-- Tombol paginasi akan dimuat di sini melalui JavaScript -->
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

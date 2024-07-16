@@ -20,6 +20,9 @@ class UserController extends Controller
         return datatables()
             ->of($user)
             ->addIndexColumn()
+            ->addColumn('role', function ($user) {
+                return '<span class="text-uppercase">'. $user->role .'</span>';
+            })
             ->addColumn('aksi', function ($user) {
                 return '
                 <div>
@@ -28,7 +31,7 @@ class UserController extends Controller
                 </div>
                 ';
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'role'])
             ->make(true);
     }
 

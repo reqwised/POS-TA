@@ -19,7 +19,7 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Nama</th>
-                            <th width="20%">Email</th>
+                            <th width="25%">Email</th>
                             <th width="20%">Role</th>
                             <th width="10%">Aksi</th>
                         </thead>

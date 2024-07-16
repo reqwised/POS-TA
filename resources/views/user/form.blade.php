@@ -23,9 +23,9 @@
 
                     <div class="form-group">
                         <label for="role">Role <span class="text-danger">*</span></label>
-                        <select name="role" id="role" class="custom-select" data-error="Role user tidak boleh kosong" required>
+                        <select name="role" id="role" class="custom-select text-uppercase" data-error="Role pengguna tidak boleh kosong" required>
                             <option value="">- Pilih Role -</option>
-                            <option value="Pemantau Stok">Pemantau Stok</option>
+                            <option value="Pengelola Stok">Pengelola Stok</option>
                             <option value="Kasir">Kasir</option>
                         </select>
                         <span class="help-block with-errors text-danger"></span>
@@ -38,7 +38,7 @@
 
                     <div class="form-group">
                         <label for="password_confirmation">Konfirmasi Password <span class="text-danger">*</span></label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Password Minimal 6 Karakter" data-error="Konfirmasi password anda dengan benar" required data-match="#password"><span class="help-block with-errors text-danger"></span>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Password Minimal 6 Karakter" data-error="Konfirmasi password dengan benar" required data-match="#password"><span class="help-block with-errors text-danger"></span>
                     </div>
                 </div>
                 

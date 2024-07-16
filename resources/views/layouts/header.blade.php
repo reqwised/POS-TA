@@ -11,14 +11,14 @@
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="{{ url(auth()->user()->foto ?? '/img/user.jpg') }}" class="user-image img-profil rounded-circle" alt="User Image">
-                <span>{{ auth()->user()->name }} - {{ auth()->user()->role }}</span>
+                <div class="d-inline">{{ auth()->user()->name }} - <span class="text-uppercase">{{ auth()->user()->role }}</span></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-item user-header text-center">
                     <img src="{{ url(auth()->user()->foto ?? '/img/user.jpg') }}" class="img-circle img-profil mt-2" alt="User Image" style="width: 80px; height: 80px;">
                     <h5 class="mt-2">{{ auth()->user()->name }}</h5>
-                    <h6 class="mt-2">{{ auth()->user()->role }}</h6>
-                    <p class="mb-0 text-sm">{{ auth()->user()->email }}</p>
+                    <p class="mb-0 text-uppercase">{{ auth()->user()->role }}</p>
+                    <p class="mb-0 font-italic">{{ auth()->user()->email }}</p>
                 </div>
                 <div class="dropdown-footer">
                     <a href="{{ route('user.profil') }}" class="btn btn-primary"><i class="nav-icon fas fa-user-edit"></i> Profil</a>

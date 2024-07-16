@@ -42,8 +42,6 @@ class DashboardController extends Controller
             $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
         }
         
-        //TEST BARANG TERLARIS
-
         // Fetch data for top-selling products
         $tanggal_awal = date('Y-m-01');
         $tanggal_akhir = date('Y-m-d');
@@ -66,8 +64,6 @@ class DashboardController extends Controller
                 $dataJumlah_produk[] = $penjualan->total_jumlah;
             }
         }
-        // dd($dataNama_produk, $dataJumlah_produk, $data_tanggal, $data_pendapatan);
-        //TEST BARANG TERLARIS
 
         $tanggal_awal = date('Y-m-01');
         // Menambahkan data jumlah penjualan
@@ -108,45 +104,46 @@ class DashboardController extends Controller
         $thisMonth = date('Y-m');
         $thisYear = date('Y');
 
+        // penjualan
         $penjualanHariIni = Penjualan::whereDate('created_at', $today)->sum('bayar');
         $penjualanBulanIni = Penjualan::where('created_at', 'LIKE', "$thisMonth%")->sum('bayar');
         $penjualanTahunIni = Penjualan::where('created_at', 'LIKE', "$thisYear%")->sum('bayar');
         $totalPenjualan = Penjualan::sum('bayar');
 
-        // Menghitung laba
+        // pembelian + pengeluaran
         $totalPembelianHariIni = Pembelian::whereDate('created_at', $today)->sum('bayar');
-        $totalPengeluaranHariIni = Pengeluaran::whereDate('created_at', $today)->sum('nominal');
-        $labaHariIni = $penjualanHariIni - $totalPembelianHariIni - $totalPengeluaranHariIni;
-
         $totalPembelianBulanIni = Pembelian::where('created_at', 'LIKE', "$thisMonth%")->sum('bayar');
-        $totalPengeluaranBulanIni = Pengeluaran::where('created_at', 'LIKE', "$thisMonth%")->sum('nominal');
-        $labaBulanIni = $penjualanBulanIni - $totalPembelianBulanIni - $totalPengeluaranBulanIni;
-
         $totalPembelianTahunIni = Pembelian::where('created_at', 'LIKE', "$thisYear%")->sum('bayar');
-        $totalPengeluaranTahunIni = Pengeluaran::where('created_at', 'LIKE', "$thisYear%")->sum('nominal');
-        $labaTahunIni = $penjualanTahunIni - $totalPembelianTahunIni - $totalPengeluaranTahunIni;
-
         $totalPembelian = Pembelian::sum('bayar');
-        $totalPengeluaran = Pengeluaran::sum('nominal');
-        $totalLaba = $totalPenjualan - $totalPembelian - $totalPengeluaran;
 
-        // Format nilai penjualan dan laba
+        $totalPengeluaranHariIni = Pengeluaran::whereDate('created_at', $today)->sum('nominal');
+        $totalPengeluaranBulanIni = Pengeluaran::where('created_at', 'LIKE', "$thisMonth%")->sum('nominal');
+        $totalPengeluaranTahunIni = Pengeluaran::where('created_at', 'LIKE', "$thisYear%")->sum('nominal');
+        $totalPengeluaran = Pengeluaran::sum('nominal');
+
+        // Gabungan Pembelian dan Pengeluaran (Pengeluaran Total)
+        $pengeluaranHariIni = $totalPembelianHariIni + $totalPengeluaranHariIni;
+        $pengeluaranBulanIni = $totalPembelianBulanIni + $totalPengeluaranBulanIni;
+        $pengeluaranTahunIni = $totalPembelianTahunIni + $totalPengeluaranTahunIni;
+        $pengeluaranTotal = $totalPembelian + $totalPengeluaran;
+
+        // Format nilai penjualan dan pengeluaran
         $penjualanHariIni = 'Rp. ' . format_uang($penjualanHariIni);
         $penjualanBulanIni = 'Rp. ' . format_uang($penjualanBulanIni);
         $penjualanTahunIni = 'Rp. ' . format_uang($penjualanTahunIni);
         $totalPenjualan = 'Rp. ' . format_uang($totalPenjualan);
 
-        $labaHariIni = 'Rp. ' . format_uang($labaHariIni);
-        $labaBulanIni = 'Rp. ' . format_uang($labaBulanIni);
-        $labaTahunIni = 'Rp. ' . format_uang($labaTahunIni);
-        $totalLaba = 'Rp. ' . format_uang($totalLaba);
+        $pengeluaranHariIni = 'Rp. ' . format_uang($pengeluaranHariIni);
+        $pengeluaranBulanIni = 'Rp. ' . format_uang($pengeluaranBulanIni);
+        $pengeluaranTahunIni = 'Rp. ' . format_uang($pengeluaranTahunIni);
+        $pengeluaranTotal = 'Rp. ' . format_uang($pengeluaranTotal);
 
-        // Menghitung jumlah user dengan role Kasir dan Pemantau Stok
+        // Menghitung jumlah user
         $jumlahKasir = User::where('role', 'Kasir')->count();
-        $jumlahPemantauStok = User::where('role', 'Pemantau Stok')->count();
+        $jumlahPemantauStok = User::where('role', 'Pengelola Stok')->count();
 
         if (auth()->user()->role == 'Pemilik Toko') {
-            return view('admin.dashboard', compact('kategori', 'produk', 'supplier', 'member', 'tanggal_awal', 'tanggal_akhir', 'data_tanggal', 'data_pendapatan', 'penjualanHariIni', 'penjualanBulanIni', 'penjualanTahunIni', 'totalPenjualan', 'labaHariIni', 'labaBulanIni', 'labaTahunIni', 'totalLaba', 'jumlahKasir', 'jumlahPemantauStok', 'dataNama_produk', 'dataJumlah_produk'));
+            return view('admin.dashboard', compact('kategori', 'produk', 'supplier', 'member', 'tanggal_awal', 'tanggal_akhir', 'data_tanggal', 'data_pendapatan', 'penjualanHariIni', 'penjualanBulanIni', 'penjualanTahunIni', 'totalPenjualan', 'pengeluaranHariIni', 'pengeluaranBulanIni', 'pengeluaranTahunIni', 'pengeluaranTotal', 'jumlahKasir', 'jumlahPemantauStok', 'dataNama_produk', 'dataJumlah_produk'));
         } else if (auth()->user()->role == 'Kasir') {
             return view('kasir.dashboard');
         } else {

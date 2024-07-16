@@ -49,13 +49,8 @@
                     <form class="form-produk">
                         @csrf
                         <div class="form-group row">
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Cari Produk">
-                                <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
-                                <input type="hidden" name="id_produk" id="id_produk">
-                            </div>
-                            <div class="col-sm-3">
-                                <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Pilih Produk</button>
+                            <div class="col-sm-6">
+                                <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Cari Produk</button>
                             </div>
                         </div>
                     </form>
@@ -90,7 +85,7 @@
                                 <div class="form-group row">
                                     <label for="diskon" class="col-sm-3 col-form-label">Diskon</label>
                                     <div class="col-lg-9">
-                                        <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}">
+                                        <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}" min="0" max="100">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -152,28 +147,31 @@
         });
         table2 = $('.table-produk').DataTable();
 
+        $(document).on('focus', '.quantity', function () {
+            $(this).data('previousValue', $(this).val());
+        });
+
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
             let jumlah = parseInt($(this).val());
+            let previousValue = $(this).data('previousValue');
 
-            if (jumlah < 1) {
-                $(this).val(1);
+            if (jumlah < 1 || jumlah > 1000) {
+                $(this).val(previousValue);
+
+                let message = jumlah < 1 ? "Jumlah tidak boleh kurang dari 1" : "Jumlah tidak boleh lebih dari 1000";
+
                 Swal.fire({
                     title: "Perhatian!",
-                    text: "Jumlah tidak boleh kurang dari 1",
+                    text: message,
                     icon: "warning",
                     confirmButtonColor: '#007bff',
                 });
+
+                return;
             }
-            if (jumlah > 1000) {
-                $(this).val(1000);
-                Swal.fire({
-                    title: "Perhatian!",
-                    text: "Jumlah tidak boleh lebih dari 1000",
-                    icon: "warning",
-                    confirmButtonColor: '#007bff',
-                });
-            }
+
+            $(this).data('previousValue', jumlah);
 
             $.post(`{{ url('/pembelian_detail') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
@@ -188,7 +186,7 @@
                 .fail(errors => {
                     alert('Tidak dapat menampilkan data');
                     return;
-                })
+                });
         });
 
         $(document).on('input', '#diskon', function () {
@@ -274,5 +272,19 @@
                 return;
             })
     }
+
+    // Event listener untuk memastikan nilai tidak kurang dari 0
+    document.getElementById('diskon').addEventListener('input', function() {
+        if (parseInt(this.value) < 0 || this.value === '') {
+            this.value = 0; // Jika nilai kurang dari 0 atau kosong, set ke 0
+        }
+    });
+
+    // Event listener untuk memastikan nilai tidak lebih dari 100
+    document.getElementById('diskon').addEventListener('input', function() {
+        if (parseInt(this.value) > 100) {
+            this.value = 100; // Jika nilai lebih dari 100, set ke 100
+        }
+    });
 </script>
 @endpush

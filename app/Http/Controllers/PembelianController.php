@@ -7,6 +7,7 @@ use App\Models\Pembelian;
 use App\Models\PembelianDetail;
 use App\Models\Produk;
 use App\Models\Supplier;
+use Carbon\Carbon;
 
 class PembelianController extends Controller
 {
@@ -19,7 +20,14 @@ class PembelianController extends Controller
 
     public function data()
     {
-        $pembelian = Pembelian::orderBy('id_pembelian', 'desc')->get();
+        $user = auth()->user();
+        $pembelianQuery = Pembelian::orderBy('id_pembelian', 'desc');
+
+        if ($user->role == 'Pengelola Stok') {
+            $pembelianQuery->whereDate('created_at', Carbon::today());
+        }
+
+        $pembelian = $pembelianQuery->get();
 
         return datatables()
             ->of($pembelian)

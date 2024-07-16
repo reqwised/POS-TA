@@ -74,7 +74,7 @@
                                 <button onclick="deleteData('${row.delete_url}')" class="btn btn-sm btn-danger">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>`;
-                        @elseif (auth()->user()->role == 'Pemantau Stok')
+                        @elseif (auth()->user()->role == 'Pengelola Stok')
                             return `
                                 <button onclick="showDetail('${row.detail_url}')" class="btn btn-sm btn-warning text-light">
                                     <i class="fas fa-info-circle"></i>

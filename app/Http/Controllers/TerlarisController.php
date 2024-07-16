@@ -35,32 +35,16 @@ class TerlarisController extends Controller
                             ->get();
     
         foreach ($total_penjualan as $penjualan) {
-            //The code $produk = Produk::find($penjualan->id_produk); 
-            //retrieves a record from the produk table using Laravel's Eloquent ORM, 
-            //based on the id_produk value fetched from the $penjualan object.
-
-            //find($penjualan->id_produk): Uses the find method provided by Eloquent to 
-            //retrieve a record from the produk table where the primary key 
-            //(id_produk) matches the value stored in $penjualan->id_produk
             $produk = Produk::find($penjualan->id_produk);
 
             $row = array();
             $row['DT_RowIndex'] = $no++;
-            $row['id_produk'] = $penjualan->id_produk;
             $row['nama_produk'] = $produk->nama_produk;
-            $row['jumlah'] = $penjualan->total_jumlah;
-            $row['subtotal'] = $penjualan->total_subtotal;
+            $row['jumlah'] = format_uang($penjualan->total_jumlah);
+            $row['subtotal'] = 'Rp. ' . format_uang($penjualan->total_subtotal);
     
             $data[] = $row;
         }
-        // Add an empty row if needed (optional)
-        $data[] = [
-            'DT_RowIndex' => '',
-            'id_produk' => '',
-            'nama_produk' => '',
-            'jumlah' => '',
-            'subtotal' => '',
-        ];
 
         return $data;
     }

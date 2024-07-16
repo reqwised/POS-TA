@@ -83,7 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penjualan/{id}/nota', [PenjualanController::class, 'notaSelect'])->name('penjualan.nota_Select');
     });
 
-    Route::group(['middleware' => 'role:Pemilik Toko,Pemantau Stok'], function () {
+    Route::group(['middleware' => 'role:Pemilik Toko,Pengelola Stok'], function () {
         Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
         Route::resource('/kategori', KategoriController::class);
         Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         
     });
  
-    Route::group(['middleware' => 'role:Pemilik Toko,Kasir,Pemantau Stok'], function () {
+    Route::group(['middleware' => 'role:Pemilik Toko,Kasir,Pengelola Stok'], function () {
         Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
         Route::post('/profil', [UserController::class, 'updateProfil'])->name('user.update_profil');
         Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');

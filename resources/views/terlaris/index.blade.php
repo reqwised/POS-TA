@@ -16,7 +16,7 @@
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h5 class="card-title"><b>Laporan Barang dengan Jumlah Penjualan {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}</b></h5>
+                    <h5 class="card-title">Laporan Penjualan Barang {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}</h5>
                     <div class="float-right">
                         <button onclick="updatePeriode()" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Periode Laporan</button>
                     </div>
@@ -25,8 +25,8 @@
                     <table class="table table-sm table-bordered table-striped">
                         <thead>
                             <th width="5%">No</th>
-                            <th>Nama Produk</th>
-                            <th>Total Produk Terjual</th>
+                            <th width="35%">Nama</th>
+                            <th width="20%">Total Produk Terjual</th>
                             <th>Jumlah Subtotal</th>
                         </thead>
                     </table>
@@ -77,28 +77,20 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Find the form element
         var form = document.querySelector('form[data-toggle="validator"]');
 
-        // Add event listener for form submission
         form.addEventListener('submit', function (event) {
-            // Get the value of tanggal_awal and tanggal_akhir
             var tanggalAwal = new Date(document.getElementById('tanggal_awal').value);
             var tanggalAkhir = new Date(document.getElementById('tanggal_akhir').value);
 
-            // Check if tanggal_awal is greater than tanggal_akhir
             if (tanggalAwal > tanggalAkhir) {
-                // Prevent form submission
                 event.preventDefault();
-
-                // Show error message
                 Swal.fire({
-                    title: "Gagal memproses data!",
+                    title: "Perhatian!",
                     text: "Tanggal awal tidak boleh lebih besar dari tanggal akhir.",
-                    icon: "error",
+                    icon: "warning",
                     confirmButtonColor: '#007bff',
                 });
-                return;
             }
         });
     });

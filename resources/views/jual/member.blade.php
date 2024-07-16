@@ -1,6 +1,5 @@
-<!-- Modal: Daftar Member -->
 <div class="modal fade" id="daftarMemberModal" tabindex="-1" role="dialog" aria-labelledby="daftarMemberModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="daftarMemberModalLabel">Daftar Member</h5>
@@ -8,26 +7,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body mx-2">
                 <input type="text" id="search-member-input" class="form-control" placeholder="Cari kode/nama member...">
                 <br>
-                <table class="table">
+                <table class="table table-sm table-bordered table-striped">
                     <thead>
                         <tr>
                             <th width="5%">No</th>
-                            <th>Kode</th>
+                            <th width="15%">Kode</th>
                             <th>Nama</th>
-                            <th><i class="fa fa-cog"></i></th>
+                            <th width="15%">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="member-list">
-                        <!-- Member akan dimuat di sini melalui JavaScript -->
                     </tbody>
                 </table>
                 <div id="paginationmember" class="text-center"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

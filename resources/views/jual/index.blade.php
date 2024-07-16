@@ -9,8 +9,6 @@
     }
     .tampil-bayar {
         font-size: 4.5em;
-        text-align: center;
-        height: 100px;
     }
     @media(max-width: 768px) {
         .tampil-bayar {
@@ -61,7 +59,7 @@
                         </tbody>
                     </table>
                     
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col-lg-4">
                         <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
                             @csrf
@@ -81,7 +79,7 @@
                                 <div class="input-group">
                                     <input type="text" id="kode_member" class="form-control" oninput="fetchMemberByKode()">
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#daftarMemberModal">Cari Member</button>
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#daftarMemberModal"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -93,11 +91,11 @@
                                 <div class="row">
                                     <div class="col">
                                         <label for="diskon">Diskon (%)</label>
-                                        <input type="number" id="disc_pr" class="form-control" value="0" oninput="disco_pr()">
+                                        <input type="number" id="disc_pr" class="form-control" value="0" oninput="disco_pr()" min="0" max="100">
                                     </div>
                                     <div class="col">
                                         <label for="disdiskon">Diskon (Rp)</label>
-                                        <input type="number" id="disc_rp" class="form-control" value="0" oninput="disco_rp()">
+                                        <input type="number" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0">
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +115,7 @@
                     </div>
 
                     <div class="col-lg-8">
-                        <div class="tampil-bayar bg-primary"></div>
+                        <div class="tampil-bayar bg-primary text-center rounded"></div>
                         <div class="tampil-terbilang"></div>
                     </div>
 
@@ -143,13 +141,12 @@
                 Stok tidak mencukupi untuk produk ini.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Tutup</button>
             </div>
             </div>
         </div>
     </div>
 </div>
-  
 
 @includeIf('jual.produk')
 @includeIf('jual.member')
@@ -240,13 +237,13 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1 + (data.from - 1)}</td>
-                        <td class="hidden-column"><span class="label label-success">${item.id_produk}</span></td>
+                        <td class="hidden-column">${item.id_produk}</td>
                         <td><span class="badge badge-primary">${item.kode_produk}</span></td>
                         <td>${item.nama_produk}</td>
-                        <td >${item.harga_jual}</td>
+                        <td>${item.harga_jual}</td>
                         <td width="10%">${item.stok > 0 ? 
                             `<button type="button" class="btn btn-primary btn-sm" 
-                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}', '${item.stok}')">
+                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}', '${item.stok}')"><i class="fa fa-check-circle"></i> 
                                 Pilih
                             </button>` : 
                             '<span class="text-danger">Stok habis</span>'}
@@ -264,7 +261,7 @@
         if (data.prev_page_url) {
             const prevButton = document.createElement('button');
             prevButton.innerText = 'Previous';
-            prevButton.classList.add('btn', 'btn-secondary');
+            prevButton.classList.add('btn', 'btn-primary');
             prevButton.onclick = () => fetchProducts(data.current_page - 1, searchTerm);
             pagination.appendChild(prevButton);
         }
@@ -272,7 +269,7 @@
         if (data.next_page_url) {
             const nextButton = document.createElement('button');
             nextButton.innerText = 'Next';
-            nextButton.classList.add('btn', 'btn-secondary');
+            nextButton.classList.add('btn', 'btn-primary');
             nextButton.onclick = () => fetchProducts(data.current_page + 1, searchTerm);
             pagination.appendChild(nextButton);
         }
@@ -316,7 +313,7 @@
             row.innerHTML = `
                 <td>${no++}</td>
                 <td class="hidden-column">${id_produk}</td>
-                <td>${kode}</td>
+                <td><p class="badge badge-primary m-0">${kode}</p></td>
                 <td>${nama}</td>
                 <td>${harga}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
@@ -488,16 +485,20 @@
     }
 
     function validateJumlah(input, stok) {
-        const jumlah = parseInt(input.value);
-        if (jumlah > stok) {
-            // Tampilkan modal peringatan
+        let jumlah = parseInt(input.value);
+
+        if (jumlah < 1) {
+            input.value = 1;
+            const modalBody = document.querySelector('#warningModal .modal-body');
+            modalBody.innerText = `Jumlah tidak boleh kurang dari satu.`;
+            $('#warningModal').modal('show');
+        } else if (jumlah > stok) {
+            input.value = stok;
             const modalBody = document.querySelector('#warningModal .modal-body');
             modalBody.innerText = `Stok tidak mencukupi untuk produk ini.`;
             $('#warningModal').modal('show');
-            
-            // Setel kembali nilai jumlah ke stok maksimum
-            input.value = stok;
         }
+
         updateSubtotal(input);
     }
 
@@ -560,9 +561,9 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${(page - 1) * 10 + index + 1}</td>
-                        <td>${item.kode_member}</td>
+                        <td><p class="badge badge-primary m-0">${item.kode_member}</p></td>
                         <td>${item.nama}</td>
-                        <td><button type="button" class="btn btn-primary btn-xs btn-flat" 
+                        <td><button type="button" class="btn btn-primary btn-sm" 
                             onclick="pilihMember('${item.id}', '${item.kode_member}', '${item.nama}')">
                             <i class="fa fa-check-circle"></i> Pilih
                         </button></td>`;
@@ -575,7 +576,7 @@
 
                 if (data.prev_page_url) {
                     const prevButton = document.createElement('button');
-                    prevButton.classList.add('btn', 'btn-secondary', 'mr-2');
+                    prevButton.classList.add('btn', 'btn-primary', 'mr-2');
                     prevButton.innerText = 'Previous';
                     prevButton.onclick = () => fetchMembers(search, data.current_page - 1);
                     pagination.appendChild(prevButton);
@@ -583,7 +584,7 @@
 
                 if (data.next_page_url) {
                     const nextButton = document.createElement('button');
-                    nextButton.classList.add('btn', 'btn-secondary', 'ml-2');
+                    nextButton.classList.add('btn', 'btn-primary', 'ml-2');
                     nextButton.innerText = 'Next';
                     nextButton.onclick = () => fetchMembers(search, data.current_page + 1);
                     pagination.appendChild(nextButton);
