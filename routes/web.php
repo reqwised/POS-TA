@@ -45,6 +45,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
         Route::get('/laporan/data/{awal}/{akhir}', [LaporanController::class, 'data'])->name('laporan.data');
         Route::get('/laporan/pdf/{awal}/{akhir}', [LaporanController::class, 'exportPDF'])->name('laporan.export_pdf');
+        Route::get('laporan/labarugi',[LaporanController::class, 'labarugi'])->name('laporan.labarugi');
+        Route::get('/laporan/laba-rugi', [LaporanController::class, 'indexLabaRugi'])->name('laporan.laba_rugi.index');
+        Route::get('/laporan/laba-rugi/data/{awal}/{akhir}', [LaporanController::class, 'dataLR'])->name('laporan.laba_rugi.data');
 
         Route::get('/terlaris', [TerlarisController::class, 'index'])->name('terlaris.index');
         Route::get('/terlaris/data/{awal}/{akhir}', [TerlarisController::class, 'data'])->name('terlaris.data');

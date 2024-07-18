@@ -109,6 +109,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('laporan.labarugi') }}" class="nav-link {{(Route::is('laporan.labarugi')) ? 'nav-link active' : '' }}">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>
+                            Laporan Omset dan Pendapatan
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-header">SYSTEM</li>
                 <li class="nav-item">
                     <a href="{{ route('user.index') }}" class="nav-link {{(Route::is('user.index')) ? 'nav-link active' : '' }}">
