@@ -243,7 +243,7 @@
                         <td>${item.harga_jual}</td>
                         <td width="10%">${item.stok > 0 ? 
                             `<button type="button" class="btn btn-primary btn-sm" 
-                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}', '${item.stok}')"><i class="fa fa-check-circle"></i> 
+                                onclick="pilihProduk('${item.id_produk}', '${item.kode_produk}', '${item.nama_produk}', '${item.harga_jual}', '${item.stok}','${item.diskon}')"><i class="fa fa-check-circle"></i> 
                                 Pilih
                             </button>` : 
                             '<span class="text-danger">Stok habis</span>'}
@@ -283,7 +283,7 @@
     $('#daftarProdukModal').on('show.bs.modal', () => fetchProducts(currentprodPage, searchTerm));
 
 
-    function pilihProduk(id_produk, kode, nama, harga, stok) {
+    function pilihProduk(id_produk, kode, nama, harga, stok, diskon) {
         const tbody = document.getElementById('table-penjualan-body');
         let existingRow = null;
 
@@ -317,7 +317,7 @@
                 <td>${nama}</td>
                 <td>${harga}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
-                <td><input type="number" class="form-control" name="diskon_pr" value="0" oninput="diskon_pr(this)"></td>
+                <td><input type="number" class="form-control" name="diskon_pr" value="${diskon}" oninput="diskon_pr(this)"></td>
                 <td><input type="number" class="form-control" name="diskon_rp" value="0" oninput="diskon_rp(this)"></td>
                 <td>${harga}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
@@ -325,6 +325,8 @@
             `;
 
             tbody.appendChild(row);
+            const diskonPrInput = row.querySelector('input[name="diskon_pr"]');
+            diskon_pr(diskonPrInput);
         }
         calculateTotal();
     }
@@ -340,7 +342,7 @@
             })
             .then(data => {
                 if(data.stok > 0){
-                    pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual, data.stok);
+                    pilihProduk(data.id_produk, data.kode_produk, data.nama_produk, data.harga_jual, data.stok, data.diskon);
                     document.getElementById('kodeProdukInput').value = ''; // Clear input after adding product
                 }
                 else{
@@ -364,13 +366,15 @@
         const row = input.parentNode.parentNode;
         const harga = parseFloat(row.cells[4].innerText);
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
-        // const diskon = parseInt(row.querySelector('input[name="diskon_rp"]').value);
+        const diskon = parseInt(row.querySelector('input[name="diskon_pr"]').value);
         const subtotalCell = row.cells[8];
         const stok = row.cells[10].innerText;
         const kondisi = stok-jumlah+1;
-                
+
+        
         if(kondisi){
-            const subtotal = (harga * jumlah);
+            const subtotal = (harga * jumlah - (jumlah*harga*diskon/100));
+            row.querySelector('input[name="diskon_rp"]').value = parseInt(jumlah*harga*diskon/100);
             subtotalCell.innerText = subtotal;
             calculateTotal();
         }
@@ -446,11 +450,6 @@
     }
 
     function applyDiscount() {
-        // const total = parseInt(document.getElementById('total').value || 0);
-        // const diskon = parseFloat(document.getElementById('disc_rp').value || 0);
-        // console.log("Fungsi apllydisc; total = " + total);
-        // const totalSetelahDiskon = total - diskon;
-        // document.getElementById('byr').value = totalSetelahDiskon;
         disco_rp();
         disco_pr();
         calculateChange();
@@ -461,7 +460,6 @@
         let diskon = (total*(diskon_pr/100));
         document.getElementById('disc_rp').value = diskon;
         document.getElementById('byr').value = total - diskon;
-        console.log(total  - diskon);
         calculateChange();
     }
     function disco_rp(){
@@ -469,8 +467,6 @@
         const diskon_rp = parseFloat(document.getElementById('disc_rp').value || 0);
         const totalSetelahDiskon = total - diskon_rp;
         let diskon_pr = (diskon_rp/total);
-        console.log("total = " + total);
-        console.log("diskon_pr = " + diskon_pr);
         document.getElementById('byr').value = totalSetelahDiskon;
         document.getElementById('disc_pr').value = diskon_pr*100;
         calculateChange();
@@ -532,10 +528,15 @@
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    console.log("error");
+                    document.getElementById('id_member').value = '';
+                    document.getElementById('nama_member').value = '';
+                    document.getElementById('disc_pr').value = '0';
+                    disco_pr();
                 } else {
                     document.getElementById('id_member').value = data.id_member;
                     document.getElementById('nama_member').value = data.nama;
+                    document.getElementById('disc_pr').value = {{$diskonsetting}};
+                    disco_pr();
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -597,6 +598,8 @@ function pilihMember(id, kode, nama) {
     document.getElementById('id_member').value = id;
     document.getElementById('kode_member').value = kode;
     document.getElementById('nama_member').value = nama;
+    document.getElementById('disc_pr').value = {{$diskonsetting}};
+    applyDiscount();
     $('#daftarMemberModal').modal('hide');
 }
 

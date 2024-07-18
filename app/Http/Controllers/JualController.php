@@ -31,7 +31,8 @@ class JualController extends Controller
 
     public function index(){
         $produk = Produk::all();
-        return view('jual.index', compact('produk'));
+        $diskonsetting = Setting::first()->diskon ?? 0;
+        return view('jual.index', compact('produk','diskonsetting'));
     }
     public function store(Request $request)
     {
