@@ -324,7 +324,7 @@
                 <td>${nama}</td>
                 <td>${format_uang(harga)}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
-                <td><input type="number" class="form-control" name="diskon_pr" value="${diskon}" oninput="diskon_pr(this)"></td>
+                <td><input type="number" class="form-control" name="diskon_pr" min="0" max="100" value="${diskon}" oninput="diskon_pr(this)"></td>
                 <td><input type="number" class="form-control" name="diskon_rp" value="0" oninput="diskon_rp(this)"></td>
                 <td>${format_uang(harga)}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
@@ -394,6 +394,9 @@
     }
 
     function diskon_pr(input) {
+        if (isNaN(input.value) || input.value.trim() === "" || input.value>100) {
+            input.value = 0;
+        }
         const row = input.parentNode.parentNode;
         const harga = unformatCurrency(row.cells[4].innerText);
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
@@ -409,6 +412,9 @@
     }
 
     function diskon_rp(input) {
+        if (isNaN(input.value) || input.value.trim() === "") {
+            input.value = 0;
+        }
         const row = input.parentNode.parentNode;
         const harga = unformatCurrency(row.cells[4].innerText);
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
@@ -417,10 +423,18 @@
         const subtotalCell = row.cells[8];
         let subtotal_after_dsc = sub - diskon_rp;
         let diskon_pr = (diskon_rp / sub) * 100;
+        if(input.value >= sub){
+            input.value = sub;
+            row.querySelector('input[name="diskon_pr"]').value = 100;
+            subtotalCell.innerText = format_uang(0);
+            calculateTotal();
+        }
+        else{
+            row.querySelector('input[name="diskon_pr"]').value = diskon_pr;
+            subtotalCell.innerText = format_uang(subtotal_after_dsc);
+            calculateTotal();
+        }
 
-        row.querySelector('input[name="diskon_pr"]').value = diskon_pr;
-        subtotalCell.innerText = format_uang(subtotal_after_dsc);
-        calculateTotal();
     }
 
     document.getElementById('kodeProdukInput').addEventListener('keypress', function(event) {
@@ -475,6 +489,7 @@
         const diskon_pr = parseFloat(document.getElementById('disc_pr').value || 0);
         let diskon = parseInt(total*(diskon_pr/100));
         let final = total-diskon;
+        document.getElementById('disc_pr').value = diskon_pr;
         document.getElementById('disc_rp').value = "Rp. " + diskon;
         document.getElementById('byr').value = 'Rp. '+ final;
         calculateChange();
@@ -485,9 +500,15 @@
         const totalSetelahDiskon = total - diskon_rp;
         let diskon_pr = (diskon_rp/total);
         document.getElementById('byr').value = 'Rp. '+ totalSetelahDiskon;
-        document.getElementById('disc_pr').value = diskon_pr*100;
         document.getElementById('disc_rp').value = 'Rp. ' + diskon_rp;
-        calculateChange();
+        if(total == 0){
+            document.getElementById('disc_pr').value = 0;
+            calculateChange();
+        }
+        else{
+            document.getElementById('disc_pr').value = diskon_pr*100;
+            calculateChange();
+        }
     }
 
     function calculateChange() {
