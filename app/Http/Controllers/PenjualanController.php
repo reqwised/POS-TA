@@ -34,6 +34,9 @@ class PenjualanController extends Controller
             ->addColumn('total_item', function ($penjualan) {
                 return format_uang($penjualan->total_item);
             })
+            ->addColumn('invoice', function ($penjualan) {
+                return ($penjualan->kode_invoice);
+            })
             ->addColumn('total_harga', function ($penjualan) {
                 return 'Rp. ' . format_uang($penjualan->total_harga);
             })

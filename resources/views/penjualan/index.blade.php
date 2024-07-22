@@ -16,6 +16,7 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Tanggal</th>
+                            <th>Invoice</th>
                             <th>Member</th>
                             <th>Total Item</th>
                             <th>Total Harga</th>
@@ -36,7 +37,7 @@
 
 @push('scripts')
 <script>
-    let table, table1;
+    let table, table1, kodeInvoice;
 
     $(function () {
         table = $('.table-penjualan').DataTable({
@@ -50,6 +51,7 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
+                {data: 'invoice'},
                 {data: 'nama'},
                 {data: 'total_item'},
                 {data: 'total_harga'},
@@ -63,7 +65,7 @@
                     render: function(data, type, row) {
                         @if (auth()->user()->role == 'Pemilik Toko')
                             return `
-                                <button onclick="showDetail('${row.detail_url}')" class="btn btn-sm btn-warning text-light">
+                                <button onclick="showDetail('${row.detail_url}', '${row.kode_invoice}')" class="btn btn-sm btn-warning text-light">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
                                 <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
@@ -74,7 +76,7 @@
                                 </button>`;
                         @elseif (auth()->user()->role == 'Kasir')
                             return `
-                                <button onclick="showDetail('${row.detail_url}')" class="btn btn-sm btn-warning text-light">
+                                <button onclick="showDetail('${row.detail_url}', '${row.kode_invoice}')" class="btn btn-sm btn-warning text-light">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
                                 <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
@@ -101,8 +103,10 @@
         })
     });
 
-    function showDetail(url) {
+    function showDetail(url, kode_invoice) {
+        kodeInvoice = kode_invoice;  // Simpan kode_invoice dalam variabel global
         $('#modal-detail').modal('show');
+        $('#kode-invoice').text(kodeInvoice);  // Tampilkan kode_invoice dalam modal
 
         table1.ajax.url(url);
         table1.ajax.reload();
