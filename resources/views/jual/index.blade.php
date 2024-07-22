@@ -95,7 +95,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="disdiskon">Diskon (Rp)</label>
-                                        <input type="number" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0">
+                                        <input type="text" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0">
                                     </div>
                                 </div>
                             </div>
@@ -161,9 +161,9 @@
         // Mengambil nilai dari input
         const member = document.getElementById('kode_member').value;
         const totalItem = calculateTotalItems();
-        const totalHarga = document.getElementById('total').value;
-        const diskon = document.getElementById('disc_rp').value;
-        const bayar = document.getElementById('byr').value;
+        const totalHarga = document.getElementById('total').value.replace(/[^,\d]/g, '');
+        const diskon = document.getElementById('disc_rp').value.replace(/[^,\d]/g, '');
+        const bayar = document.getElementById('byr').value.replace(/[^,\d]/g, '');
         const diterima = document.getElementById('cash').value.replace(/[^,\d]/g, '');
         const detailItems = getDetailItems();
 
@@ -414,8 +414,6 @@
         let subtotal_after_dsc = sub - diskon_rp;
         let diskon_pr = (diskon_rp/sub)*100;
 
-        console.log("diskon_pr"+diskon_pr);
-
         row.querySelector('input[name="diskon_pr"]').value = diskon_pr;
         subtotalCell.innerText = subtotal_after_dsc;
         calculateTotal();
@@ -447,35 +445,45 @@
         });
 
         document.querySelector('.tampil-bayar').innerText = format_uang(total);
-        document.getElementById('total').value = total;
+        document.getElementById('total').value = 'Rp. '+ total;
         applyDiscount();
     }
 
     function applyDiscount() {
-        disco_rp();
-        disco_pr();
-        calculateChange();
+        if(document.getElementById('disc_rp').value.replace(/[^,\d]/g, '') === "0" && document.getElementById('disc_pr').value === "0" ){
+            let huehue = document.getElementById('total').value;
+            document.getElementById('byr').value = huehue;
+            calculateChange();
+        }
+        else if(document.getElementById('disc_pr').value === "0"){
+            disco_rp();
+        }
+        else{
+            disco_pr();
+        }
     }
     function disco_pr(){
-        const total = parseInt(document.getElementById('total').value || 0);
+        const total = parseInt(document.getElementById('total').value.replace(/[^,\d]/g, '') || 0);
         const diskon_pr = parseFloat(document.getElementById('disc_pr').value || 0);
         let diskon = (total*(diskon_pr/100));
-        document.getElementById('disc_rp').value = diskon;
-        document.getElementById('byr').value = total - diskon;
+        let final = total-diskon;
+        document.getElementById('disc_rp').value = "Rp. " + diskon;
+        document.getElementById('byr').value = 'Rp. '+ final;
         calculateChange();
     }
     function disco_rp(){
-        const total = parseInt(document.getElementById('total').value || 0);
-        const diskon_rp = parseFloat(document.getElementById('disc_rp').value || 0);
+        const total = parseInt(document.getElementById('total').value.replace(/[^,\d]/g, '') || 0);
+        const diskon_rp = parseFloat(document.getElementById('disc_rp').value.replace(/[^,\d]/g, '') || 0);
         const totalSetelahDiskon = total - diskon_rp;
         let diskon_pr = (diskon_rp/total);
-        document.getElementById('byr').value = totalSetelahDiskon;
+        document.getElementById('byr').value = 'Rp. '+ totalSetelahDiskon;
         document.getElementById('disc_pr').value = diskon_pr*100;
+        document.getElementById('disc_rp').value = 'Rp. ' + diskon_rp;
         calculateChange();
     }
 
     function calculateChange() {
-        const totalBayar = parseFloat(document.getElementById('byr').value || 0);
+        const totalBayar = parseFloat(document.getElementById('byr').value.replace(/[^,\d]/g, '') || 0);
         const diterimaValue = document.getElementById('cash').value.replace(/[^,\d]/g, '');
         const diterima = parseFloat(diterimaValue || 0);
         const kembali = diterima - totalBayar;
@@ -602,6 +610,7 @@ function pilihMember(id, kode, nama) {
     document.getElementById('nama_member').value = nama;
     document.getElementById('disc_pr').value = {{$diskonsetting}};
     disco_pr();
+    calculateTotal();
     $('#daftarMemberModal').modal('hide');
 }
 
