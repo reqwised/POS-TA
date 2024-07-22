@@ -26,14 +26,15 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Nomor Faktur</th>
-                            <th>Pendapatan Kotor</th>
-                            <th>Pendapatan Bersih</th>
+                            <th>Pendapatan</th>
+                            <th>HPP</th>
                             <th>Margin (%/Rp)</th>
                         </thead>
                         <tfoot>
                             <th colspan="2">Total</th>
                             <th id="total-pendapatan-kotor">Rp. 0</th>
                             <th id="total-penjualan-bersih">Rp. 0</th>
+                            <th id="margintotal">Rp. 0</th>
                         </tfoot>
                     </table>
                 </div>
@@ -63,8 +64,8 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'nomor_faktur'},
                 {data: 'pendapatan_kotor'},
-                {data: 'penjualan_bersih'},
-                {data: 'margin'}
+                {data: 'margin'},
+                {data: 'penjualan_bersih'}
             ],
             dom: 'Brt',
             bSort: false,
@@ -99,6 +100,7 @@
                 // Update footer
                 $(api.column(2).footer()).html('Rp. ' + totalPendapatanKotor.toLocaleString());
                 $(api.column(3).footer()).html('Rp. ' + totalPenjualanBersih.toLocaleString());
+                $(api.column(4).footer()).html('Rp. ' + (totalPendapatanKotor - totalPenjualanBersih).toLocaleString());
             }
         });
 

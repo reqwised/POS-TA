@@ -8,6 +8,7 @@ use App\Models\Penjualan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 use PDF;
 
@@ -29,37 +30,41 @@ class LaporanController extends Controller
     public function getDataLR($awal, $akhir){
         $no = 1;
         $dataLR = array();
-        $total_pendapatan = 0;
-        $total_struk = 0;
         $total_omset = 0;
         $total_hpp = 0;
     
+        $akhir = Carbon::parse($akhir)->endOfDay();
+
         $penjualan_details = Penjualan::whereBetween('created_at', [$awal, $akhir])
             ->with('details.produk')
             ->get();
-
+    
         foreach ($penjualan_details as $penjualan) {
+            $pendapatan_kotor = $penjualan->bayar;
+            $total_penjualan_bersih = 0;
+    
             foreach ($penjualan->details as $detail) {
                 $produk = $detail->produk;
-                $pendapatan_kotor = $penjualan->bayar;
                 $penjualan_bersih = ($produk->harga_jual - $produk->harga_beli) * $detail->jumlah - $detail->diskon - $penjualan->diskon;
-                
-                $total_omset += $pendapatan_kotor;
-                $total_hpp += $penjualan_bersih;
-
-                $row = array();
-                $row['DT_RowIndex'] = $no++;
-                $row['nomor_faktur'] = $penjualan->kode_invoice;
-                $row['pendapatan_kotor'] = 'Rp. ' . format_uang($pendapatan_kotor);
-                $row['penjualan_bersih'] = 'Rp. ' . format_uang($penjualan_bersih); // Menambahkan penjualan bersih
-                $row['margin'] = number_format(($penjualan_bersih/$pendapatan_kotor)*100,2) .'%/Rp. '. format_uang($pendapatan_kotor - $penjualan_bersih);
-    
-                $dataLR[] = $row;
+                $total_penjualan_bersih += $penjualan_bersih;
             }
+    
+            $total_omset += $pendapatan_kotor;
+            $total_hpp += $total_penjualan_bersih;
+    
+            $row = array();
+            $row['DT_RowIndex'] = $no++;
+            $row['nomor_faktur'] = $penjualan->kode_invoice;
+            $row['pendapatan_kotor'] = 'Rp. ' . format_uang($pendapatan_kotor);
+            $row['penjualan_bersih'] = number_format(($total_penjualan_bersih / $pendapatan_kotor) * 100, 2) . '% / Rp. ' . format_uang($total_penjualan_bersih); // Menambahkan penjualan bersih
+            $row['margin'] = 'Rp. ' . format_uang($pendapatan_kotor - $total_penjualan_bersih);
+    
+            $dataLR[] = $row;
         }
     
         return $dataLR;
     }
+    
 
     public function dataLR($awal ,$akhir){
         $dataLR = $this->getDataLR($awal, $akhir);

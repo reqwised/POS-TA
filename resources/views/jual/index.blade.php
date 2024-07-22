@@ -154,6 +154,7 @@
 
 @push('scripts')
 <script>
+    //nyimpan tabel penjualan
     document.querySelector('.btn-simpan').addEventListener('click', function(event) {
         event.preventDefault();
 
@@ -179,6 +180,7 @@
         document.getElementById('form-penjualan').submit();
     });
 
+    //Penjualan_detail get masuk ke json
     function getDetailItems() {
         const tbody = document.getElementById('table-penjualan-body');
         let items = [];
@@ -599,7 +601,7 @@ function pilihMember(id, kode, nama) {
     document.getElementById('kode_member').value = kode;
     document.getElementById('nama_member').value = nama;
     document.getElementById('disc_pr').value = {{$diskonsetting}};
-    applyDiscount();
+    disco_pr();
     $('#daftarMemberModal').modal('hide');
 }
 
