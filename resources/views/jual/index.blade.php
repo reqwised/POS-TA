@@ -154,6 +154,7 @@
 
 @push('scripts')
 <script>
+    document.querySelector('.tampil-bayar').innerText = format_uang(0);
     //nyimpan tabel penjualan
     document.querySelector('.btn-simpan').addEventListener('click', function(event) {
         event.preventDefault();
@@ -161,9 +162,9 @@
         // Mengambil nilai dari input
         const member = document.getElementById('kode_member').value;
         const totalItem = calculateTotalItems();
-        const totalHarga = document.getElementById('total').value.replace(/[^,\d]/g, '');
+        const totalHarga = document.getElementById('total').value.replace(/[^,\d]/g, '').replace(/,00/,'');
         const diskon = document.getElementById('disc_rp').value.replace(/[^,\d]/g, '');
-        const bayar = document.getElementById('byr').value.replace(/[^,\d]/g, '');
+        const bayar = document.getElementById('byr').value.replace(/[^,\d]/g, '').replace(/,00/,'');
         const diterima = document.getElementById('cash').value.replace(/[^,\d]/g, '');
         const detailItems = getDetailItems();
 
@@ -189,10 +190,10 @@
             const id_produk = row.cells[1].innerText;
             const kode = row.cells[2].innerText;
             const nama = row.cells[3].innerText;
-            const harga = parseFloat(row.cells[4].innerText);
+            const harga = unformatCurrency(row.cells[4].innerText);
             const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
             const diskon = parseInt(row.querySelector('input[name="diskon_rp"]').value);
-            const subtotal = parseFloat(row.cells[8].innerText);
+            const subtotal = unformatCurrency(row.cells[8].innerText);
 
             items.push({
                 id_produk: id_produk,
@@ -285,6 +286,10 @@
     $('#daftarProdukModal').on('show.bs.modal', () => fetchProducts(currentprodPage, searchTerm));
 
 
+    function unformatCurrency(value) {
+        return parseFloat(value.replace(/[Rp. ]/g, '').replace(/\./g, ''));
+    }
+
     function pilihProduk(id_produk, kode, nama, harga, stok, diskon) {
         const tbody = document.getElementById('table-penjualan-body');
         let existingRow = null;
@@ -317,11 +322,11 @@
                 <td class="hidden-column">${id_produk}</td>
                 <td><p class="badge badge-primary m-0">${kode}</p></td>
                 <td>${nama}</td>
-                <td>${harga}</td>
+                <td>${format_uang(harga)}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
                 <td><input type="number" class="form-control" name="diskon_pr" value="${diskon}" oninput="diskon_pr(this)"></td>
                 <td><input type="number" class="form-control" name="diskon_rp" value="0" oninput="diskon_rp(this)"></td>
-                <td>${harga}</td>
+                <td>${format_uang(harga)}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
                 <td>${stok}</td>
             `;
@@ -366,21 +371,19 @@
 
     function updateSubtotal(input) {
         const row = input.parentNode.parentNode;
-        const harga = parseFloat(row.cells[4].innerText);
-        const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
+        const harga = unformatCurrency(row.cells[4].innerText);
+        let jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
         const diskon = parseInt(row.querySelector('input[name="diskon_pr"]').value);
         const subtotalCell = row.cells[8];
         const stok = row.cells[10].innerText;
-        const kondisi = stok-jumlah+1;
+        const kondisi = stok - jumlah + 1;
 
-        
-        if(kondisi){
-            const subtotal = (harga * jumlah - (jumlah*harga*diskon/100));
-            row.querySelector('input[name="diskon_rp"]').value = parseInt(jumlah*harga*diskon/100);
-            subtotalCell.innerText = subtotal;
+        if (kondisi) {
+            const subtotal = (harga * jumlah - (jumlah * harga * diskon / 100));
+            row.querySelector('input[name="diskon_rp"]').value = parseInt(jumlah * harga * diskon / 100);
+            subtotalCell.innerText = format_uang(subtotal);
             calculateTotal();
-        }
-        else{
+        } else {
             const modalBody = document.querySelector('#warningModal .modal-body');
             modalBody.innerText = `Stok tidak mencukupi untuk produk ini.`;
             $('#warningModal').modal('show');
@@ -390,32 +393,33 @@
         }
     }
 
-    function diskon_pr(input){
+    function diskon_pr(input) {
         const row = input.parentNode.parentNode;
-        const harga = row.cells[4].innerText;
+        const harga = unformatCurrency(row.cells[4].innerText);
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
         const diskon_pr = parseFloat(row.querySelector('input[name="diskon_pr"]').value);
-        const sub = harga*jumlah;
+        const sub = harga * jumlah;
         const subtotalCell = row.cells[8];
-        let subtotal_after_percent = sub - ((diskon_pr/100)*sub);
+        let subtotal_after_percent =parseInt(sub - ((diskon_pr / 100) * sub));
         let diskon_rp = sub - subtotal_after_percent;
 
         row.querySelector('input[name="diskon_rp"]').value = diskon_rp;
-        subtotalCell.innerText = subtotal_after_percent;
+        subtotalCell.innerText = format_uang(subtotal_after_percent);
         calculateTotal();
     }
-    function diskon_rp(input){
+
+    function diskon_rp(input) {
         const row = input.parentNode.parentNode;
-        const harga = row.cells[4].innerText;
+        const harga = unformatCurrency(row.cells[4].innerText);
         const jumlah = parseInt(row.querySelector('input[name="jumlah"]').value);
         const diskon_rp = parseInt(row.querySelector('input[name="diskon_rp"]').value);
-        const sub = harga*jumlah;
+        const sub = harga * jumlah;
         const subtotalCell = row.cells[8];
         let subtotal_after_dsc = sub - diskon_rp;
-        let diskon_pr = (diskon_rp/sub)*100;
+        let diskon_pr = (diskon_rp / sub) * 100;
 
         row.querySelector('input[name="diskon_pr"]').value = diskon_pr;
-        subtotalCell.innerText = subtotal_after_dsc;
+        subtotalCell.innerText = format_uang(subtotal_after_dsc);
         calculateTotal();
     }
 
@@ -440,13 +444,17 @@
         let total = 0;
 
         tbody.querySelectorAll('tr').forEach(row => {
-            const subtotal = parseFloat(row.cells[8].innerText);
+            const subtotal = unformatCurrency(row.cells[8].innerText);
             total += subtotal;
         });
 
         document.querySelector('.tampil-bayar').innerText = format_uang(total);
-        document.getElementById('total').value = 'Rp. '+ total;
+        document.getElementById('total').value = format_uang(total);
         applyDiscount();
+    }
+
+    function format_uang(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
     function applyDiscount() {
@@ -465,7 +473,7 @@
     function disco_pr(){
         const total = parseInt(document.getElementById('total').value.replace(/[^,\d]/g, '') || 0);
         const diskon_pr = parseFloat(document.getElementById('disc_pr').value || 0);
-        let diskon = (total*(diskon_pr/100));
+        let diskon = parseInt(total*(diskon_pr/100));
         let final = total-diskon;
         document.getElementById('disc_rp').value = "Rp. " + diskon;
         document.getElementById('byr').value = 'Rp. '+ final;
