@@ -51,7 +51,7 @@ class PenjualanController extends Controller
                 return '<span class="badge badge-primary">' . $member . '</spa>';
             })
             ->editColumn('diskon', function ($penjualan) {
-                return $penjualan->diskon . '%';
+                return $penjualan->diskon / $penjualan->total_harga *100 . '%';
             })
             ->editColumn('kasir', function ($penjualan) {
                 return $penjualan->user->name ?? '';
