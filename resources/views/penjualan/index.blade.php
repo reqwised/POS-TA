@@ -52,7 +52,9 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
                 {data: 'invoice'},
-                {data: 'nama'},
+                {data: 'nama',render: function(data, type, row) {
+            return `<span class="badge badge-primary">${data}</span>`;
+        }},
                 {data: 'total_item'},
                 {data: 'total_harga'},
                 {data: 'diskon'},
@@ -65,7 +67,7 @@
                     render: function(data, type, row) {
                         @if (auth()->user()->role == 'Pemilik Toko')
                             return `
-                                <button onclick="showDetail('${row.detail_url}', '${row.kode_invoice}')" class="btn btn-sm btn-warning text-light">
+                                <button onclick= "showDetail('${row.detail_url}', '${row.kode_invoice}', '${row.tanggal}', '${row.nama}', '${row.kasir}')" class="btn btn-sm btn-warning text-light">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
                                 <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
@@ -103,15 +105,17 @@
         })
     });
 
-    function showDetail(url, kode_invoice) {
-        kodeInvoice = kode_invoice;  // Simpan kode_invoice dalam variabel global
+    function showDetail(url, kode_invoice, date, memb, casr) {
+        var kodeInvoice = kode_invoice;  // Simpan kode_invoice dalam variabel lokal
         $('#modal-detail').modal('show');
-        $('#kode-invoice').text(kodeInvoice);  // Tampilkan kode_invoice dalam modal
+        $('#kode-invoice').text(kodeInvoice);
+        $('#date').text(date);  // Tampilkan date dalam modal
+        $('#memb').text(memb);  // Tampilkan nama dalam modal
+        $('#casr-invoice').text(casr);  // Tampilkan kasir dalam modal
 
         table1.ajax.url(url);
         table1.ajax.reload();
     }
-
     function deleteData(url) {
         Swal.fire({
             title: 'Yakin ingin menghapus data ini?',

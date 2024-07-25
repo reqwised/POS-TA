@@ -7,7 +7,25 @@
             </div>
             <div class="modal-body m-2">
                 <div class="mb-3">
-                    <strong>Kode Invoice: </strong><span id="kode-invoice"></span>  <!-- Tambahkan ini -->
+                    <table class="table table-sm table-borderless mb-0">
+                        <tr>
+                            <td width="10%">Invoice</td>
+                            <td>: <span id="kode-invoice"></span></td>
+                        </tr>
+                        <tr>
+                            <td width="10%">Tanggal</td>
+                            <td>: <span id="date"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Pelanggan</td>
+                            <td>:<span class="badge badge-primary" id="memb"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Kasir</td>
+                            <td>: <span id="casr-invoice"></span></td>
+                        </tr>
+                    </table>
+                      <!-- Tambahkan ini -->
                 </div>
                 <table class="table table-sm table-bordered table-striped table-detail">
                     <thead>

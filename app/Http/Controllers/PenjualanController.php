@@ -48,7 +48,7 @@ class PenjualanController extends Controller
             })
             ->addColumn('nama', function ($penjualan) {
                 $member = $penjualan->member->nama ?? '';
-                return '<span class="badge badge-primary">' . $member . '</spa>';
+                return $member;
             })
             ->editColumn('diskon', function ($penjualan) {
                 return $penjualan->diskon / $penjualan->total_harga *100 . '%';

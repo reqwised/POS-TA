@@ -480,6 +480,7 @@
         if(document.getElementById('disc_rp').value.replace(/[^,\d]/g, '') === "0" && document.getElementById('disc_pr').value === "0" ){
             let huehue = document.getElementById('total').value;
             document.getElementById('byr').value = huehue;
+            document.querySelector('.tampil-bayar').innerText = huehue;
             calculateChange();
         }
         else if(document.getElementById('disc_pr').value === "0"){
@@ -497,6 +498,7 @@
         document.getElementById('disc_pr').value = diskon_pr;
         document.getElementById('disc_rp').value = "Rp. " + diskon;
         document.getElementById('byr').value = 'Rp. '+ final;
+        document.querySelector('.tampil-bayar').innerText = format_uang(final);
         calculateChange();
     }
     function disco_rp(){
@@ -506,6 +508,7 @@
         let diskon_pr = (diskon_rp/total);
         document.getElementById('byr').value = 'Rp. '+ totalSetelahDiskon;
         document.getElementById('disc_rp').value = 'Rp. ' + diskon_rp;
+        document.querySelector('.tampil-bayar').innerText = format_uang(totalSetelahDiskon);
         if(total == 0){
             document.getElementById('disc_pr').value = 0;
             calculateChange();
@@ -521,7 +524,6 @@
         const diterimaValue = document.getElementById('cash').value.replace(/[^,\d]/g, '');
         const diterima = parseFloat(diterimaValue || 0);
         const kembali = diterima - totalBayar;
-        document.querySelector('.tampil-bayar').innerText = format_uang(totalbayar);
         document.getElementById('kembali').value = 'Rp ' + kembali.toLocaleString('id-ID');
     }
 

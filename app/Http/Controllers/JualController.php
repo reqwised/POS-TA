@@ -10,18 +10,20 @@ use App\Models\Setting;
 use App\Models\PenjualanDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Carbon\carbon;
 
 class JualController extends Controller
 {
 
     private function generateKodeInvoice()
     {
-        // Ambil tanggal, jam, dan menit saat ini
-        $date = now()->format('d/m/Y/H:i');
+        $now = Carbon::now('Asia/Jakarta');
+        // Ambil tanggal, jam, dan menit saat ini dengan format YmdHis
+        $date = $now->format('ymdHis');
 
         // Ambil jumlah penjualan yang dilakukan hari ini untuk menentukan nomor urut
-        $todayCount = Penjualan::whereDate('created_at', now()->toDateString())->count() + 1;
-
+        $todayCount = Penjualan::whereDate('created_at', $now->toDateString())->count() + 1;
+    
         // Format nomor urut menjadi 5 digit dengan leading zeroes
         $number = str_pad($todayCount, 5, '0', STR_PAD_LEFT);
 
