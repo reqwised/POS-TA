@@ -90,12 +90,12 @@
                     </a>
                 </li>
 
-                <li class="nav-header">REPORT</li>
+                <li class="nav-header">LAPORAN</li>
                 <li class="nav-item">
                     <a href="{{ route('laporan.index') }}" class="nav-link {{(Route::is('laporan.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>
-                            Laporan
+                            Laporan Pendapatan
                         </p>
                     </a>
                 </li>
@@ -113,12 +113,12 @@
                     <a href="{{ route('laporan.labarugi') }}" class="nav-link {{(Route::is('laporan.labarugi')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>
-                            Laporan Omset dan Pendapatan
+                            Laporan Omset
                         </p>
                     </a>
                 </li>
 
-                <li class="nav-header">SYSTEM</li>
+                <li class="nav-header">SISTEM</li>
                 <li class="nav-item">
                     <a href="{{ route('user.index') }}" class="nav-link {{(Route::is('user.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>

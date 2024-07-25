@@ -49,7 +49,12 @@
                     <form class="form-produk">
                         @csrf
                         <div class="form-group row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Cari Produk">
+                                <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
+                                <input type="hidden" name="id_produk" id="id_produk">
+                            </div>
+                            <div class="col-sm-3">
                                 <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Cari Produk</button>
                             </div>
                         </div>

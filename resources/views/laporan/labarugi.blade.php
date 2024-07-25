@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Laporan Omset dan Pendapatan')
+@section('title', 'Laporan Omset')
 @push('css')
 <link rel="stylesheet" href="{{ asset('/AdminLTE/plugins/daterangepicker/daterangepicker.css') }}">
 @endpush
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Laporan Omset dan Pendapatan</li>
+    <li class="breadcrumb-item active">Laporan Omset</li>
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h5 class="card-title">Laporan Omset dan Pendapatan {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}</h5>
+                    <h5 class="card-title">Laporan Omset {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}</h5>
                     <div class="float-right">
                         <button onclick="updatePeriode()" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Periode Laporan</button>
                     </div>
