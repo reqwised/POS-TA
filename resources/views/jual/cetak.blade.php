@@ -57,8 +57,8 @@
 <body onload="window.print()">
     <button class="btn-print" style="position: absolute; right: 1rem; top: rem;" onclick="window.print()">Print</button>
     <div class="text-center">
-        <h3 style="margin-bottom: 5px;">Toko Harsono</h3>
-        <p>Ampel Boyolali</p>
+        <h3 style="margin-bottom: 5px;">{{ strtoupper($setting->nama_perusahaan) }}</h3>
+        <p>{{ strtoupper($setting->alamat) }}</p>
     </div>
     <br>
     <div>
@@ -66,7 +66,7 @@
         <p style="float: right">{{ strtoupper(auth()->user()->name) }}</p>
     </div>
     <div class="clear-both" style="clear: both;"></div>
-    <p>No: {{ tambah_nol_didepan($penjualan->id_penjualan, 10) }}</p>
+    <p>No: {{ $penjualan->kode_invoice }}</p>
     <p class="text-center">===================================</p>
     
     <br>

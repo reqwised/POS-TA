@@ -120,8 +120,8 @@ class LaporanController extends Controller
             'tanggal'       => '',
             'penjualan'     => '',
             'pembelian'     => '',
-            'pengeluaran'   => 'Total Pendapatan',
-            'pendapatan'    => 'Rp. '. format_uang($total_pendapatan),
+            'pengeluaran'   => '<strong>Total Pendapatan</strong>',
+            'pendapatan'    =>'<strong>Rp. '. format_uang($total_pendapatan) .'</strong>',
         ];
 
         return $data;
@@ -133,6 +133,7 @@ class LaporanController extends Controller
 
         return datatables()
             ->of($data)
+            ->rawColumns(['pengeluaran', 'pendapatan'])
             ->make(true);
     }
 

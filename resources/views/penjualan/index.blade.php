@@ -23,7 +23,7 @@
                             <th>Diskon</th>
                             <th>Total Bayar</th>
                             <th>Kasir</th>
-                            <th width="15%">Aksi</th>
+                            <th width="12%">Aksi</th>
                         </thead>
                     </table>
                 </div>
@@ -78,7 +78,7 @@
                                 </button>`;
                         @elseif (auth()->user()->role == 'Kasir')
                             return `
-                                <button onclick="showDetail('${row.detail_url}', '${row.kode_invoice}')" class="btn btn-sm btn-warning text-light">
+                                <button onclick="showDetail('${row.detail_url}', '${row.kode_invoice}', '${row.tanggal}', '${row.nama}', '${row.kasir}')" class="btn btn-sm btn-warning text-light">
                                     <i class="fas fa-info-circle"></i>
                                 </button>
                                 <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
@@ -112,6 +112,7 @@
         $('#date').text(date);  // Tampilkan date dalam modal
         $('#memb').text(memb);  // Tampilkan nama dalam modal
         $('#casr-invoice').text(casr);  // Tampilkan kasir dalam modal
+        $('#casr-invoice').text(casr);
 
         table1.ajax.url(url);
         table1.ajax.reload();

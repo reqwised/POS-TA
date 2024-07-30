@@ -101,19 +101,19 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('terlaris.index') }}" class="nav-link {{(Route::is('terlaris.index')) ? 'nav-link active' : '' }}">
+                    <a href="{{ route('laporan.labarugi') }}" class="nav-link {{(Route::is('laporan.labarugi')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>
-                            Laporan Barang
+                            Laporan Omset
                         </p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('laporan.labarugi') }}" class="nav-link {{(Route::is('laporan.labarugi')) ? 'nav-link active' : '' }}">
+                    <a href="{{ route('terlaris.index') }}" class="nav-link {{(Route::is('terlaris.index')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>
-                            Laporan Omset
+                            Laporan Barang
                         </p>
                     </a>
                 </li>

@@ -31,7 +31,7 @@
                             <th>Margin (%/Rp)</th>
                         </thead>
                         <tfoot>
-                            <th colspan="2">Total</th>
+                            <th colspan="2" class="text-center">Total</th>
                             <th id="total-pendapatan-kotor">Rp. 0</th>
                             <th id="total-penjualan-bersih">Rp. 0</th>
                             <th id="margintotal">Rp. 0</th>

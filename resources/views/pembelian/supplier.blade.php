@@ -22,7 +22,7 @@
                                 <td width="15%">{{ $item->telepon }}</td>
                                 <td width="45%">{{ $item->alamat }}</td>
                                 <td width="10%">
-                                    <a href="{{ route('pembelian.create', $item->id_supplier) }}" class="btn btn-primary btn-sm"></i>Pilih
+                                    <a href="{{ route('pembelian.create', $item->id_supplier) }}" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i> Pilih
                                     </a>
                                 </td>
                             </tr>

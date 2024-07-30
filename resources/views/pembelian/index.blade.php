@@ -85,7 +85,6 @@
                 ]
         });
 
-        $('.table-supplier').DataTable();
         table1 = $('.table-detail').DataTable({
             processing: true,
             bSort: false,
@@ -98,7 +97,20 @@
                 {data: 'jumlah'},
                 {data: 'subtotal'},
             ]
-        })
+        });
+
+        table2 = $('.table-supplier').DataTable({
+            processing: true,
+            bSort: false,
+            dom: 'Brt',
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'nama'},
+                {data: 'telepon'},
+                {data: 'alamat'},
+                {data: 'aksi', name: 'aksi', orderable: false, searchable: false},
+            ]
+        });
     });
 
     function addForm() {

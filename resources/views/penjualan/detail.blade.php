@@ -7,25 +7,24 @@
             </div>
             <div class="modal-body m-2">
                 <div class="mb-3">
-                    <table class="table table-sm table-borderless mb-0">
+                    <table class="table table-sm table-borderless">
                         <tr>
-                            <td width="10%">Invoice</td>
+                            <td width="10%"><strong>Invoice</strong></td>
                             <td>: <span id="kode-invoice"></span></td>
                         </tr>
                         <tr>
-                            <td width="10%">Tanggal</td>
+                            <td><strong>Tanggal</strong></td>
                             <td>: <span id="date"></span></td>
                         </tr>
                         <tr>
-                            <td>Pelanggan</td>
+                            <td><strong>Pelanggan</strong></td>
                             <td>:<span class="badge badge-primary" id="memb"></span></td>
                         </tr>
                         <tr>
-                            <td>Kasir</td>
+                            <td><strong>Kasir</strong></td>
                             <td>: <span id="casr-invoice"></span></td>
                         </tr>
                     </table>
-                      <!-- Tambahkan ini -->
                 </div>
                 <table class="table table-sm table-bordered table-striped table-detail">
                     <thead>
