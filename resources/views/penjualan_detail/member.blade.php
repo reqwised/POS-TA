@@ -1,37 +1,31 @@
-<div class="modal fade" id="modal-member" tabindex="-1" role="dialog" aria-labelledby="modal-member">
+<div class="modal fade" id="daftarMemberModal" tabindex="-1" role="dialog" aria-labelledby="daftarMemberModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Pilih Member</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="daftarMemberModalLabel">Daftar Member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body m-4">
-                <table class="table table-borderless table-striped table-member">
+            <div class="modal-body mx-2">
+                <input type="text" id="search-member-input" class="form-control" placeholder="Cari kode/nama member...">
+                <br>
+                <table class="table table-sm table-bordered table-striped">
                     <thead>
-                        <th width="5%">#</th>
-                        <th>Nama</th>
-                        <th>Telepon</th>
-                        <th>Alamat</th>
-                        <th>Aksi</th>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="15%">Kode</th>
+                            <th>Nama</th>
+                            <th width="15%">Aksi</th>
+                        </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($member as $key => $item)
-                            <tr>
-                                <td width="5%">{{ $key+1 }}</td>
-                                <td>{{ $item->nama }}</td>
-                                <td>{{ $item->telepon }}</td>
-                                <td>{{ $item->alamat }}</td>
-                                <td>
-                                    <a href="#" class="btn btn-primary btn-sm"
-                                        onclick="pilihMember('{{ $item->id_member }}', '{{ $item->kode_member }}')">
-                                        <i class="fa fa-check-circle"></i>
-                                        Pilih
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
+                    <tbody id="member-list">
                     </tbody>
                 </table>
+                <div id="paginationmember" class="text-center"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>

@@ -2,129 +2,119 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
+use Illuminate\Http\Request;
 use App\Models\Penjualan;
-use App\Models\PenjualanDetail;
+use App\Models\Member;
 use App\Models\Produk;
 use App\Models\Setting;
-use Illuminate\Http\Request;
+use App\Models\PenjualanDetail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
-class PenjualanDetailController extends Controller
+class JualController extends Controller
 {
-    public function index()
+
+    private function generateKodeInvoice()
     {
-        $produk = Produk::orderBy('nama_produk')->get();
-        $member = Member::orderBy('nama')->get();
-        $diskon = Setting::first()->diskon ?? 0;
+        // Ambil tanggal, jam, dan menit saat ini
+        $date = now()->format('d/m/Y/H:i');
 
-        // Cek apakah ada transaksi yang sedang berjalan
-        if ($id_penjualan = session('id_penjualan')) {
-            $penjualan = Penjualan::find($id_penjualan);
-            $memberSelected = $penjualan->member ?? new Member();
+        // Ambil jumlah penjualan yang dilakukan hari ini untuk menentukan nomor urut
+        $todayCount = Penjualan::whereDate('created_at', now()->toDateString())->count() + 1;
 
-            return view('penjualan_detail.index', compact('produk', 'member', 'diskon', 'id_penjualan', 'penjualan', 'memberSelected'));
-        } else {
-            if (auth()->user()->role == 'Pemilik Toko') {
-                return redirect()->route('transaksi.baru');
-            } else {
-                return redirect()->route('home');
-            }
-        }
+        // Format nomor urut menjadi 5 digit dengan leading zeroes
+        $number = str_pad($todayCount, 5, '0', STR_PAD_LEFT);
+
+        // Gabungkan semua bagian untuk membuat kode_invoice
+        return "{$date}/{$number}";
     }
 
-    public function data($id)
-    {
-        $detail = PenjualanDetail::with('produk')
-            ->where('id_penjualan', $id)
-            ->get();
-
-        $data = array();
-        $total = 0;
-        $total_item = 0;
-
-        foreach ($detail as $item) {
-            $row = array();
-            $row['kode_produk'] = '<span class="badge badge-primary">'. $item->produk['kode_produk'] .'</span';
-            $row['nama_produk'] = $item->produk['nama_produk'];
-            $row['harga_jual']  = 'Rp. '. format_uang($item->harga_jual);
-            $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_penjualan_detail .'" value="'. $item->jumlah .'">';
-            $row['diskon']      = $item->diskon . '%';
-            $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
-            $row['aksi']        = '<div class="btn-group">
-                                    <button onclick="deleteData(`'. route('transaksi.destroy', $item->id_penjualan_detail) .'`)" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                                </div>';
-            $data[] = $row;
-
-            $total += $item->harga_jual * $item->jumlah - (($item->diskon * $item->jumlah) / 100 * $item->harga_jual);;
-            $total_item += $item->jumlah;
-        }
-        $data[] = [
-            'kode_produk' => '
-                <div class="total hide">'. $total .'</div>
-                <div class="total_item hide">'. $total_item .'</div>',
-            'nama_produk' => '',
-            'harga_jual'  => '',
-            'jumlah'      => '',
-            'diskon'      => '',
-            'subtotal'    => '',
-            'aksi'        => '',
-        ];
-
-        return datatables()
-            ->of($data)
-            ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
-            ->make(true);
+    public function index(){
+        $produk = Produk::all();
+        $diskonsetting = Setting::first()->diskon ?? 0;
+        return view('jual.index', compact('produk','diskonsetting'));
     }
-
     public function store(Request $request)
     {
-        $produk = Produk::where('id_produk', $request->id_produk)->first();
-        if (! $produk) {
-            return response()->json('Data gagal disimpan', 400);
+        // Log the request data for debugging
+        Log::info('Request data: ', $request->all());
+
+        // Validasi data
+        $request->validate([
+            'id_member' => 'nullable|exists:member,id_member',
+            'total_item' => 'required|integer',
+            'total_harga' => 'required|numeric|min:0',
+            'diskon' => 'required|numeric|min:0',
+            'bayar' => 'required|numeric|min:0',
+            'diterima' => 'required|numeric|min:0',
+            'detail_items' => 'required'
+        ]);
+
+        try {
+            // Buat transaksi baru
+            $penjualan = new Penjualan;
+            $penjualan->id_member = $request->id_member;
+            $penjualan->total_item = $request->total_item;
+            $penjualan->total_harga = $request->total_harga;
+            $penjualan->diskon = $request->diskon;
+            $penjualan->bayar = $request->bayar;
+            $penjualan->diterima = $request->diterima;
+            $penjualan->kode_invoice = $this->generateKodeInvoice(); 
+            $penjualan->id_user = Auth::id(); // Mengambil ID user yang sedang login
+            $penjualan->save();
+
+            Log::info('Main transaction saved successfully', ['penjualan_id' => $penjualan->id]);
+
+            $detailItems = json_decode($request->detail_items, true);
+            foreach ($detailItems as $item) {
+                Log::info('Saving detail item: ', $item); // Log detail item yang akan disimpan
+                $penjualanDetail = new PenjualanDetail;
+                $penjualanDetail->id_penjualan = $penjualan->id_penjualan;
+                $penjualanDetail->id_produk = $item['id_produk'];
+                $penjualanDetail->harga_jual = $item['harga'];
+                $penjualanDetail->jumlah = $item['jumlah'];
+                $penjualanDetail->diskon = $item['diskon'];
+                $penjualanDetail->subtotal = $item['subtotal'];
+                $penjualanDetail->save();
+
+                $prod = Produk::find($item['id_produk']);
+                if($prod){
+                    $prod->stok -= $item['jumlah'];
+                    $prod->save();
+                }
+                Log::info('Detail item saved successfully', ['penjualan_detail_id' => $penjualanDetail->id]); // Log detail item berhasil disimpan
+            }
+            
+            Log::info('Transaction saved successfully');
+
+            return redirect()->route('jual.selesai',$penjualan->id_penjualan)->with('success', 'Transaksi berhasil disimpan');
+        } catch (\Exception $e) {
+            Log::error('Error saving transaction: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan transaksi');
+        }
+    }
+
+    
+    public function selesai($id)
+        {
+            $penjualan = Penjualan::with('details')->find($id);
+
+            if (!$penjualan) {
+                return redirect()->route('jual.index')->with('error', 'Transaksi tidak ditemukan');
+            }
+
+            return view('jual.selesai', compact('penjualan'));
         }
 
-        $detail = new PenjualanDetail();
-        $detail->id_penjualan = $request->id_penjualan;
-        $detail->id_produk = $produk->id_produk;
-        $detail->harga_jual = $produk->harga_jual;
-        $detail->jumlah = 1;
-        $detail->diskon = $produk->diskon;
-        $detail->subtotal = $produk->harga_jual - ($produk->diskon / 100 * $produk->harga_jual);;
-        $detail->save();
-
-        return response()->json('Data berhasil disimpan', 200);
-    }
-
-    public function update(Request $request, $id)
+    public function cetak($id)
     {
-        $detail = PenjualanDetail::find($id);
-        $detail->jumlah = $request->jumlah;
-        $detail->subtotal = $detail->harga_jual * $request->jumlah - (($detail->diskon * $request->jumlah) / 100 * $detail->harga_jual);;
-        $detail->update();
-    }
+        $penjualan = Penjualan::with('details')->find($id);
 
-    public function destroy($id)
-    {
-        $detail = PenjualanDetail::find($id);
-        $detail->delete();
+        if (!$penjualan) {
+            return redirect()->route('jual.index')->with('error', 'Transaksi tidak ditemukan');
+        }
 
-        return response(null, 204);
-    }
-
-    public function loadForm($diskon = 0, $total = 0, $diterima = 0)
-    {
-        $bayar   = $total - ($diskon / 100 * $total);
-        $kembali = ($diterima != 0) ? $diterima - $bayar : 0;
-        $data    = [
-            'totalrp' => format_uang($total),
-            'bayar' => $bayar,
-            'bayarrp' => format_uang($bayar),
-            'terbilang' => ucwords(terbilang($bayar). ' Rupiah'),
-            'kembalirp' => format_uang($kembali),
-            'kembali_terbilang' => ucwords(terbilang($kembali). ' Rupiah'),
-        ];
-
-        return response()->json($data);
+        // Buat logika untuk menampilkan atau mencetak nota, misalnya dengan menggunakan view khusus atau library PDF
+        return view('jual.cetak', compact('penjualan'));
     }
 }

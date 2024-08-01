@@ -1,38 +1,59 @@
-<div class="modal fade" id="modal-produk" tabindex="-1" role="dialog" aria-labelledby="modal-produk">
+<div class="modal fade" id="daftarProdukModal" tabindex="-1" role="dialog" aria-labelledby="daftarProdukModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Pilih Produk</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="daftarProdukModalLabel">Daftar Produk</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body m-4">
-                <table class="table table-borderless table-striped table-produk">
+            <div class="modal-body mx-2 mt-3">
+                <input type="text" id="search-input" class="form-control" placeholder="Cari kode/nama produk...">
+                <br>
+                <table class="table table-sm table-bordered table-striped">
                     <thead>
-                        <th width="5%">#</th>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Harga</th>
-                        <th>Aksi</th>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th width="15%">Kode</th>
+                            <th>Nama</th>
+                            <th>Harga Beli</th>
+                            <th width="15%">Aksi</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        @foreach ($produk as $key => $item)
-                            <tr>
-                                <td width="5%">{{ $key+1 }}</td>
-                                <td><span class="badge badge-primary">{{ $item->kode_produk }}</span></td>
-                                <td>{{ $item->nama_produk }}</td>
-                                <td>{{ $item->harga_beli }}</td>
-                                <td>
-                                    <a href="#" class="btn btn-primary btn-sm"
-                                        onclick="pilihProduk('{{ $item->id_produk }}', '{{ $item->kode_produk }}')">
-                                        <i class="fa fa-check-circle"></i>
-                                        Pilih
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tbody id="product-list">
+                        </tbody>
                     </tbody>
                 </table>
+                <div id="pagination" class="text-center">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    $('#daftarProdukModal').on('shown.bs.modal', function () {
+        $('#search-input').trigger('focus');
+    });
+    document.getElementById('search-input').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const productList = document.getElementById('product-list');
+    const rows = productList.getElementsByTagName('tr');
+
+    Array.from(rows).forEach(row => {
+        const kode = row.cells[2].innerText.toLowerCase();
+        const nama = row.cells[3].innerText.toLowerCase();
+        if (kode.includes(searchTerm) || nama.includes(searchTerm)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+@endpush
