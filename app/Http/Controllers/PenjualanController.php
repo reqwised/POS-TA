@@ -35,7 +35,7 @@ class PenjualanController extends Controller
                 return format_uang($penjualan->total_item);
             })
             ->addColumn('invoice', function ($penjualan) {
-                return ($penjualan->kode_invoice);
+                return '<span class="badge badge-primary">'. $penjualan->kode_invoice .'<span>';
             })
             ->addColumn('total_harga', function ($penjualan) {
                 return 'Rp. ' . format_uang($penjualan->total_harga);
@@ -65,7 +65,7 @@ class PenjualanController extends Controller
             ->addColumn('delete_url', function ($penjualan) {
                 return route('penjualan.destroy', $penjualan->id_penjualan);
             })
-            ->rawColumns(['nama'])
+            ->rawColumns(['nama', 'invoice'])
             ->make(true);
     }
 

@@ -13,9 +13,6 @@
             <div class="card card-outline card-primary">
                 <div class="card-header">
                     <button onclick="addForm()" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah Pembelian</button>
-                    <!-- @empty(! session('id_pembelian'))
-                    <a href="{{ route('pembelian_detail.index') }}" class="btn btn-sm btn-danger"><i class="fas fa-edit"></i> Edit</a>
-                    @endempty -->
                 </div>
                 <div class="card-body">
                     <table class="table table-sm table-bordered table-striped table-pembelian">

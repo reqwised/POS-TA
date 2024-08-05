@@ -18,19 +18,19 @@
                             <div class="col-md-6">
                                 <h5>Edit Profil</h5>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="name">Nama <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" data-error="Nama tidak boleh kosong" id="name" required autofocus value="{{ $profil->name }}"><span class="help-block with-errors text-danger"></span>
                                 </div>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label>Foto Profil</label>
                                     <div class="custom-file">
                                         <input type="file" name="foto" class="custom-file-input" id="foto" onchange="validateImage(this)">
                                         <label class="custom-file-label" for="foto">Choose file</label>
                                     </div>
                                     <small class="form-text text-muted">
-                                        File harus berupa gambar (JPEG, PNG, GIF), ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
+                                        File dengan format (JPEG, PNG, GIF), ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
                                     </small>
                                     <span class="help-block with-errors"></span>
                                     <div class="tampil-foto mt-3">
@@ -42,19 +42,19 @@
                             <div class="col-md-6">
                                 <h5>Ganti Password <span class="text-sm text-secondary font-italic">(Kosongkan jika tidak ingin diubah)</span></h5>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="old_password">Password Lama</label>
                                     <input type="password" name="old_password" id="old_password" class="form-control" placeholder="Masukkan Password Lama Anda" data-error="Password harus terdiri dari setidaknya 6 karakter" minlength="6">
                                     <span class="help-block with-errors text-danger"></span>
                                 </div>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="password">Password Baru</label>
                                     <input type="password" name="password" id="password" class="form-control" placeholder="Buat Password Baru (Minimal 6 Karakter)" data-error="Password harus terdiri dari setidaknya 6 karakter" minlength="6">
                                     <span class="help-block with-errors text-danger"></span>
                                 </div>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="password_confirmation">Konfirmasi Password</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Konfirmasi Password Baru (Minimal 6 Karakter)" data-error="Konfirmasi password Anda dengan benar" data-match="#password">
                                     <span class="help-block with-errors text-danger"></span>
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-primary"><i class="fas fa-check"></i> Simpan</button>
                     </div>
                 </form>
             </div>

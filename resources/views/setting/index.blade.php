@@ -16,18 +16,18 @@
                     <div class="card-body">
                         <div class="form-row">
                             <div class="col-md-6">
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="nama_perusahaan">Nama Toko  <span class="text-danger">*</span></label>
                                     <input type="text" name="nama_perusahaan" class="form-control" id="nama_perusahaan" data-error="Nama toko tidak boleh kosong" required autofocus><span class="help-block with-errors text-danger"></span>
                                 </div>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="telepon">Telepon  <span class="text-danger">*</span></label>
                                     <input type="text" name="telepon" class="form-control" data-error="Nomor telepon tidak boleh kosong" id="telepon" required>
                                     <span class="help-block with-errors text-danger"></span>
                                 </div>
 
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label for="alamat">Alamat <span class="text-danger">*</span></label>
                                     <textarea name="alamat" class="form-control" data-error="Alamat tidak boleh kosong" id="alamat" rows="3" required></textarea>
                                     <span class="help-block with-errors text-danger"></span>
@@ -35,29 +35,25 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-group col-md-10">
-                                    <label for="diskon">Diskon  <span class="text-danger">*</span></label>
-                                    <input type="number" name="diskon" class="form-control" data-error="Diskon tidak boleh kosong" id="diskon" required>
+                                <div class="form-group col-md-9">
+                                    <label for="diskon">Diskon <span class="text-danger"> *</span></label>
+                                    <div class="input-group">
+                                        <input type="number" name="diskon" class="form-control" data-error="Diskon tidak boleh kosong" id="diskon" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                                        </div>
+                                    </div>
                                     <span class="help-block with-errors text-danger"></span>
                                 </div>
 
-                                <div class="form-group col-md-10">
-                                    <label for="tipe_nota">Tipe Nota  <span class="text-danger">*</span></label>
-                                    <select name="tipe_nota" class="custom-select" id="tipe_nota" required>
-                                        <option value="1">Nota Kecil</option>
-                                        <option value="2">Nota Besar</option>
-                                    </select>
-                                    <span class="help-block with-errors text-danger"></span>
-                                </div>
-
-                                <div class="form-group col-md-10">
+                                <div class="form-group col-md-9">
                                     <label>Logo <span class="text-sm text-secondary font-italic">(Kosongkan jika tidak ingin diubah)</span></label>
                                     <div class="custom-file">
                                         <input type="file" name="path_logo" class="custom-file-input" id="path_logo" onchange="preview('.tampil-logo', this.files[0])">
                                         <label class="custom-file-label" for="foto">Choose file</label>
                                     </div>
                                     <small class="form-text text-muted">
-                                        File harus berupa gambar PNG, ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
+                                        File dengan format PNG, ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
                                     </small>
                                     <span class="help-block with-errors text-danger"></span>
                                     <div class="tampil-logo mt-3">
@@ -69,7 +65,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-primary"><i class="fas fa-check"></i> Simpan</button>
                     </div>
                 </form>
             </div>
@@ -106,7 +102,6 @@
                         title: "Gagal menyimpan data",
                         icon: "error",
                     });
-                    return;
                 });
             }
         });
@@ -139,7 +134,6 @@
                         title: "Gagal menyimpan data",
                         icon: "error",
                     });
-                    return;
             });
     }
 
@@ -177,5 +171,17 @@
             reader.readAsDataURL(file);
         }
     }
+
+    document.getElementById('diskon').addEventListener('input', function() {
+        let value = parseInt(this.value) || 0;
+        
+        if (value < 0) {
+            this.value = 0;
+        } else if (value > 100) {
+            this.value = 100;
+        } else {
+            this.value = value;
+        }
+    });
 </script>
 @endpush

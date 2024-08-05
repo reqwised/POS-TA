@@ -9,7 +9,7 @@
                 <div class="mb-3">
                     <table class="table table-sm table-borderless">
                         <tr>
-                            <td width="10%"><strong>Invoice</strong></td>
+                            <td width="15%"><strong>Nomor Faktur</strong></td>
                             <td>: <span id="kode-invoice"></span></td>
                         </tr>
                         <tr>
@@ -18,7 +18,7 @@
                         </tr>
                         <tr>
                             <td><strong>Pelanggan</strong></td>
-                            <td>:<span class="badge badge-primary" id="memb"></span></td>
+                            <td>: <span id="memb"></span></td>
                         </tr>
                         <tr>
                             <td><strong>Kasir</strong></td>
@@ -28,7 +28,7 @@
                 </div>
                 <table class="table table-sm table-bordered table-striped table-detail">
                     <thead>
-                        <th width="5%">No</th>
+                        <th>No</th>
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Harga</th>

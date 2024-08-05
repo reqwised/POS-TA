@@ -194,7 +194,7 @@
         <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Grafik Pendapatan {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                    <h3 class="card-title">Grafik Pendapatan Periode {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="chart">
@@ -208,7 +208,7 @@
         <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Grafik Barang Terjual {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                    <h3 class="card-title">Grafik Barang Periode {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="chart">

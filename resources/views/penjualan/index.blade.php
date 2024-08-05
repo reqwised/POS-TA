@@ -16,7 +16,7 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Tanggal</th>
-                            <th>Invoice</th>
+                            <th>Nomor Faktur</th>
                             <th>Member</th>
                             <th>Total Item</th>
                             <th>Total Harga</th>
@@ -53,7 +53,7 @@
                 {data: 'tanggal'},
                 {data: 'invoice'},
                 {data: 'nama',render: function(data, type, row) {
-            return `<span class="badge badge-primary">${data}</span>`;
+            return `<span">${data}</span>`;
         }},
                 {data: 'total_item'},
                 {data: 'total_harga'},

@@ -4,7 +4,7 @@
 @push('css')
 <style>
     .tampil-bayar {
-        font-size: 4.5em;
+        font-size: 3.5em;
     }
     .tampil-terbilang {}
     .table-pembelian tbody tr:last-child {
@@ -29,51 +29,76 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
-                <div class="card-header">
-                    <table class="table table-sm table-borderless mb-0">
-                        <tr>
-                            <td width="10%">Supplier</td>
-                            <td>: {{ $supplier->nama }}</td>
-                        </tr>
-                        <tr>
-                            <td>Telepon</td>
-                            <td>: {{ $supplier->telepon }}</td>
-                        </tr>
-                        <tr>
-                            <td>Alamat</td>
-                            <td>: {{ $supplier->alamat }}</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="card-body mx-2">
-                    <form class="form-produk">
-                        @csrf
-                        <div class="form-group row">
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Cari Produk">
-                                <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
-                                <input type="hidden" name="id_produk" id="id_produk">
-                            </div>
-                            <div class="col-sm-3">
-                                <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Cari Produk</button>
+                <div class="card-header pb-0 border-bottom">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <table class="table table-sm table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th width="5%"><strong>Supplier</strong></th>
+                                        <td><span class="px-2">:</span>{{ $supplier->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th><strong>Telepon</strong></th>
+                                        <td><span class="px-2">:</span>{{ $supplier->telepon }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th><strong>Alamat</strong></th>
+                                        <td><span class="px-2">:</span>{{ $supplier->alamat }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Total Bayar</h3>
+                                    <div class="card-tools">
+                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0" style="display: block;">
+                                    <div class="tampil-bayar text-right pr-2"></div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </div>
 
-                    <table class="table table-sm table-bordered table-striped table-pembelian">
-                        <thead>
-                            <th width="5%">No</th>
-                            <th>Kode</th>
-                            <th>Nama</th>
-                            <th>Harga</th>
-                            <th width="10%">Jumlah</th>
-                            <th>Subtotal</th>
-                            <th width="10%">Aksi</th>
-                        </thead>
-                    </table>
+                <div class="card-body pt-0">
+                    <div class="row mt-2">
 
-                    <div class="row mt-5">
-                        <div class="col-lg-4">
+                        <div class="col-lg-8">
+                            <form class="form-produk">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" name="kode_produk" id="kode_produk" placeholder="Cari Produk">
+                                    <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
+                                    <input type="hidden" name="id_produk" id="id_produk">
+                                    <div class="form-inline">
+                                        <label class="mr-4">Pilih Produk</label>
+                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Cari Produk</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <table class="table table-sm table-bordered table-striped table-pembelian">
+                                <thead>
+                                    <th width="5%">No</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Harga</th>
+                                    <th width="10%">Jumlah</th>
+                                    <th>Subtotal</th>
+                                    <th width="10%">Aksi</th>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-4 mt-2">
                             <form action="{{ route('pembelian.store') }}" class="form-pembelian" method="post">
                                 @csrf
                                 <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">
@@ -81,35 +106,26 @@
                                 <input type="hidden" name="total_item" id="total_item">
                                 <input type="hidden" name="bayar" id="bayar">
 
-                                <div class="form-group row">
-                                    <label for="totalrp" class="col-sm-3 col-form-label">Total</label>
-                                    <div class="col-lg-9">
-                                        <input type="text" id="totalrp" class="form-control" readonly>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="totalrp">Total</label>
+                                    <input type="text" id="totalrp" class="form-control" readonly>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="diskon" class="col-sm-3 col-form-label">Diskon</label>
-                                    <div class="col-lg-9">
-                                        <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}" min="0" max="100">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="diskon">Diskon</label>
+                                    <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}">
                                 </div>
-                                <div class="form-group row">
-                                    <label for="bayar" class="col-sm-3 col-form-label">Bayar</label>
-                                    <div class="col-lg-9">
-                                        <input type="text" id="bayarrp" class="form-control">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="bayar">Bayar</label>
+                                    <input type="text" id="bayarrp" class="form-control" readonly>
                                 </div>
                             </form>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="tampil-bayar text-center bg-primary rounded-top"></div>
-                            <div class="tampil-terbilang p-2 bg-light text-dark rounded-bottom"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary btn-simpan">Simpan</button>
+                    <button type="button" onclick="window.history.back()" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</button>
+                    <button type="submit" class="btn btn-primary btn-simpan float-right"><i class="fas fa-check"></i> Simpan</button>
                 </div>
             </div>
         </div>
@@ -150,7 +166,17 @@
         .on('draw.dt', function () {
             loadForm($('#diskon').val());
         });
-        table2 = $('.table-produk').DataTable();
+        table2 = $('.table-produk').DataTable({
+            processing: true,
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'kode_produk'},
+                {data: 'nama_produk'},
+                {data: 'stok'},
+                {data: 'harga_beli'},
+                {data: 'aksi', name: 'aksi', orderable: false, searchable: false},
+            ]
+        });
 
         $(document).on('focus', '.quantity', function () {
             $(this).data('previousValue', $(this).val());
@@ -211,14 +237,14 @@
         $('#modal-produk').modal('show');
     }
 
-    function hideProduk() {
-        $('#modal-produk').modal('hide');
-    }
+    // function hideProduk() {
+    //     $('#modal-produk').modal('hide');
+    // }
 
     function pilihProduk(id, kode) {
         $('#id_produk').val(id);
         $('#kode_produk').val(kode);
-        hideProduk();
+        // hideProduk();
         tambahProduk();
     }
 
@@ -235,28 +261,16 @@
     }
 
     function deleteData(url) {
-        Swal.fire({
-            title: 'Yakin ingin menghapus data ini?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#007bff',
-            cancelButtonColor: '#dc3545',
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.post(url, {
-                    '_token': $('[name=csrf-token]').attr('content'),
-                    '_method': 'delete'
-                })
-                .done((response) => {
-                    table.ajax.reload();
-                })
-                .fail(errors => {
-                    alert('Gagal menghapus data!');
-                    return;
-                })
-            }
+        $.post(url, {
+            '_token': $('[name=csrf-token]').attr('content'),
+            '_method': 'delete'
+        })
+        .done((response) => {
+            table.ajax.reload(() => loadForm($('#diskon').val()));
+        })
+        .fail((errors) => {
+            alert('Tidak dapat menghapus data');
+            return;
         });
     }
 
@@ -278,18 +292,17 @@
             })
     }
 
-    // Event listener untuk memastikan nilai tidak kurang dari 0
     document.getElementById('diskon').addEventListener('input', function() {
-        if (parseInt(this.value) < 0 || this.value === '') {
-            this.value = 0; // Jika nilai kurang dari 0 atau kosong, set ke 0
+        let value = parseInt(this.value) || 0;
+        
+        if (value < 0) {
+            this.value = 0;
+        } else if (value > 100) {
+            this.value = 100;
+        } else {
+            this.value = value;
         }
     });
 
-    // Event listener untuk memastikan nilai tidak lebih dari 100
-    document.getElementById('diskon').addEventListener('input', function() {
-        if (parseInt(this.value) > 100) {
-            this.value = 100; // Jika nilai lebih dari 100, set ke 100
-        }
-    });
 </script>
 @endpush

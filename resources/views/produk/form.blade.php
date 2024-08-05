@@ -58,7 +58,12 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="diskon">Diskon</label>
-                            <input type="number" name="diskon" id="diskon" class="form-control"value="0">
+                            <div class="input-group">
+                                <input type="number" name="diskon" id="diskon" class="form-control" data-error="Diskon tidak boleh kosong" value="0" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                                </div>
+                            </div>
                             <span class="help-block with-errors text-danger"></span>
                         </div>
                     </div>
