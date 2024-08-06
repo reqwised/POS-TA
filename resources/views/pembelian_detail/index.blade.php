@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <button type="button" onclick="window.history.back()" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</button>
+                    <a type="button" href="{{ route('pembelian.index') }}" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</a>
                     <button type="submit" class="btn btn-primary btn-simpan float-right"><i class="fas fa-check"></i> Simpan</button>
                 </div>
             </div>

@@ -30,6 +30,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-sm" data-dismiss="modal">Batal</button>
+                </div>
         </div>
     </div>
 </div>
