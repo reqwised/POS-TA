@@ -66,7 +66,7 @@
         <p style="float: right">{{ strtoupper(auth()->user()->name) }}</p>
     </div>
     <div class="clear-both" style="clear: both;"></div>
-    <p>No: {{ $penjualan->kode_invoice }}</p>
+    <p>{{ $penjualan->kode_invoice }}</p>
     <p class="text-center">===================================</p>
     
     <br>

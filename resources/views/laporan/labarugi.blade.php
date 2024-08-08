@@ -25,16 +25,16 @@
                     <table class="table table-sm table-bordered table-striped">
                         <thead>
                             <th width="5%">No</th>
-                            <th>Nomor Faktur</th>
+                            <th width="25%">Nomor Faktur</th>
                             <th>Pendapatan</th>
                             <th>HPP</th>
                             <th>Margin (%/Rp)</th>
                         </thead>
                         <tfoot>
                             <th colspan="2" class="text-center">Total</th>
-                            <th id="total-pendapatan-kotor">Rp. 0</th>
-                            <th id="total-penjualan-bersih">Rp. 0</th>
-                            <th id="margintotal">Rp. 0</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tfoot>
                     </table>
                 </div>
@@ -48,11 +48,14 @@
 
 @push('scripts')
 <script src="{{ asset('/AdminLTE/plugins/daterangepicker/daterangepicker.js') }}"></script>
+
 <script>
-    let table;
+    function format_uang(angka) {
+        return 'Rp. ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
 
     $(function () {
-        table = $('.table').DataTable({
+        let table = $('.table').DataTable({
             responsive: true,
             processing: true,
             serverSide: true,
@@ -98,9 +101,9 @@
                     }, 0);
 
                 // Update footer
-                $(api.column(2).footer()).html('Rp. ' + totalPendapatanKotor.toLocaleString());
-                $(api.column(3).footer()).html('Rp. ' + totalPenjualanBersih.toLocaleString());
-                $(api.column(4).footer()).html('Rp. ' + (totalPendapatanKotor - totalPenjualanBersih).toLocaleString());
+                $(api.column(2).footer()).html(format_uang(totalPendapatanKotor));
+                $(api.column(3).footer()).html(format_uang(totalPenjualanBersih));
+                $(api.column(4).footer()).html(format_uang(totalPendapatanKotor - totalPenjualanBersih));
             }
         });
 

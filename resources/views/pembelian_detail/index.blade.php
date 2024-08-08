@@ -33,20 +33,18 @@
                     <div class="row">
                         <div class="col-lg-7">
                             <table class="table table-sm table-borderless mb-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="5%"><strong>Supplier</strong></th>
-                                        <td><span class="px-2">:</span>{{ $supplier->nama }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th><strong>Telepon</strong></th>
-                                        <td><span class="px-2">:</span>{{ $supplier->telepon }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th><strong>Alamat</strong></th>
-                                        <td><span class="px-2">:</span>{{ $supplier->alamat }}</td>
-                                    </tr>
-                                </tbody>
+                                <tr>
+                                    <td width="10%"><strong>Supplier</strong></td>
+                                    <td>: {{ $supplier->nama }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Telepon</strong></td>
+                                    <td>: {{ $supplier->telepon }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alamat</strong></td>
+                                    <td>: {{ $supplier->alamat }}</td>
+                                </tr>
                             </table>
                         </div>
 
@@ -54,13 +52,8 @@
                             <div class="card bg-primary">
                                 <div class="card-header py-1">
                                     <h3 class="card-title">Total Bayar</h3>
-                                    <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                        </button>
-                                    </div>
                                 </div>
-                                <div class="card-body p-0" style="display: block;">
+                                <div class="card-body p-0">
                                     <div class="tampil-bayar text-right pr-2"></div>
                                 </div>
                             </div>
@@ -72,15 +65,17 @@
                     <div class="row mt-2">
 
                         <div class="col-lg-4">
+                            <h4>Pembelian</h4>
                             <form class="form-produk">
                                 @csrf
-                                <div class="form-group">
-                                    <input type="hidden" class="form-control" name="kode_produk" id="kode_produk" placeholder="Cari Produk">
-                                    <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
-                                    <input type="hidden" name="id_produk" id="id_produk">
-                                    <div class="form-inline">
-                                        <label class="mr-4">Pilih Produk</label>
-                                        <button onclick="tampilProduk()" class="btn btn-outline-primary" type="button"><i class="fas fa-search"></i> Pilih Produk yang ingin dibeli</button>
+                                <div class="form-group row">
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Masukkan Kode Produk">
+                                        <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
+                                        <input type="hidden" name="id_produk" id="id_produk">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Pilih Produk</button>
                                     </div>
                                 </div>
                             </form>
@@ -92,67 +87,29 @@
                                 <input type="hidden" name="total_item" id="total_item">
                                 <input type="hidden" name="bayar" id="bayar">
 
-                                <div class="form-group row">
-                                    <label for="totalrp" class="col-lg-3 control-label">Total</label>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="totalrp" class="form-control" readonly>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="totalrp">Total</label>
+                                    <input type="text" id="totalrp" class="form-control col-sm-11" readonly>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="diskon" class="col-lg-3 control-label">Diskon</label>
-                                    <div class="col-lg-7">
-                                        <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}">
+                                <div class="form-group">
+                                    <label for="diskon">Diskon</label>
+                                    <div class="input-group col-sm-11 px-0">
+                                        <input type="number" name="diskon" id="diskon" class="form-control " value="{{ $diskon }}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                                        </div>
                                     </div>
+                                    <span class="help-block with-errors text-danger"></span>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="bayar" class="col-lg-3 control-label">Bayar</label>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="bayarrp" class="form-control">
-                                    </div>
+                                <div class="form-group">
+                                    <label for="bayar">Bayar</label>
+                                    <input type="text" id="bayarrp" class="form-control col-sm-11" readonly>
                                 </div>
                             </form>
-
-                            <!-- <table class="table table-sm table-bordered table-striped table-pembelian">
-                                <thead>
-                                    <th width="5%">No</th>
-                                    <th>Kode</th>
-                                    <th>Nama</th>
-                                    <th>Harga</th>
-                                    <th width="10%">Jumlah</th>
-                                    <th>Subtotal</th>
-                                    <th width="7%">Aksi</th>
-                                </thead>
-                            </table> -->
                         </div>
 
                         <div class="col-lg-8">
-                            <!-- <form action="{{ route('pembelian.store') }}" class="form-pembelian" method="post">
-                                @csrf
-                                <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">
-                                <input type="hidden" name="total" id="total">
-                                <input type="hidden" name="total_item" id="total_item">
-                                <input type="hidden" name="bayar" id="bayar">
-
-                                <div class="form-group row">
-                                    <label for="totalrp" class="col-lg-2 control-label">Total</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" id="totalrp" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="diskon" class="col-lg-2 control-label">Diskon</label>
-                                    <div class="col-lg-8">
-                                        <input type="number" name="diskon" id="diskon" class="form-control" value="{{ $diskon }}">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="bayar" class="col-lg-2 control-label">Bayar</label>
-                                    <div class="col-lg-8">
-                                        <input type="text" id="bayarrp" class="form-control">
-                                    </div>
-                                </div>
-                            </form> -->
-
+                            <h4>Daftar Pembelian</h4>
                             <table class="table table-sm table-bordered table-striped table-pembelian">
                                 <thead>
                                     <th width="5%">No</th>
