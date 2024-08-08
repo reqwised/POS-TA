@@ -59,7 +59,7 @@
                 <li class="nav-header">TRANSAKSI</li>
                 <li class="nav-item">
                     <a href="{{ route('pengeluaran.index') }}" class="nav-link {{(Route::is('pengeluaran.index')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-wallet"></i>
+                        <i class="nav-icon fas fa-poll"></i>
                         <p>
                             Pengeluaran
                         </p>
@@ -67,7 +67,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('pembelian.index') }}" class="nav-link {{(Route::is('pembelian.index')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-download"></i>
+                        <i class="nav-icon fas fa-poll"></i>
                         <p>
                             Pembelian
                         </p>
@@ -75,7 +75,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('penjualan.index') }}" class="nav-link {{(Route::is('penjualan.index')) ? 'nav-link active' : '' }}">
-                        <i class="nav-icon fas fa-upload"></i>
+                        <i class="nav-icon fas fa-poll"></i>
                         <p>
                             Penjualan
                         </p>

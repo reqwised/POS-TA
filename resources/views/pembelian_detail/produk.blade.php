@@ -18,12 +18,12 @@
                     <tbody>
                         @foreach ($produk as $key => $item)
                             <tr>
-                                <td width="10%">{{ $key+1 }}</td>
+                                <td width="7%">{{ $key+1 }}</td>
                                 <td width="15%"><span class="badge badge-primary">{{ $item->kode_produk }}</span></td>
                                 <td width="40%">{{ $item->nama_produk }}</td>
                                 <td width="10%">{{ $item->stok }}</td>
                                 <td>{{ $item->harga_beli }}</td>
-                                <td width="10%">
+                                <td width="13%">
                                     <a href="#" class="btn btn-primary btn-sm"
                                         onclick="pilihProduk('{{ $item->id_produk }}', '{{ $item->kode_produk }}')">
                                         <i class="fa fa-check-circle"></i>
@@ -34,6 +34,9 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Batal</button>
             </div>
         </div>
     </div>
