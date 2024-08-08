@@ -29,101 +29,106 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
-                <div class="card-body mx-2">
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <input tabindex="2" type="text" id="kodeProdukInput"class="form-control d-inline" placeholder="Masukkan Kode Produk">
-                        </div>
-                        <div class="col-sm-3">
-                            <button tabindex="1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal"><i class="fas fa-search"></i>
-                                Cari Produk
-                            </button>
-                        </div>
-                    </div>
-
-                    <table class="table table-sm table-bordered table-striped table-penjualan">
-                        <thead>
-                            <th width="5%">No</th>
-                            <th class="hidden-column">ID Produk</th>
-                            <th>Kode</th>
-                            <th>Nama</th>
-                            <th>Harga</th>
-                            <th width="15%">Jumlah</th>
-                            <th>Diskon (%)</th>
-                            <th>Diskon (Rp)</th>
-                            <th>Subtotal</th>
-                            <th width="10%">Aksi</i></th>
-                            <th>Stok</th>
-                        </thead>
-                        <tbody id="table-penjualan-body">
-                        </tbody>
-                    </table>
-                    
-                <div class="row mt-4">
-                    <div class="col-lg-4">
-                        <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
-                            @csrf
-                            <input type="hidden" id="id_member" name="id_member" value="">
-                            <input type="hidden" id="total_item" name="total_item" value="">
-                            <input type="hidden" id="total_harga" name="total_harga" value="">
-                            <input type="hidden" id="diskon" name="diskon" value="">
-                            <input type="hidden" id="bayar" name="bayar" value="">
-                            <input type="hidden" id="diterima" name="diterima" value="">
-                            <input type="hidden" id="detail_items" name="detail_items" value="">
-                            <div class="form-group">
-                                <label for="total">Total</label>
-                                <input type="text" id="total" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="kode_member">Kode Member</label>
-                                <div class="input-group">
-                                    <input type="text" id="kode_member" class="form-control" oninput="fetchMemberByKode()">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#daftarMemberModal"><i class="fas fa-search"></i></button>
+                <div class="card-body">
+                    <div class="row mt-2">
+                        <div class="col-lg-3">
+                            <h4>Transaksi Penjualan</h4>
+                            <form action="{{ route('jual.store') }}" method="POST" id="form-penjualan">
+                                @csrf
+                                <input type="hidden" id="id_member" name="id_member" value="">
+                                <input type="hidden" id="total_item" name="total_item" value="">
+                                <input type="hidden" id="total_harga" name="total_harga" value="">
+                                <input type="hidden" id="diskon" name="diskon" value="">
+                                <input type="hidden" id="bayar" name="bayar" value="">
+                                <input type="hidden" id="diterima" name="diterima" value="">
+                                <input type="hidden" id="detail_items" name="detail_items" value="">
+                                <div class="form-group">
+                                    <label for="total">Total</label>
+                                    <input type="text" id="total" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kode_member">Kode Member</label>
+                                    <div class="input-group">
+                                        <input type="text" id="nama_member" class="form-control">
+                                        <input type="hidden" id="kode_member" class="form-control" oninput="fetchMemberByKode()">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#daftarMemberModal"><i class="fas fa-search"></i></button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="nama_member">Nama Member</label>
-                                <input type="text" id="nama_member" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="diskon">Diskon (%)</label>
-                                        <input type="number" id="disc_pr" class="form-control" value="0" oninput="disco_pr()" min="0" max="100">
-                                    </div>
-                                    <div class="col">
-                                        <label for="disdiskon">Diskon (Rp)</label>
-                                        <input type="text" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="diskon">Diskon (%)</label>
+                                            <input type="number" id="disc_pr" class="form-control" value="0" oninput="disco_pr()" min="0" max="100">
+                                        </div>
+                                        <div class="col">
+                                            <label for="disdiskon">Diskon (Rp)</label>
+                                            <input type="text" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="bayar">Bayar</label>
-                                <input type="text" id="byr" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="diterima">Diterima</label>
-                                <input type="text" id="cash" class="form-control" oninput="formatCurrency(this)" onblur="removeFormatting(this)" value=''>
-                            </div>
-                            <div class="form-group">
-                                <label for="kembali">Kembali</label>
-                                <input type="text" id="kembali" class="form-control" readonly>
-                            </div>
-                        </form>
-                    </div>
+                                <div class="form-group">
+                                    <label for="bayar">Bayar</label>
+                                    <input type="text" id="byr" class="form-control" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="diterima">Diterima</label>
+                                    <input type="text" id="cash" class="form-control" oninput="formatCurrency(this)" onblur="removeFormatting(this)" value=''>
+                                </div>
+                                <div class="form-group">
+                                    <label for="kembali">Kembali</label>
+                                    <input type="text" id="kembali" class="form-control" readonly>
+                                </div>
+                            </form>
+                        </div>
 
-                    <div class="col-lg-8">
-                        <div class="tampil-bayar bg-primary text-center rounded"></div>
-                        <div class="tampil-terbilang"></div>
-                    </div>
+                        <div class="col-lg-9">
+                            <h4>Daftar Penjualan</h4>
+                            <div class="form-group row">
+                                <div class="col-sm-5">
+                                    <input tabindex="2" type="text" id="kodeProdukInput"class="form-control d-inline" placeholder="Masukkan Kode Produk">
+                                </div>
+                                <div class="col-sm-4">
+                                    <button tabindex="1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#daftarProdukModal"><i class="fas fa-search"></i>
+                                        Cari Produk
+                                    </button>
+                                </div>
+                            </div>
 
+                            <table class="table table-sm table-bordered table-striped table-penjualan">
+                                <thead>
+                                    <th width="5%">No</th>
+                                    <th class="hidden-column">ID Produk</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Harga</th>
+                                    <th width="15%">Jumlah</th>
+                                    <th>Diskon (%)</th>
+                                    <th>Diskon (Rp)</th>
+                                    <th>Subtotal</th>
+                                    <th width="10%">Aksi</i></th>
+                                    <th>Stok</th>
+                                </thead>
+                                <tbody id="table-penjualan-body">
+                                </tbody>
+                            </table>
+
+                            <div class="card bg-primary">
+                                <div class="card-header py-1">
+                                    <h3 class="card-title">Total Bayar</h3>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="tampil-bayar text-right pr-2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-simpan">Simpan</button>
+                <a type="button" href="{{ route('pembelian.index') }}" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</a>
+                <button type="submit" class="btn btn-primary btn-simpan float-right"><i class="fas fa-check"></i> Simpan</button>
             </div>
         </div>
     </div>

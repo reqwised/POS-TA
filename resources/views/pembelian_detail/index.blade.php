@@ -29,57 +29,11 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
-                <div class="card-header pb-0">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <table class="table table-sm table-borderless mb-0">
-                                <tr>
-                                    <td width="10%"><strong>Supplier</strong></td>
-                                    <td>: {{ $supplier->nama }}</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Telepon</strong></td>
-                                    <td>: {{ $supplier->telepon }}</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Alamat</strong></td>
-                                    <td>: {{ $supplier->alamat }}</td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="col-lg-5">
-                            <div class="card bg-primary">
-                                <div class="card-header py-1">
-                                    <h3 class="card-title">Total Bayar</h3>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div class="tampil-bayar text-right pr-2"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body pt-0">
+                <div class="card-body">
                     <div class="row mt-2">
 
                         <div class="col-lg-4">
                             <h4>Pembelian</h4>
-                            <form class="form-produk">
-                                @csrf
-                                <div class="form-group row">
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Masukkan Kode Produk">
-                                        <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
-                                        <input type="hidden" name="id_produk" id="id_produk">
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Pilih Produk</button>
-                                    </div>
-                                </div>
-                            </form>
-
                             <form action="{{ route('pembelian.store') }}" class="form-pembelian" method="post">
                                 @csrf
                                 <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">
@@ -87,6 +41,10 @@
                                 <input type="hidden" name="total_item" id="total_item">
                                 <input type="hidden" name="bayar" id="bayar">
 
+                                <div class="form-group">
+                                    <label>Supplier</label>
+                                    <input class="form-control col-sm-11" value="{{ $supplier->nama }}" readonly>
+                                </div>
                                 <div class="form-group">
                                     <label for="totalrp">Total</label>
                                     <input type="text" id="totalrp" class="form-control col-sm-11" readonly>
@@ -110,7 +68,21 @@
 
                         <div class="col-lg-8">
                             <h4>Daftar Pembelian</h4>
-                            <table class="table table-sm table-bordered table-striped table-pembelian">
+                            <form class="form-produk">
+                                @csrf
+                                <div class="form-group row">
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" name="kode_produk" id="kode_produk" placeholder="Masukkan Kode Produk">
+                                        <input type="hidden" name="id_pembelian" id="id_pembelian" value="{{ $id_pembelian }}">
+                                        <input type="hidden" name="id_produk" id="id_produk">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Pilih Produk</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <table class="table table-sm table-bordered table-striped table-pembelian mb-5">
                                 <thead>
                                     <th width="5%">No</th>
                                     <th>Kode</th>
@@ -121,6 +93,15 @@
                                     <th width="7%">Aksi</th>
                                 </thead>
                             </table>
+
+                            <div class="card bg-primary mt-3">
+                                <div class="card-header py-1">
+                                    <h3 class="card-title">Total Bayar</h3>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="tampil-bayar text-right pr-2"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
