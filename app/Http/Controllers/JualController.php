@@ -111,12 +111,13 @@ class JualController extends Controller
     public function cetak($id)
     {
         $penjualan = Penjualan::with('details')->find($id);
+        $setting = Setting::first();
 
         if (!$penjualan) {
             return redirect()->route('jual.index')->with('error', 'Transaksi tidak ditemukan');
         }
 
         // Buat logika untuk menampilkan atau mencetak nota, misalnya dengan menggunakan view khusus atau library PDF
-        return view('jual.cetak', compact('penjualan'));
+        return view('jual.cetak', compact('penjualan' , 'setting'));
     }
 }

@@ -53,6 +53,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'password' => 'required|string|confirmed|min:6',
+        ]);
+        
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
