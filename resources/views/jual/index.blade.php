@@ -311,9 +311,12 @@
             const jumlahInput = existingRow.querySelector('input[name="jumlah"]');
             const newJumlah = parseInt(jumlahInput.value) + 1;
             if (newJumlah > stok) {
-                const modalBody = document.querySelector('#warningModal .modal-body');
-                modalBody.innerText = `Stok tidak mencukupi untuk produk "${nama}".`;
-                $('#warningModal').modal('show');
+                Swal.fire({
+                    title: "Gagal!",
+                    text: `Stok tidak mencukupi untuk produk`,
+                    icon: "error",
+                    confirmButtonColor: '#007bff',
+                });
                 return;
             }
             jumlahInput.value = newJumlah;
@@ -389,9 +392,13 @@
             subtotalCell.innerText = format_uang(subtotal);
             calculateTotal();
         } else {
-            const modalBody = document.querySelector('#warningModal .modal-body');
-            modalBody.innerText = `Stok tidak mencukupi untuk produk ini.`;
-            $('#warningModal').modal('show');
+            input.value = 1;
+            Swal.fire({
+                    title: "Gagal!",
+                    text: `Stok tidak mencukupi untuk produk ini`,
+                    icon: "error",
+                    confirmButtonColor: '#007bff',
+                });
             row.querySelector('input[name="jumlah"]').value = stok;
             // Update jumlah kembali
             jumlah = stok;
@@ -532,14 +539,20 @@
 
         if (jumlah < 1) {
             input.value = 1;
-            const modalBody = document.querySelector('#warningModal .modal-body');
-            modalBody.innerText = `Jumlah tidak boleh kurang dari satu.`;
-            $('#warningModal').modal('show');
+            Swal.fire({
+                title: "Gagal!",
+                text: "Jumlah barang tidak boleh kurang dari satu",
+                icon: "error",
+                confirmButtonColor: '#007bff',
+            });
         } else if (jumlah > stok) {
             input.value = stok;
-            const modalBody = document.querySelector('#warningModal .modal-body');
-            modalBody.innerText = `Stok tidak mencukupi untuk produk ini.`;
-            $('#warningModal').modal('show');
+            Swal.fire({
+                title: "Gagal!",
+                text: "Stok tidak mencukupi",
+                icon: "error",
+                confirmButtonColor: '#007bff',
+            });
         }
 
         updateSubtotal(input);
