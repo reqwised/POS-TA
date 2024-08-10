@@ -33,7 +33,7 @@
                     <div class="row mt-2">
 
                         <div class="col-lg-4">
-                            <h4>Pembelian</h4>
+                            <h4>Transaksi Pembelian</h4>
                             <form action="{{ route('pembelian.store') }}" class="form-pembelian" method="post">
                                 @csrf
                                 <input type="hidden" name="id_pembelian" value="{{ $id_pembelian }}">

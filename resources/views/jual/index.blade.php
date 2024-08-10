@@ -47,7 +47,7 @@
                                     <input type="text" id="total" class="form-control" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kode_member">Kode Member</label>
+                                    <label for="kode_member">Member</label>
                                     <div class="input-group">
                                         <input type="text" id="nama_member" class="form-control">
                                         <input type="hidden" id="kode_member" class="form-control" oninput="fetchMemberByKode()">
@@ -55,6 +55,16 @@
                                             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#daftarMemberModal"><i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="diskon">Diskon</label>
+                                    <div class="input-group">
+                                        <input ype="number" id="disc_pr" class="form-control" value="0" oninput="disco_pr()" readonly>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                                        </div>
+                                    </div>
+                                    <span class="help-block with-errors text-danger"></span>
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
@@ -127,7 +137,7 @@
                 </div>
 
             <div class="card-footer">
-                <a type="button" href="{{ route('pembelian.index') }}" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</a>
+                <a type="button" href="{{ route('penjualan.index') }}" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</a>
                 <button type="submit" class="btn btn-primary btn-simpan float-right"><i class="fas fa-check"></i> Simpan</button>
             </div>
         </div>
