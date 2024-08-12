@@ -41,8 +41,58 @@ class DashboardController extends Controller
 
             $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
         }
+
+
+
+        // TEST GRAFIK OMSET
+
+
+
+
+
+
+                $tanggalAwal1 = date('Y-m-01');
+                $tanggalAkhir1 = date('Y-m-d');
+                $jumlah_hari = (int) substr($tanggalAkhir1, 8, 2);
+
+                $total_omset = array_fill(0, $jumlah_hari, 0);
+                $total_hpp = array_fill(0, $jumlah_hari, 0);
+                $data_tanggal1 = range(1, $jumlah_hari);  // Array of dates from 1 to current day
+
+                $penjualan_details = Penjualan::whereBetween('created_at', [$tanggalAwal1, $tanggalAkhir1])
+                    ->with('details.produk')
+                    ->get();
+
+                foreach ($penjualan_details as $penjualan) {
+                    $tanggal = (int) substr($penjualan->created_at, 8, 2);
+                    $pendapatan_kotor = $penjualan->bayar;
+                    $total_penjualan_bersih = 0;
+
+                    foreach ($penjualan->details as $detail) {
+                        $produks = $detail->produk;
+                        $penjualan_bersih = ($produks->harga_jual - $produks->harga_beli) * $detail->jumlah - $detail->diskon - $penjualan->diskon;
+                        $total_penjualan_bersih += $penjualan_bersih;
+                    }
+
+                    $total_omset[$tanggal - 1] += $pendapatan_kotor;
+                    $total_hpp[$tanggal - 1] += $total_penjualan_bersih;
+                }
+
+                // Output the data
+                // dd([
+                //     'tanggal_akhir' => $tanggalAkhir1,
+                //     'data_tanggal' => $data_tanggal1,
+                //     'total_omset' => $total_omset,
+                //     'total_hpp' => $total_hpp
+                // ]);
+
+
+
+
+
+        // end TEST GRAFIK OMSET
         
-        // Fetch data for top-selling products
+        // Ambil data dari 10 barang teratas
         $tanggal_awal = date('Y-m-01');
         $tanggal_akhir = date('Y-m-d');
         $total_terlaris = PenjualanDetail::select('id_produk', DB::raw('CAST(SUM(jumlah) AS UNSIGNED) as total_jumlah'))
@@ -143,7 +193,12 @@ class DashboardController extends Controller
         $jumlahPemantauStok = User::where('role', 'Pengelola Stok')->count();
 
         if (auth()->user()->role == 'Pemilik Toko') {
-            return view('admin.dashboard', compact('kategori', 'produk', 'supplier', 'member', 'tanggal_awal', 'tanggal_akhir', 'data_tanggal', 'data_pendapatan', 'penjualanHariIni', 'penjualanBulanIni', 'penjualanTahunIni', 'totalPenjualan', 'pengeluaranHariIni', 'pengeluaranBulanIni', 'pengeluaranTahunIni', 'pengeluaranTotal', 'jumlahKasir', 'jumlahPemantauStok', 'dataNama_produk', 'dataJumlah_produk'));
+            return view('admin.dashboard', compact('kategori', 'produk', 
+            'supplier', 'member', 'tanggal_awal', 'tanggal_akhir', 'data_tanggal', 
+            'data_tanggal1', 'data_pendapatan', 'penjualanHariIni', 'penjualanBulanIni', 
+            'penjualanTahunIni', 'totalPenjualan', 'pengeluaranHariIni', 'pengeluaranBulanIni', 
+            'pengeluaranTahunIni', 'pengeluaranTotal', 'jumlahKasir', 'jumlahPemantauStok', 'dataNama_produk', 
+            'dataJumlah_produk', 'tanggalAwal1', 'tanggalAkhir1' , 'total_omset' , 'total_hpp'));
         } else if (auth()->user()->role == 'Kasir') {
             return view('kasir.dashboard');
         } else {

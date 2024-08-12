@@ -194,7 +194,7 @@
         <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Grafik Pendapatan Periode {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                    <h3 class="card-title">Grafik <b>Pendapatan</b> Periode {{ tanggal_indonesia($tanggal_awal, false) }} - {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="chart">
@@ -208,7 +208,7 @@
         <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Grafik Barang Periode {{ tanggal_indonesia($tanggal_awal, false) }} s/d {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                    <h3 class="card-title">Grafik <b>Barang Terjual</b> Periode {{ tanggal_indonesia($tanggal_awal, false) }} - {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
                 </div>
                 <div class="card-body">
                     <div class="chart">
@@ -217,6 +217,21 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-lg-6">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Grafik <b>Omset</b> Periode {{ tanggal_indonesia($tanggal_awal, false) }} - {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="omsetChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </div>
 
@@ -329,6 +344,72 @@
             data: barChartData,
             options: barChartOptions
         });
-    });
+
+
+        // Grafik Laporan Omset
+
+
+        var omsetChartCanvas = $('#omsetChart').get(0).getContext('2d');
+
+        var omsetChartData = {
+            labels: {!! json_encode($data_tanggal1) !!},
+            datasets: 
+            [
+            {
+                label: 'Total Pendapatan',
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1,
+                data: {!! json_encode($total_omset) !!}
+            },
+
+            {
+                label: 'Total Margin',
+                backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                borderColor: 'rgba(255, 0, 0, )',
+                borderWidth: 1,
+                data: {!! json_encode($total_hpp) !!}
+            }
+            ]
+        };
+
+        var omsetChartOptions = {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Tanggal'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        callback: function(value) { if (Number.isInteger(value)) { return value; } }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Rupiah (Rp)'
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                    }
+                }
+            }
+        };
+
+        new Chart(omsetChartCanvas, {
+            type: 'bar',
+            data: omsetChartData,
+            options: omsetChartOptions
+        });
+        });
 </script>
 @endpush
