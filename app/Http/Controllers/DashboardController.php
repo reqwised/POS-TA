@@ -200,9 +200,9 @@ class DashboardController extends Controller
             'pengeluaranTahunIni', 'pengeluaranTotal', 'jumlahKasir', 'jumlahPemantauStok', 'dataNama_produk', 
             'dataJumlah_produk', 'tanggalAwal1', 'tanggalAkhir1' , 'total_omset' , 'total_hpp'));
         } else if (auth()->user()->role == 'Kasir') {
-            return view('kasir.dashboard');
+            return redirect()->route('penjualan.index');
         } else {
-            return view('pemantau_stok.dashboard');
+            return redirect()->route('kategori.index');
         }
     }
 }

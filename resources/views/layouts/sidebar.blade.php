@@ -11,6 +11,9 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
+                
+                @if (auth()->user()->role == 'Pemilik Toko')
+
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{(Route::is('dashboard')) ? 'nav-link active' : '' }}">
                         <i class="nav-icon fas fa-columns"></i>
@@ -19,6 +22,7 @@
                         </p>
                     </a>
                 </li>
+                @endif
 
                 @if (auth()->user()->role == 'Pemilik Toko')
 

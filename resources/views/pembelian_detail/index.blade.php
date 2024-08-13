@@ -215,6 +215,14 @@
         $('.btn-simpan').on('click', function () {
             $('.form-pembelian').submit();
         });
+        $(document).ready(function() {
+            $('#kode_produk').keypress(function(e) {
+                if (e.which == 13) { // 13 adalah kode key untuk Enter
+                    e.preventDefault(); // Mencegah form submit secara default
+                    tambahProduk(); // Panggil fungsi tambahProduk
+                }
+            });
+        });
     });
 
     function tampilProduk() {
@@ -234,12 +242,14 @@
 
     function tambahProduk() {
         let kode_produk = $('#kode_produk').val();
+        console.log(kode_produk);
+        
+        if (!kode_produk) {
+            alert('Kode produk tidak boleh kosong');
+            return;
+        }
         let tableData = table.rows().data().toArray();
         let existingRow = tableData.find(row => row.kode_produk === kode_produk);
-
-        console.log("Kode Produk dari Input:", kode_produk);
-        console.log("Data Tabel:", tableData);
-        console.log("Baris yang Ditemukan:", existingRow);
 
         if (existingRow) {
             // Ekstraksi nilai jumlah dari input HTML
@@ -256,6 +266,7 @@
                 })
                 .done(response => {
                     table.ajax.reload(() => loadForm($('#diskon').val()));
+                    $('#kode_produk').val(''); // Bersihkan input setelah sukses
                 })
                 .fail(errors => {
                     console.error(errors);
@@ -267,6 +278,7 @@
             $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
                 .done(response => {
                     $('#kode_produk').focus();
+                    $('#kode_produk').val(''); // Bersihkan input setelah sukses
                     table.ajax.reload(() => loadForm($('#diskon').val()));
                 })
                 .fail(errors => {
@@ -276,8 +288,6 @@
                 });
         }
     }
-
-
 
 
     function deleteData(url) {
