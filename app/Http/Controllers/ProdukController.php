@@ -179,6 +179,7 @@ class ProdukController extends Controller
         }
     }
 
+
     public function stash()
     {
         $produk = Produk::leftJoin('kategori', 'kategori.id_kategori', 'produk.id_kategori')

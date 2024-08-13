@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/stash', [ProdukController::class, 'stash'])->name('produk.stash');
         Route::post('/produk/restore/{id}', [ProdukController::class, 'restore'])->name('produk.restore');
 
+
         
     });
  

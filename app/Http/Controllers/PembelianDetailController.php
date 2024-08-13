@@ -32,39 +32,42 @@ class PembelianDetailController extends Controller
         $data = array();
         $total = 0;
         $total_item = 0;
-
+    
         foreach ($detail as $item) {
             $row = array();
-            $row['kode_produk'] = '<span class="badge badge-primary">'. $item->produk['kode_produk'] .'</span';
+            $row['id'] = $item->id_pembelian_detail;
+            $row['kode_produk'] = $item->produk['kode_produk'];
             $row['nama_produk'] = $item->produk['nama_produk'];
-            $row['harga_beli']  = 'Rp. '. format_uang($item->harga_beli);
-            $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_pembelian_detail .'" value="'. $item->jumlah .'">';
-            $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
-            $row['aksi']        = '<div class="btn-group">
-                                    <button onclick="deleteData(`'. route('pembelian_detail.destroy', $item->id_pembelian_detail) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-                                </div>';
+            $row['harga_beli'] = 'Rp. ' . format_uang($item->harga_beli);
+            $row['jumlah'] = '<input type="number" class="form-control input-sm quantity" data-id="' . $item->id_pembelian_detail . '" value="' . $item->jumlah . '">';
+            $row['subtotal'] = 'Rp. ' . format_uang($item->subtotal);
+            $row['aksi'] = '<div class="btn-group">
+                                <button onclick="deleteData(`' . route('pembelian_detail.destroy', $item->id_pembelian_detail) . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </div>';
             $data[] = $row;
-
+    
             $total += $item->harga_beli * $item->jumlah;
             $total_item += $item->jumlah;
         }
+    
         $data[] = [
             'kode_produk' => '
-                <div class="total hide">'. $total .'</div>
-                <div class="total_item hide">'. $total_item .'</div>',
+                <div class="total hide">' . $total . '</div>
+                <div class="total_item hide">' . $total_item . '</div>',
             'nama_produk' => '',
-            'harga_beli'  => '',
-            'jumlah'      => '',
-            'subtotal'    => '',
-            'aksi'        => '',
+            'harga_beli' => '',
+            'jumlah' => '',
+            'subtotal' => '',
+            'aksi' => '',
         ];
-
+    
         return datatables()
             ->of($data)
             ->addIndexColumn()
             ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
             ->make(true);
     }
+    
 
     public function store(Request $request)
     {
@@ -87,9 +90,19 @@ class PembelianDetailController extends Controller
     public function update(Request $request, $id)
     {
         $detail = PembelianDetail::find($id);
+    
+        if (!$detail) {
+            \Log::error("Detail not found with ID: $id");
+            return response()->json('Data tidak ditemukan', 404);
+        }
+    
+        \Log::info("Updating detail with ID: $id", ['request_data' => $request->all()]);
+    
         $detail->jumlah = $request->jumlah;
         $detail->subtotal = $detail->harga_beli * $request->jumlah;
         $detail->update();
+    
+        return response()->json('Data berhasil diperbarui', 200);
     }
 
     public function destroy($id)

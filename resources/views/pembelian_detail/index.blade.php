@@ -149,6 +149,7 @@
         .on('draw.dt', function () {
             loadForm($('#diskon').val());
         });
+
         table2 = $('.table-produk').DataTable({
             processing: true,
             columns: [
@@ -232,16 +233,52 @@
     }
 
     function tambahProduk() {
-        $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
-            .done(response => {
-                $('#kode_produk').focus();
-                table.ajax.reload(() => loadForm($('#diskon').val()));
-            })
-            .fail(errors => {
-                alert('Tidak dapat menyimpan data');
-                return;
-            });
+        let kode_produk = $('#kode_produk').val();
+        let tableData = table.rows().data().toArray();
+        let existingRow = tableData.find(row => row.kode_produk === kode_produk);
+
+        console.log("Kode Produk dari Input:", kode_produk);
+        console.log("Data Tabel:", tableData);
+        console.log("Baris yang Ditemukan:", existingRow);
+
+        if (existingRow) {
+            // Ekstraksi nilai jumlah dari input HTML
+            let jumlahInput = $(existingRow.jumlah).val(); // Ekstrak nilai dari HTML input
+            let newJumlah = parseInt(jumlahInput) + 1;
+
+            // Ambil ID detail pembelian dari atribut data-id pada input
+            let idDetail = $(existingRow.jumlah).data('id');
+
+            $.post(`{{ url('/pembelian_detail') }}/${idDetail}`, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'put',
+                    'jumlah': newJumlah
+                })
+                .done(response => {
+                    table.ajax.reload(() => loadForm($('#diskon').val()));
+                })
+                .fail(errors => {
+                    console.error(errors);
+                    alert('Tidak dapat menambahkan produk');
+                    return;
+                });
+        } else {
+            // Jika produk belum ada, tambahkan produk baru
+            $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
+                .done(response => {
+                    $('#kode_produk').focus();
+                    table.ajax.reload(() => loadForm($('#diskon').val()));
+                })
+                .fail(errors => {
+                    console.error(errors);
+                    alert('Tidak dapat menyimpan data');
+                    return;
+                });
+        }
     }
+
+
+
 
     function deleteData(url) {
         $.post(url, {
