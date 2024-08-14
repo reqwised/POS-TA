@@ -66,18 +66,18 @@
                                     </div>
                                     <span class="help-block with-errors text-danger"></span>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <div class="row">
                                         <div class="col">
                                             <label for="diskon">Diskon (%)</label>
                                             <input type="number" id="disc_pr" class="form-control" value="0" oninput="disco_pr()" min="0" max="100">
                                         </div>
-                                        <div class="col">
-                                            <label for="disdiskon">Diskon (Rp)</label>
-                                            <input type="text" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0">
-                                        </div>
+                                        <div class="col"> --}}
+                                            {{-- <label for="disdiskon">Diskon (Rp)</label> --}}
+                                            <input type="hidden" id="disc_rp" class="form-control" value="0" oninput="disco_rp()" min="0" readonly>
+                                        {{-- </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group">
                                     <label for="bayar">Bayar</label>
                                     <input type="text" id="byr" class="form-control" readonly>
@@ -115,7 +115,7 @@
                                     <th>Harga</th>
                                     <th width="15%">Jumlah</th>
                                     <th>Diskon (%)</th>
-                                    <th>Diskon (Rp)</th>
+                                    <th class="hidden-column">Diskon (Rp)</th>
                                     <th>Subtotal</th>
                                     <th width="10%">Aksi</i></th>
                                     <th>Stok</th>
@@ -179,8 +179,8 @@
         const totalItem = calculateTotalItems();
         const totalHarga = document.getElementById('total').value.replace(/[^,\d]/g, '').replace(/,00/,'');
         const diskon = document.getElementById('disc_rp').value.replace(/[^,\d]/g, '');
-        const bayar = document.getElementById('byr').value.replace(/[^,\d]/g, '').replace(/,00/,'');
-        const diterima = document.getElementById('cash').value.replace(/[^,\d]/g, '');
+        const bayar = parseInt(document.getElementById('byr').value.replace(/[^,\d]/g, '').replace(/,00/,''));
+        const diterima = parseInt(document.getElementById('cash').value.replace(/[^,\d]/g, ''));
         const detailItems = getDetailItems();
 
         // Isi input hidden
@@ -191,6 +191,12 @@
         document.getElementById('bayar').value = bayar;
         document.getElementById('diterima').value = diterima;
         document.getElementById('detail_items').value = JSON.stringify(detailItems);
+
+
+        console.log("diterima = ", diterima);
+        console.log("bayar = ", bayar);
+        console.log(diterima >= bayar);
+        
 
         // Submit the form
         if(diterima >= bayar){
@@ -347,8 +353,8 @@
                 <td>${nama}</td>
                 <td>${format_uang(harga)}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
-                <td><input type="number" class="form-control" name="diskon_pr" min="0" max="100" value="${diskon}" oninput="diskon_pr(this)"></td>
-                <td><input type="number" class="form-control" name="diskon_rp" min="0" value="0" oninput="diskon_rp(this)"></td>
+                <td><input class="form-control" name="diskon_pr" min="0" max="100" value="${diskon}" oninput="diskon_pr(this)" readonly></td>
+                <td class="hidden-column"><input type="number" class="form-control" name="diskon_rp" min="0" value="0" oninput="diskon_rp(this)"></td>
                 <td>${format_uang(harga)}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
                 <td>${stok}</td>
