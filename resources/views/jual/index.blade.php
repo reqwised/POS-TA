@@ -353,7 +353,7 @@
                 <td>${nama}</td>
                 <td>${format_uang(harga)}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
-                <td><input class="form-control" name="diskon_pr" min="0" max="100" value="${diskon}" oninput="diskon_pr(this)" readonly></td>
+                <td width="12%"><input class="form-control" name="diskon_pr" min="0" max="100" value="${diskon}" oninput="diskon_pr(this)" readonly></td>
                 <td class="hidden-column"><input type="number" class="form-control" name="diskon_rp" min="0" value="0" oninput="diskon_rp(this)"></td>
                 <td>${format_uang(harga)}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
