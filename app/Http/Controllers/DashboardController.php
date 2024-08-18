@@ -42,15 +42,7 @@ class DashboardController extends Controller
             $tanggal_awal = date('Y-m-d', strtotime("+1 day", strtotime($tanggal_awal)));
         }
 
-
-
-        // TEST GRAFIK OMSET
-
-
-
-
-
-
+        // GRAFIK OMSET
                 $tanggalAwal1 = date('Y-m-01');
                 $tanggalAkhir1 = date('Y-m-d');
                 $jumlah_hari = (int) substr($tanggalAkhir1, 8, 2);
@@ -77,20 +69,7 @@ class DashboardController extends Controller
                     $total_omset[$tanggal - 1] += $pendapatan_kotor;
                     $total_hpp[$tanggal - 1] += $total_penjualan_bersih;
                 }
-
-                // Output the data
-                // dd([
-                //     'tanggal_akhir' => $tanggalAkhir1,
-                //     'data_tanggal' => $data_tanggal1,
-                //     'total_omset' => $total_omset,
-                //     'total_hpp' => $total_hpp
-                // ]);
-
-
-
-
-
-        // end TEST GRAFIK OMSET
+        //GRAFIK OMSET
         
         // Ambil data dari 10 barang teratas
         $tanggal_awal = date('Y-m-01');
@@ -193,7 +172,7 @@ class DashboardController extends Controller
         $jumlahPemantauStok = User::where('role', 'Pengelola Stok')->count();
 
         if (auth()->user()->role == 'Pemilik Toko') {
-            return view('admin.dashboard', compact('kategori', 'produk', 
+            return response()->view('admin.dashboard', compact('kategori', 'produk', 
             'supplier', 'member', 'tanggal_awal', 'tanggal_akhir', 'data_tanggal', 
             'data_tanggal1', 'data_pendapatan', 'penjualanHariIni', 'penjualanBulanIni', 
             'penjualanTahunIni', 'totalPenjualan', 'pengeluaranHariIni', 'pengeluaranBulanIni', 

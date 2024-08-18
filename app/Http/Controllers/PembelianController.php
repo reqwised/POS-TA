@@ -53,9 +53,6 @@ class PembelianController extends Controller
             ->addColumn('detail_url', function ($pembelian) {
                 return route('pembelian.show', $pembelian->id_pembelian);
             })
-            ->addColumn('delete_url', function ($pembelian) {
-                return route('pembelian.destroy', $pembelian->id_pembelian);
-            })
             ->rawColumns(['aksi'])
             ->make(true);
     }

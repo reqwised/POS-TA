@@ -69,7 +69,7 @@ class JualController extends Controller
 
             $detailItems = json_decode($request->detail_items, true);
             foreach ($detailItems as $item) {
-                Log::info('Saving detail item: ', $item); // Log detail item yang akan disimpan
+                Log::info('Saving detail item: ', $item);
                 $penjualanDetail = new PenjualanDetail;
                 $penjualanDetail->id_penjualan = $penjualan->id_penjualan;
                 $penjualanDetail->id_produk = $item['id_produk'];
@@ -117,7 +117,6 @@ class JualController extends Controller
             return redirect()->route('jual.index')->with('error', 'Transaksi tidak ditemukan');
         }
 
-        // Buat logika untuk menampilkan atau mencetak nota, misalnya dengan menggunakan view khusus atau library PDF
         return view('jual.cetak', compact('penjualan' , 'setting'));
     }
 }
