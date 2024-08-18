@@ -204,20 +204,7 @@
             </div>
         </div>
 
-        <!-- Grafik Barang Terjual -->
-        <div class="col-lg-6">
-            <div class="card card-outline card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">Grafik <b>Barang Terjual</b> Periode {{ tanggal_indonesia($tanggal_awal, false) }} - {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
-                </div>
-                <div class="card-body">
-                    <div class="chart">
-                        <canvas id="barChart" style="height: 300px;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!-- Grafik Omset -->
         <div class="col-lg-6">
             <div class="card card-outline card-primary">
                 <div class="card-header">
@@ -231,6 +218,19 @@
             </div>
         </div>
 
+        <!-- Grafik Barang Terjual -->
+        <div class="col-lg-6">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Grafik <b>Barang Terjual</b> Periode {{ tanggal_indonesia($tanggal_awal, false) }} - {{ tanggal_indonesia($tanggal_akhir, false) }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="barChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

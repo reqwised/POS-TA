@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button class="btn btn-primary"><i class="fas fa-check"></i> Simpan</button>
+                        <button class="btn btn-primary">Simpan</button>
                     </div>
                 </form>
             </div>

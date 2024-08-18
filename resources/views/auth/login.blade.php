@@ -47,7 +47,7 @@
                             <label for="email">Email <span class="text-danger">*</span></label>
                             <input type="email" name="email" class="form-control form-control-lg" id="email" placeholder="user@example.com" required value="{{ old('email') }}" autofocus>
                             <div class="invalid-feedback">
-                                Email tidak valid. Pastikan email memiliki format yang benar (misalnya, user@example.com).
+                                Masukkan email dengan benar (contoh: user@example.com).
                             </div>
                         </div>
 
@@ -59,13 +59,13 @@
                             </div>
                         </div>
 
-                        <div class="form-group form-check my-3">
+                        <!-- <div class="form-group form-check my-3">
                             <input class="form-check-input icheck" type="checkbox" id="rememberMe" name="remember">
                             <label class="form-check-label text-secondary" for="rememberMe">
                                 Remember Me
                             </label>
-                        </div>
-                        <button type="submit" class="btn btn-lg btn-primary w-100" id="loginButton" disabled>Login</button>
+                        </div> -->
+                        <button type="submit" class="btn btn-lg btn-primary w-100 mt-3" id="loginButton" disabled>Login</button>
                     </form>
                 </div>
             </div>
