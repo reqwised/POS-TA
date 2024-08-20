@@ -162,7 +162,6 @@
             };
             reader.readAsDataURL(file);
         }
-        preview('.tampil-logo', file);
     }
 
     document.getElementById('diskon').addEventListener('input', function() {

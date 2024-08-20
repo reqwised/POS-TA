@@ -24,7 +24,7 @@ class SettingController extends Controller
         $setting->telepon = $request->telepon;
         $setting->alamat = $request->alamat;
         $setting->diskon = $request->diskon;
-        $setting->tipe_nota = $request->tipe_nota;
+        // $setting->tipe_nota = $request->tipe_nota;
 
         if ($request->hasFile('path_logo')) {
             $file = $request->file('path_logo');
