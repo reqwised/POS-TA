@@ -49,15 +49,15 @@
                                 <div class="form-group col-md-9">
                                     <label>Logo <span class="text-sm text-secondary font-italic">(Kosongkan jika tidak ingin diubah)</span></label>
                                     <div class="custom-file">
-                                        <input type="file" name="path_logo" class="custom-file-input" id="path_logo" onchange="preview('.tampil-logo', this.files[0])">
+                                        <input type="file" name="path_logo" class="custom-file-input" id="path_logo" onchange="validateImage(this)">
                                         <label class="custom-file-label" for="foto">Choose file</label>
                                     </div>
                                     <small class="form-text text-muted">
-                                        File dengan format PNG, ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
+                                        Ukuran maksimal 1 MB dengan format (JPEG, JPG, dan PNG).
                                     </small>
                                     <span class="help-block with-errors text-danger"></span>
                                     <div class="tampil-logo mt-3">
-                                        <img src="{{ url($profil->foto ?? '/') }}" width="150">
+                                        <img id="logoPreview" src="{{ url($profil->foto ?? '/') }}" width="150">
                                     </div>
                                 </div>
                             </div>
@@ -131,45 +131,38 @@
             })
             .fail(errors => {
                 Swal.fire({
-                        title: "Gagal menyimpan data",
-                        icon: "error",
-                    });
+                    title: "Gagal menyimpan data!",
+                    icon: "error",
+                    confirmButtonColor: '#007bff',
+                });
             });
     }
 
     function validateImage(input) {
         const file = input.files[0];
-        const img = new Image();
-        const maxSize = 500 * 1024; // 500KB
-        const allowedTypes = ['image/png'];
+        const maxSize = 1000 * 1024; // 1MB
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
         if (file) {
             if (!allowedTypes.includes(file.type)) {
-                alert("File harus berupa gambar PNG.");
+                alert("Format gambar harus (JPEG, JPG, PNG).");
                 input.value = "";
                 return;
             }
 
             if (file.size > maxSize) {
-                alert("Ukuran file maksimal adalah 500KB.");
+                alert("Ukuran file maksimal adalah 1 MB.");
                 input.value = "";
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function (e) {
-                img.src = e.target.result;
-                img.onload = function () {
-                    if (img.width !== img.height) {
-                        alert("Gambar harus memiliki aspek rasio 1:1.");
-                        input.value = "";
-                    } else {
-                        document.getElementById('logoPreview').src = img.src;
-                    }
-                };
+                document.getElementById('logoPreview').src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
+        preview('.tampil-logo', file);
     }
 
     document.getElementById('diskon').addEventListener('input', function() {

@@ -42,7 +42,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 @section('breadcrumb')
-                                <li class="breadcrumb-item"><a href="#">POS</a></li>
+                                <li class="breadcrumb-item"><a href="#"><span class="text-uppercase">{{ auth()->user()->role }}</span></a></li>
                                 @show
                             </ol>
                         </div>

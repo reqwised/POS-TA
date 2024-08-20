@@ -28,11 +28,11 @@
             <div class="row align-items-center justify-content-center h-100 g-0 px-4 px-sm-0 ">
                 <div class="col col-sm-7 col-lg-8 col-xl-7">
                     <a href="#" class="d-flex justify-content-center mb-4">
-                        <img src="{{ url($setting->path_logo) }}" alt="logo.png" width="100">
+                        <img src="{{ url($setting->path_logo) }}" alt="logo.png" width="150">
                     </a>
                     <div class="text-center mb-10">
                         <h1 class="font-weight-bold">Login</h1>
-                        <p class="text-secondary">Silahkan login untuk mengelola penjualan Toko Anda dengan mudah dan efisien.</p>
+                        <p class="text-secondary">Silahkan login untuk mengelola Toko Anda dengan mudah dan efisien.</p>
                     </div>
 
                     @if ($errors->any())

@@ -30,11 +30,11 @@
                                         <label class="custom-file-label" for="foto">Choose file</label>
                                     </div>
                                     <small class="form-text text-muted">
-                                        File dengan format (JPEG, PNG, GIF), ukuran maksimal 500KB, dan memiliki aspek rasio 1:1.
+                                        Ukuran maksimal 1 MB dengan format (JPEG, JPG, dan PNG).
                                     </small>
                                     <span class="help-block with-errors"></span>
                                     <div class="tampil-foto mt-3">
-                                        <img id="fotoPreview" src="{{ url($profil->foto ?? '/') }}" width="150">
+                                        <img class="rounded-circle" id="fotoPreview" src="{{ url($profil->foto ?? '/') }}" width="150">
                                     </div>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                     } else {
                         Swal.fire({
                             title: "Gagal menyimpan data!",
-                            icon: "warning",
+                            icon: "error",
                             confirmButtonColor: '#007bff',
                         });
                     }
@@ -117,50 +117,27 @@
         });
     });
 
-    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-        var fileName = document.getElementById("foto").files[0].name;
-        var nextSibling = e.target.nextElementSibling
-        nextSibling.innerText = fileName
-    });
-
-    function preview(container, file) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            document.querySelector(container + ' img').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-    }
-
     function validateImage(input) {
         const file = input.files[0];
-        const img = new Image();
-        const maxSize = 500 * 1024; // 500KB
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const maxSize = 1500 * 1024; // 1MB
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
 
         if (file) {
             if (!allowedTypes.includes(file.type)) {
-                alert("File harus berupa gambar (JPEG, PNG, GIF).");
+                alert("Format gambar harus (JPEG, JPG, PNG).");
                 input.value = "";
                 return;
             }
 
             if (file.size > maxSize) {
-                alert("Ukuran file maksimal adalah 500KB.");
+                alert("Ukuran file maksimal adalah 1 MB.");
                 input.value = "";
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function (e) {
-                img.src = e.target.result;
-                img.onload = function () {
-                    if (img.width !== img.height) {
-                        alert("Gambar harus memiliki aspek rasio 1:1.");
-                        input.value = "";
-                    } else {
-                        document.getElementById('fotoPreview').src = img.src;
-                    }
-                };
+                document.getElementById('fotoPreview').src = e.target.result;
             };
             reader.readAsDataURL(file);
         }

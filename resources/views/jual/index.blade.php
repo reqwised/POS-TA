@@ -137,8 +137,8 @@
                 </div>
 
             <div class="card-footer">
-                <a type="button" href="{{ route('penjualan.index') }}" class="btn btn-danger"><i class="fas fa-window-close"></i> Batal</a>
-                <button type="submit" class="btn btn-primary btn-simpan float-right"><i class="fas fa-check"></i> Simpan</button>
+                <a type="button" href="{{ route('penjualan.index') }}" class="btn btn-danger">Batal</a>
+                <button type="submit" class="btn btn-primary btn-simpan float-right">Simpan</button>
             </div>
         </div>
     </div>

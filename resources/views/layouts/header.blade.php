@@ -11,7 +11,7 @@
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="{{ url(auth()->user()->foto ?? '/img/user.jpg') }}" class="user-image img-profil rounded-circle" alt="User Image">
-                <div class="d-inline">{{ auth()->user()->name }} - <span class="text-uppercase">{{ auth()->user()->role }}</span></div>
+                <div class="d-inline">{{ auth()->user()->name }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-item user-header text-center">
