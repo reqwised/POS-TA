@@ -32,11 +32,11 @@ class ProdukController extends Controller
         return datatables()
             ->of($produk)
             ->addIndexColumn()
-            ->addColumn('select_all', function ($produk) {
-                return '
-                    <input type="checkbox" name="id_produk[]" value="'. $produk->id_produk .'">
-                ';
-            })
+            // ->addColumn('select_all', function ($produk) {
+            //     return '
+            //         <input type="checkbox" name="id_produk[]" value="'. $produk->id_produk .'">
+            //     ';
+            // })
             ->addColumn('kode_produk', function ($produk) {
                 return '<span class="badge badge-primary">'. $produk->kode_produk .'</span>';
             })
@@ -53,11 +53,10 @@ class ProdukController extends Controller
                 return '
                 <div>
                     <button type="button" onclick="editForm(`'. route('produk.update', $produk->id_produk) .'`)" class="btn btn-sm btn-warning text-light"><i class="fas fa-edit"></i></button>
-                    <button type="button" onclick="deleteData(`'. route('produk.destroy', $produk->id_produk) .'`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 ';
             })
-            ->rawColumns(['aksi', 'kode_produk', 'select_all', 'stok', 'harga_beli', 'harga_jual'])
+            ->rawColumns(['aksi', 'kode_produk', 'stok', 'harga_beli', 'harga_jual'])
             ->make(true);
     }
 

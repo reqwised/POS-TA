@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
@@ -67,9 +67,6 @@
                             return `
                                 <button onclick="showDetail('${row.detail_url}')" class="btn btn-sm btn-warning text-light">
                                     <i class="fas fa-info-circle"></i>
-                                </button>
-                                <button onclick="deleteData('${row.delete_url}')" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
                                 </button>`;
                         @elseif (auth()->user()->role == 'Pengelola Stok')
                             return `

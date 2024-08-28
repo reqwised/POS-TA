@@ -12,19 +12,20 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="alert alert-primary alert-dismissible" role="alert">
+                    <div class="alert alert-primary alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <i class="fas fa-check"></i> Berhasil
-                    </h2>
+                        <h5><i class="icon fas fa-check"></i> Berhasil!</h5>
+                    </div>
                     <div class="text-center">
-                        <h2>Transaksi telah disimpan.</h2>
-                        <br><br>
-                        <a href="{{ route('jual.index') }}" class="btn btn-primary btn-lg">Transaksi Baru</a>
-                        <button class="btn btn-danger btn-lg" onclick="cetakNota({{ $penjualan->id_penjualan }})">Cetak Nota</button>
+                        <h2 class="mb-5">Proses Transaksi Selesai.</h2>
+                        <button class="btn btn-danger" onclick="cetakNota({{ $penjualan->id_penjualan }})">Cetak Nota</button>
+                        <a href="{{ route('jual.index') }}" class="btn btn-primary">Transaksi Baru</a>
                     </div>
                 </div>
-                <div class="card-footer">
-                </div>
+                <!-- <div class="card-footer">
+                    <button class="btn btn-danger" onclick="cetakNota({{ $penjualan->id_penjualan }})">Cetak Nota</button>
+                    <a href="{{ route('jual.index') }}" class="btn btn-primary float-right">Transaksi Baru</a>
+                </div> -->
             </div>
         </div>
     </div>

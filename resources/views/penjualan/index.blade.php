@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
@@ -23,7 +23,7 @@
                             <th>Diskon</th>
                             <th>Total Bayar</th>
                             <th>Kasir</th>
-                            <th width="12%">Aksi</th>
+                            <th width="10%">Aksi</th>
                         </thead>
                     </table>
                 </div>
@@ -72,9 +72,6 @@
                                 </button>
                                 <button onclick="notaSelect('${row.nota_select}')" class="btn btn-sm btn-info text-light">
                                     <i class="fas fa-file"></i>
-                                </button>
-                                <button onclick="deleteData('${row.delete_url}')" class="btn btn-sm btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
                                 </button>`;
                         @elseif (auth()->user()->role == 'Kasir')
                             return `

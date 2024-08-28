@@ -17,7 +17,7 @@
                 <div class="dropdown-item user-header text-center">
                     <img src="{{ url(auth()->user()->foto ?? '/img/user.jpg') }}" class="img-circle img-profil mt-2" alt="User Image" style="width: 80px; height: 80px;">
                     <h5 class="mt-2">{{ auth()->user()->name }}</h5>
-                    <p class="mb-0 text-uppercase">{{ auth()->user()->role }}</p>
+                    <p class="mb-0 text-uppercase text-bold">{{ auth()->user()->role }}</p>
                     <p class="mb-0 font-italic">{{ auth()->user()->email }}</p>
                 </div>
                 <div class="dropdown-footer">

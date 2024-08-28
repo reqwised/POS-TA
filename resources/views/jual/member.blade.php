@@ -25,7 +25,7 @@
                 <div id="paginationmember" class="text-center"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-sm" data-dismiss="modal">Batal</button>
             </div>
         </div>
     </div>

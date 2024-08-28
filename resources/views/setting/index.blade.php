@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <button class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-primary float-right">Simpan</button>
                     </div>
                 </form>
             </div>

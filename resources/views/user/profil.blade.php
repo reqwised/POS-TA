@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Edit Profil')
+@section('title', 'Profil')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Edit Profil</li>
+    <li class="breadcrumb-item active">Profil</li>
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary">Simpan</button>
+                        <button class="btn btn-primary float-right">Simpan</button>
                     </div>
                 </form>
             </div>

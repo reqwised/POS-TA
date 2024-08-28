@@ -14,7 +14,7 @@
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>{{ $penjualanHariIni }}</h3>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $penjualanBulanIni }}</h3>
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
                     <h3>{{ $penjualanTahunIni }}</h3>
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <!-- <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-dark">
                 <div class="inner">
                     <h3>{{ $totalPenjualan }}</h3>
@@ -57,11 +57,11 @@
                     <i class="fas fa-chart-bar"></i>
                 </div>
             </div>
-        </div>        
+        </div>         -->
     </div>
 
     <div class="row">
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-red">
                 <div class="inner">
                     <h3>{{ $pengeluaranHariIni }}</h3>
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $pengeluaranBulanIni }}</h3>
@@ -83,7 +83,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-4 col-xs-6">
             <div class="small-box bg-yellow">
                 <div class="inner">
                     <h3>{{ $pengeluaranTahunIni }}</h3>
@@ -94,7 +94,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <!-- <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-dark">
                 <div class="inner">
                     <h3>{{ $pengeluaranTotal }}</h3>
@@ -104,7 +104,7 @@
                     <i class="fas fa-chart-bar"></i>
                 </div>
             </div>
-        </div>        
+        </div>         -->
     </div>
 
     <div class="row">
@@ -274,7 +274,7 @@
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Pendapatan'
+                        labelString: 'Rupiah (Rp)'
                     }
                 }]
             },
@@ -299,7 +299,7 @@
         var barChartData = {
             labels: {!! json_encode($dataNama_produk) !!},
             datasets: [{
-                label: 'Barang Terlaris',
+                label: 'Barang Terjual',
                 backgroundColor: 'rgba(54, 162, 235, 0.7)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1,

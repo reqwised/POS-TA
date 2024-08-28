@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline card-primary">
@@ -19,7 +19,7 @@
                     <h5 class="card-title">Laporan Pendapatan Periode {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}</h5>
                     <div class="float-right">
                         <button onclick="updatePeriode()" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Periode Laporan</button>
-                        <a href="{{ route('laporan.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank" class="btn btn-sm btn-danger"><i class="far fa-file-pdf"></i> PDF</a>
+                        <!-- <a href="{{ route('laporan.export_pdf', [$tanggalAwal, $tanggalAkhir]) }}" target="_blank" class="btn btn-sm btn-danger"><i class="far fa-file-pdf"></i> PDF</a> -->
                     </div>
                 </div>
                 <div class="card-body">

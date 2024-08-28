@@ -77,7 +77,7 @@
                                         <input type="hidden" name="id_produk" id="id_produk">
                                     </div>
                                     <div class="col-sm-4">
-                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Pilih Produk</button>
+                                        <button onclick="tampilProduk()" class="btn btn-primary" type="button"><i class="fas fa-search"></i> Cari Produk</button>
                                     </div>
                                 </div>
                             </form>
