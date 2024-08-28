@@ -33,10 +33,6 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Route::get('/app', function () {
-//     return view('layouts.app');
-// });
-
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

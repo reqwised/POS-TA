@@ -60,7 +60,7 @@ class PenjualanController extends Controller
                 return route('penjualan.show', $penjualan->id_penjualan);
             })
             ->addColumn('nota_select', function ($penjualan) {
-                return route('penjualan.nota_Select', $penjualan->id_penjualan);
+                return route('jual.cetak', $penjualan->id_penjualan);
             })
             ->rawColumns(['nama', 'invoice'])
             ->make(true);
@@ -190,15 +190,12 @@ class PenjualanController extends Controller
 
     public function notaSelect($id)
     {
+        $penjualan = Penjualan::with('details')->find($id);
         $setting = Setting::first();
-        $penjualan = Penjualan::find($id);
+
         if (! $penjualan) {
             abort(404);
         }
-        $detail = PenjualanDetail::with('produk')
-            ->where('id_penjualan', $id)
-            ->get();
-
         return view('penjualan.nota_kecil', compact('setting', 'penjualan', 'detail'));
     }
 }
