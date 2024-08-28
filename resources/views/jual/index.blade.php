@@ -113,12 +113,12 @@
                                     <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Harga</th>
-                                    <th width="15%">Jumlah</th>
+                                    <th>Stok</th>
+                                    <th width="12%">Jumlah</th>
                                     <th>Diskon (%)</th>
                                     <th class="hidden-column">Diskon (Rp)</th>
                                     <th>Subtotal</th>
                                     <th width="10%">Aksi</i></th>
-                                    <th>Stok</th>
                                 </thead>
                                 <tbody id="table-penjualan-body">
                                 </tbody>
@@ -352,12 +352,12 @@
                 <td><p class="badge badge-primary m-0">${kode}</p></td>
                 <td>${nama}</td>
                 <td>${format_uang(harga)}</td>
+                <td>${stok}</td>
                 <td><input tabindex="${tbody.children.length + 2}" type="number" class="form-control" name="jumlah" value="1" oninput="validateJumlah(this, ${stok})"></td>
-                <td width="12%"><input class="form-control" name="diskon_pr" min="0" max="100" value="${diskon}" oninput="diskon_pr(this)" readonly></td>
+                <td width="12%"><input class="form-control" name="diskon_pr" value="${diskon}" oninput="diskon_pr(this)" readonly></td>
                 <td class="hidden-column"><input type="number" class="form-control" name="diskon_rp" min="0" value="0" oninput="diskon_rp(this)"></td>
                 <td>${format_uang(harga)}</td>
                 <td><button type="button" class="btn btn-danger btn-sm" onclick="hapusProduk(this)"><i class="fa fa-trash"></i></button></td>
-                <td>${stok}</td>
             `;
 
             tbody.appendChild(row);

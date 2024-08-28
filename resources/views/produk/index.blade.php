@@ -29,7 +29,7 @@
                                 <th>Kategori</th>
                                 <th>Modal</th>
                                 <th>Jual</th>
-                                <th width="10%">Diskon %</th>
+                                <th width="10%">Diskon (%)</th>
                                 <th>Stok</th>
                                 @if (auth()->user()->role == 'Pemilik Toko')
                                 <th width="10%">Aksi</th>
