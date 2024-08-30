@@ -17,6 +17,20 @@ class PembelianController extends Controller
 
         return view('pembelian.index', compact('supplier'));
     }
+    public function cancel(Request $request)
+    {
+        $pembelian = Pembelian::find(session('id_pembelian'));
+
+        if ($pembelian->total_harga == 0) {
+            $pembelian->delete();
+        }
+
+        session()->forget('id_pembelian');
+        session()->forget('id_supplier');
+
+        return redirect()->route('pembelian.index');
+    }
+
 
     public function data()
     {

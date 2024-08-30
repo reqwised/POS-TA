@@ -11,7 +11,7 @@ use App\Models\PenjualanDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class JualController extends Controller
+class PenjualanDetailController extends Controller
 {
 
     private function generateKodeInvoice()

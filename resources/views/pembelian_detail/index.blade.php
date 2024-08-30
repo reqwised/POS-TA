@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="card-footer">
-                    <a type="button" href="{{ route('pembelian.index') }}" class="btn btn-danger">Batal</a>
+                    <a type="button" href="{{ route('pembelian.cancel') }}" class="btn btn-danger">Batal</a>
                     <button type="submit" class="btn btn-primary btn-simpan float-right">Simpan</button>
                 </div>
             </div>
@@ -242,14 +242,13 @@
 
     function tambahProduk() {
         let kode_produk = $('#kode_produk').val();
-        console.log(kode_produk);
         
         if (!kode_produk) {
             alert('Kode produk tidak boleh kosong');
             return;
         }
         let tableData = table.rows().data().toArray();
-        let existingRow = tableData.find(row => row.kode_produk === kode_produk);
+        let existingRow = tableData.find(row => row.kode_produk.includes(`>${kode_produk}</div>`));
 
         if (existingRow) {
             // Ekstraksi nilai jumlah dari input HTML

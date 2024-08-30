@@ -33,6 +33,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -81,6 +82,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/supplier/data', [SupplierController::class, 'data'])->name('supplier.data');
         Route::resource('/supplier', SupplierController::class);
         Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+        Route::get('/pembelian/cancel',[PembelianController::class, 'cancel'])->name('pembelian.cancel');
         Route::get('/pembelian/{id}/create', [PembelianController::class, 'create'])->name('pembelian.create');
         Route::resource('/pembelian', PembelianController::class)
             ->except('create');
