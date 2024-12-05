@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/sandinur157/tuturial-membuat-aplikasi-point-of-sales/main/public/img/logo.png" width="120">
+    <img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/logo.png" width="120">
 </p>
 
 ## Tentang Aplikasi
@@ -10,7 +10,6 @@ Aplikasi POS atau point of sales adalah aplikasi yang digunakan untuk mengelola 
 - Manajemen Kategori Produk
 - Manajemen Produk
   - Multiple Delete
-  - Cetak Barcode
 - Manajemen Member atau Anggota
   - Cetak Kartu Member
 - Manajemen Supplier
@@ -27,19 +26,9 @@ Aplikasi POS atau point of sales adalah aplikasi yang digunakan untuk mengelola 
 - Manajemen User dan Profil
 - Pengaturan Toko
   - Identitas
-  - Upload Desain Kartu Member
   - Setting Diskon Member
 - User (Administrator, Kasir)
 - Grafik ChartJS pada Dashboard
-
-## Instalasi
-#### Via Git
-```bash
-git clone https://github.com/sandinur157/tuturial-membuat-aplikasi-point-of-sales.git
-```
-
-### Download ZIP
-[Link](https://github.com/sandinur157/tuturial-membuat-aplikasi-point-of-sales/archive/refs/heads/main.zip)
 
 ### Setup Aplikasi
 Jalankan perintah 
