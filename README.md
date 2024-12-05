@@ -1,5 +1,5 @@
 <p align="center">
-    <a href="https://github.com/sandinur157" target="_blank"><img src="https://raw.githubusercontent.com/sandinur157/tuturial-membuat-aplikasi-point-of-sales/main/public/img/logo.png" width="120"></a>
+    <img src="https://raw.githubusercontent.com/sandinur157/tuturial-membuat-aplikasi-point-of-sales/main/public/img/logo.png" width="120">
 </p>
 
 ## Tentang Aplikasi
@@ -87,12 +87,3 @@ Menjalankan aplikasi
 ```bash
 php artisan serve
 ```
-
-## Link Tutorial
-
-- [Youtube](https://www.youtube.com/playlist?list=PLaN75JfoGz0Okf9f_7GbGM5IFaLXWx-_C)
-- [W2Learn](https://www.w2learn.com)
-
-## License
-
-[MIT license](https://opensource.org/licenses/MIT)
