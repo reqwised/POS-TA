@@ -1,14 +1,10 @@
 <p align="center">
     <img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/logo.png" width="120">
 </p>
-<p>
-    <table border="0px">
-        <tr>
-            <th><img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot 2024-08-25 124141.png"></th>
-            <th><img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot 2024-08-25 125740.png"></th>
-            <th><img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot 2024-12-06 at 14-08-11 Toko Ku Transaksi Penjualan.png"></th>
-        </tr>
-    </table>
+<p align="center">
+    <img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot%202024-08-25%20124141.png" width="33%">
+    <img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot%202024-08-25%20125740.png" width="33%">
+    <img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot%202024-12-06%20at%2014-08-11%20Toko%20Ku%20Transaksi%20Penjualan.png" width="33%">
 </p>
 
 ## Tentang Aplikasi
