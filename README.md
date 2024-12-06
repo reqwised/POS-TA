@@ -1,6 +1,15 @@
 <p align="center">
     <img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/logo.png" width="120">
 </p>
+<p>
+    <table border="0px">
+        <tr>
+            <th> satu </th>
+            <th> dua </th>
+            <th> tiga</th>
+        </tr>
+    </table>
+</p>
 
 ## Tentang Aplikasi
 
