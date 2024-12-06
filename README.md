@@ -4,9 +4,9 @@
 <p>
     <table border="0px">
         <tr>
-            <th> satu </th>
-            <th> dua </th>
-            <th> tiga</th>
+            <th><img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot 2024-08-25 124141.png"></th>
+            <th><img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot 2024-08-25 125740.png"></th>
+            <th><img src="https://raw.githubusercontent.com/reqwised/POS-TA/main/public/img/Screenshot 2024-12-06 at 14-08-11 Toko Ku Transaksi Penjualan.png"></th>
         </tr>
     </table>
 </p>
